@@ -233,7 +233,7 @@ async function persistLead(
   return {
     ok: true,
     message:
-      "¡Listo! Guardé tu información y el equipo te contactará pronto. Te llegará una confirmación a tu correo.",
+      "¡Listo! Guardé tu información. El equipo de NEWEBD te contacta directo en las próximas horas.",
   };
 }
 
