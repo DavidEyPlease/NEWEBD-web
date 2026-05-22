@@ -121,6 +121,20 @@ export function useScrollSlides({
     };
 
     const onKey = (e: KeyboardEvent) => {
+      // No interceptar teclas cuando el usuario está escribiendo en un input,
+      // textarea, select o elemento contentEditable (ej: el chat widget).
+      const target = e.target as HTMLElement | null;
+      if (target) {
+        const tag = target.tagName;
+        if (
+          tag === "INPUT" ||
+          tag === "TEXTAREA" ||
+          tag === "SELECT" ||
+          target.isContentEditable
+        ) {
+          return;
+        }
+      }
       switch (e.key) {
         case "ArrowDown":
         case "PageDown":

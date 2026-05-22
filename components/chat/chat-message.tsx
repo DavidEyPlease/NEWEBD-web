@@ -28,7 +28,7 @@ export function ChatMessageBubble({ message }: Props) {
 
       <div
         className={cn(
-          "max-w-[78%] rounded-2xl px-3.5 py-2.5 text-[14px] leading-relaxed",
+          "max-w-[78%] min-w-0 rounded-2xl px-3.5 py-2.5 text-[14px] leading-relaxed whitespace-pre-wrap break-words [overflow-wrap:anywhere]",
           isUser
             ? "gradient-brand text-white"
             : "bg-foreground/[0.04] text-foreground ring-1 ring-inset ring-border",
