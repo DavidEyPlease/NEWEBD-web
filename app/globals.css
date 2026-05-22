@@ -1,26 +1,135 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Brand palette OFICIAL — del manual de marca NEWEBD */
+  --color-brand-magenta: #ff24b8;
+  --color-brand-purple: #bd41e0;
+  --color-brand-blue: #6d88ff;
+  --color-brand-cyan: #6cbde7;
+
+  /* Aliases para compatibilidad */
+  --color-brand-pink: #ff24b8;
+
+  /* Dark surfaces basadas en el fondo oficial #1b073b */
+  --color-ink-950: #0d0420;
+  --color-ink-900: #1b073b;
+  --color-ink-800: #2a1054;
+  --color-ink-700: #3a1d6d;
+  --color-ink-600: #4d2b8a;
+
+  /* Neutrals */
+  --color-foreground: #f5f3ff;
+  --color-foreground-muted: #c4bce0;
+  --color-foreground-subtle: #8b82a8;
+  --color-background: #0d0420;
+  --color-border: rgba(245, 243, 255, 0.08);
+  --color-border-strong: rgba(245, 243, 255, 0.16);
+
+  /* Typography — Poppins oficial */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Custom animations */
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-spin-slow: spin-slow 24s linear infinite;
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes aurora {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0.6;
+  }
+  33% {
+    transform: translate3d(2%, -3%, 0) rotate(120deg);
+    opacity: 0.8;
+  }
+  66% {
+    transform: translate3d(-2%, 2%, 0) rotate(240deg);
+    opacity: 0.7;
   }
 }
 
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Reusable brand gradient utilities — paleta oficial */
+@utility gradient-brand {
+  background-image: linear-gradient(
+    120deg,
+    var(--color-brand-magenta) 0%,
+    var(--color-brand-purple) 35%,
+    var(--color-brand-blue) 70%,
+    var(--color-brand-cyan) 100%
+  );
+}
+
+@utility gradient-brand-soft {
+  background-image: linear-gradient(
+    120deg,
+    rgba(255, 36, 184, 0.18) 0%,
+    rgba(189, 65, 224, 0.18) 35%,
+    rgba(109, 136, 255, 0.18) 70%,
+    rgba(108, 189, 231, 0.18) 100%
+  );
+}
+
+@utility text-gradient-brand {
+  background-image: linear-gradient(
+    120deg,
+    var(--color-brand-magenta) 0%,
+    var(--color-brand-purple) 40%,
+    var(--color-brand-cyan) 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Subtle grid background used in dark surfaces */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(245, 243, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(245, 243, 255, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* Soft radial vignette */
+@utility bg-vignette {
+  background-image: radial-gradient(
+    ellipse 80% 60% at 50% 0%,
+    rgba(189, 65, 224, 0.2),
+    transparent 70%
+  );
+}
+
+::selection {
+  background: var(--color-brand-purple);
+  color: var(--color-foreground);
 }
