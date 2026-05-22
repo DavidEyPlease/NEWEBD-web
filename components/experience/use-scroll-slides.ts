@@ -83,9 +83,18 @@ export function useScrollSlides({
     ).matches;
     if (reduce) return;
 
+    // Helper: determinar si el event ocurrió dentro de un área que debe
+    // mantener su propio scroll/interacción nativa (ej: el chat widget).
+    const isInsideInteractiveArea = (target: EventTarget | null): boolean => {
+      if (!(target instanceof Element)) return false;
+      return target.closest("[data-allow-native-scroll]") !== null;
+    };
+
     const onWheel = (e: WheelEvent) => {
       // Solo interceptamos scroll vertical
       if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
+      // No interceptar si el wheel ocurre dentro del chat (o similar)
+      if (isInsideInteractiveArea(e.target)) return;
       e.preventDefault();
 
       if (lockRef.current) return;
@@ -101,12 +110,18 @@ export function useScrollSlides({
     };
 
     const onTouchStart = (e: TouchEvent) => {
+      // No registramos touch que empieza en áreas interactivas
+      if (isInsideInteractiveArea(e.target)) {
+        touchStartY.current = null;
+        return;
+      }
       touchStartY.current = e.touches[0].clientY;
     };
 
     const onTouchMove = (e: TouchEvent) => {
       if (touchStartY.current === null) return;
-      // Prevenir scroll nativo en mobile
+      // Prevenir scroll nativo en mobile (solo si no estamos en chat)
+      if (isInsideInteractiveArea(e.target)) return;
       e.preventDefault();
     };
 
