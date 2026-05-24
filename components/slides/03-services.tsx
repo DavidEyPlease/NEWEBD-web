@@ -24,22 +24,22 @@ export function ServicesSlide(_props: SlideProps) {
         <div className="absolute -left-20 bottom-1/4 h-[500px] w-[500px] rounded-full bg-brand-cyan/20 blur-[160px]" />
       </div>
 
-      <Container size="wide" className="relative h-full flex flex-col justify-center py-12">
+      <Container size="wide" className="relative h-full flex flex-col justify-center py-2 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="mb-10 text-center"
+          className="mb-5 text-center sm:mb-10"
         >
-          <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground-subtle sm:text-xs">
             4 pilares
           </p>
-          <h2 className="mt-4 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl">
+          <h2 className="mt-2 text-balance text-2xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:mt-4 sm:text-5xl lg:text-6xl">
             Esto construimos para ti.
           </h2>
         </motion.div>
 
-        <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
+        <div className="grid gap-2.5 sm:grid-cols-2 sm:gap-5">
           {SERVICES.map((s, i) => {
             const Icon = ICONS[s.slug] ?? Code2;
             const isHero = !!s.isDifferentiator;
@@ -58,33 +58,36 @@ export function ServicesSlide(_props: SlideProps) {
               >
                 <div
                   className={cn(
-                    "relative flex h-full flex-col gap-3 rounded-2xl p-6 backdrop-blur",
+                    "relative flex h-full flex-col gap-1.5 rounded-2xl p-3.5 backdrop-blur sm:gap-3 sm:p-6",
                     isHero ? "bg-ink-900" : "bg-background/80",
                   )}
                 >
                   <div className="flex items-center justify-between">
                     <span
                       className={cn(
-                        "inline-flex h-12 w-12 items-center justify-center rounded-xl ring-1 ring-inset",
+                        "inline-flex h-9 w-9 items-center justify-center rounded-xl ring-1 ring-inset sm:h-12 sm:w-12",
                         isHero
                           ? "gradient-brand ring-white/20"
                           : "bg-foreground/[0.04] ring-border-strong",
                       )}
                     >
                       <Icon
-                        size={22}
-                        className={isHero ? "text-white" : "text-foreground"}
+                        size={18}
+                        className={cn(
+                          "sm:size-[22px]",
+                          isHero ? "text-white" : "text-foreground",
+                        )}
                       />
                     </span>
-                    <span className="font-mono text-xs text-foreground-subtle tracking-widest">
+                    <span className="font-mono text-[10px] text-foreground-subtle tracking-widest sm:text-xs">
                       {s.number}
                     </span>
                   </div>
 
-                  <h3 className="text-2xl font-semibold tracking-tight text-foreground">
+                  <h3 className="text-lg font-semibold tracking-tight text-foreground sm:text-2xl">
                     {s.title}
                   </h3>
-                  <p className="text-sm leading-relaxed text-foreground-muted">
+                  <p className="text-xs leading-snug text-foreground-muted sm:text-sm sm:leading-relaxed">
                     {s.tagline}
                   </p>
                 </div>

@@ -36,7 +36,7 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.15 }}
-            className="mt-6 text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-6xl lg:text-7xl"
+            className="mt-4 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:mt-6 sm:text-6xl lg:text-7xl"
           >
             Hablemos.
           </motion.h1>
@@ -45,7 +45,7 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted sm:text-xl"
+            className="mx-auto mt-3 max-w-2xl text-base leading-relaxed text-foreground-muted sm:mt-6 sm:text-xl"
           >
             Elige cómo prefieres. Respondemos rápido en todos los canales.
           </motion.p>
@@ -54,18 +54,18 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="mt-14 grid gap-4 sm:grid-cols-3"
+            className="mt-7 grid gap-3 sm:mt-14 sm:grid-cols-3 sm:gap-4"
           >
             <a
               href="https://wa.me/5210000000000"
               target="_blank"
               rel="noopener noreferrer"
-              className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-foreground/[0.02] p-7 transition-all hover:border-border-strong hover:bg-foreground/[0.04]"
+              className="group flex flex-col items-center gap-2 rounded-2xl border border-border bg-foreground/[0.02] p-4 transition-all hover:border-border-strong hover:bg-foreground/[0.04] sm:gap-3 sm:p-7"
             >
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-foreground/[0.04] ring-1 ring-inset ring-border-strong transition-colors group-hover:bg-foreground/[0.08]">
-                <MessageCircle size={20} className="text-foreground" />
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-foreground/[0.04] ring-1 ring-inset ring-border-strong transition-colors group-hover:bg-foreground/[0.08] sm:h-12 sm:w-12">
+                <MessageCircle size={18} className="text-foreground sm:size-5" />
               </span>
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground-subtle sm:text-xs">
                 WhatsApp
               </span>
               <span className="text-sm text-foreground">
@@ -75,12 +75,12 @@ export function ContactoIntroSlide({ next }: SlideProps) {
 
             <a
               href="mailto:hola@newebd.com"
-              className="group flex flex-col items-center gap-3 rounded-2xl border border-border bg-foreground/[0.02] p-7 transition-all hover:border-border-strong hover:bg-foreground/[0.04]"
+              className="group flex flex-col items-center gap-2 rounded-2xl border border-border bg-foreground/[0.02] p-4 transition-all hover:border-border-strong hover:bg-foreground/[0.04] sm:gap-3 sm:p-7"
             >
-              <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-foreground/[0.04] ring-1 ring-inset ring-border-strong transition-colors group-hover:bg-foreground/[0.08]">
-                <Mail size={20} className="text-foreground" />
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-foreground/[0.04] ring-1 ring-inset ring-border-strong transition-colors group-hover:bg-foreground/[0.08] sm:h-12 sm:w-12">
+                <Mail size={18} className="text-foreground sm:size-5" />
               </span>
-              <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">
+              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground-subtle sm:text-xs">
                 Email
               </span>
               <span className="text-sm text-foreground">
@@ -93,11 +93,11 @@ export function ContactoIntroSlide({ next }: SlideProps) {
               onClick={next}
               className="group flex flex-col items-center gap-3 rounded-2xl p-[1px] gradient-brand shadow-[0_20px_60px_-20px_rgba(189,65,224,0.55)] transition-all hover:-translate-y-0.5"
             >
-              <div className="flex w-full flex-col items-center gap-3 rounded-2xl bg-ink-900 p-7">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl gradient-brand text-white">
-                  <FileText size={20} />
+              <div className="flex w-full flex-col items-center gap-2 rounded-2xl bg-ink-900 p-4 sm:gap-3 sm:p-7">
+                <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl gradient-brand text-white sm:h-12 sm:w-12">
+                  <FileText size={18} className="sm:size-5" />
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-foreground sm:text-xs">
                   Cotización
                 </span>
                 <span className="text-sm text-foreground-muted">
@@ -111,7 +111,7 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.9 }}
-            className="mt-12 text-xs text-foreground-subtle"
+            className="mt-6 hidden text-xs text-foreground-subtle sm:mt-12 sm:block"
           >
             ↓ Scroll para ir a la cotización
           </motion.p>

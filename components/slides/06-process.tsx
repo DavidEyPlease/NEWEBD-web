@@ -55,15 +55,15 @@ export function ProcessSlide(_props: SlideProps) {
             transition={{ duration: 0.5 }}
             className="text-center"
           >
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.3em] text-foreground-subtle sm:text-xs">
               Cómo trabajamos
             </p>
-            <h2 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl">
+            <h2 className="mt-3 text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:mt-6 sm:text-5xl lg:text-6xl">
               Cuatro pasos, cero misterios.
             </h2>
           </motion.div>
 
-          <div className="relative mt-16">
+          <div className="relative mt-7 sm:mt-16">
             {/* Línea conectora con gradient */}
             <div
               aria-hidden
@@ -71,7 +71,7 @@ export function ProcessSlide(_props: SlideProps) {
             />
             <ol
               role="list"
-              className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 md:gap-4"
+              className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-4 md:gap-4"
             >
               {STEPS.map((s, i) => {
                 const Icon = s.icon;
@@ -84,20 +84,20 @@ export function ProcessSlide(_props: SlideProps) {
                     className="relative flex flex-col items-center text-center md:items-start md:text-left"
                   >
                     <div className="relative">
-                      <span className="relative inline-flex h-[72px] w-[72px] items-center justify-center rounded-2xl bg-background ring-1 ring-inset ring-border-strong">
-                        <Icon size={24} className="text-foreground" />
+                      <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-background ring-1 ring-inset ring-border-strong sm:h-[72px] sm:w-[72px]">
+                        <Icon size={20} className="text-foreground sm:size-6" />
                       </span>
                       <span
                         aria-hidden
-                        className="absolute -right-2 -top-2 inline-flex h-7 px-2.5 items-center justify-center rounded-full gradient-brand text-[10px] font-bold text-white"
+                        className="absolute -right-2 -top-2 inline-flex h-6 px-2 items-center justify-center rounded-full gradient-brand text-[10px] font-bold text-white sm:h-7 sm:px-2.5"
                       >
                         {s.number}
                       </span>
                     </div>
-                    <h3 className="mt-6 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
+                    <h3 className="mt-3 text-base font-semibold tracking-tight text-foreground sm:mt-6 sm:text-2xl">
                       {s.title}
                     </h3>
-                    <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
+                    <p className="mt-1 text-xs leading-snug text-foreground-muted sm:mt-2 sm:text-sm sm:leading-relaxed">
                       {s.sub}
                     </p>
                   </motion.li>
