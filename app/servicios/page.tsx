@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
+import { Isotipo } from "@/components/brand/isotipo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -40,6 +41,14 @@ export default function ServiciosPage() {
           aria-hidden
           className="absolute inset-0 -z-10 bg-grid opacity-25 [mask-image:radial-gradient(ellipse_at_top,black_15%,transparent_70%)]"
         />
+
+        {/* Isotipo decorativo — solo mobile */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-20 top-28 opacity-50 mix-blend-screen lg:hidden"
+        >
+          <Isotipo size={220} spin />
+        </div>
 
         <Container size="wide">
           <div className="mx-auto max-w-3xl text-center">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 
+import { Isotipo } from "@/components/brand/isotipo";
 import { Container } from "@/components/ui/container";
 import { CASES } from "@/lib/content/cases";
 
@@ -23,6 +24,14 @@ export default function PortafolioPage() {
           className="absolute inset-0 -z-10 bg-grid opacity-25 [mask-image:radial-gradient(ellipse_at_top,black_15%,transparent_70%)]"
         />
 
+        {/* Isotipo decorativo — solo mobile */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-16 top-28 opacity-50 mix-blend-screen lg:hidden"
+        >
+          <Isotipo size={220} spin />
+        </div>
+
         <Container size="wide">
           <div className="mx-auto max-w-3xl text-center">
             <div className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-foreground/[0.04] px-4 py-1.5 backdrop-blur">
@@ -43,7 +52,15 @@ export default function PortafolioPage() {
         </Container>
       </section>
 
-      <section className="relative bg-background pb-24 sm:pb-32">
+      <section className="relative overflow-hidden bg-background pb-24 sm:pb-32">
+        {/* Isotipo decorativo — solo mobile */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-14 top-1/3 opacity-40 mix-blend-screen lg:hidden"
+        >
+          <Isotipo size={180} spin />
+        </div>
+
         <Container size="wide">
           <div className="grid gap-6 md:grid-cols-2">
             {CASES.map((c, idx) => (
