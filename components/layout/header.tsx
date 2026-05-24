@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react";
 
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -19,7 +20,10 @@ const EXPERIENCE_ROUTES = ["/", "/contacto"];
 
 export function Header() {
   const pathname = usePathname();
-  const isExperience = EXPERIENCE_ROUTES.includes(pathname);
+  const isMobile = useIsMobile();
+  // En mobile las rutas "experience" son scroll natural, así que el header
+  // debe comportarse igual que en una página tradicional.
+  const isExperience = EXPERIENCE_ROUTES.includes(pathname) && !isMobile;
 
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);

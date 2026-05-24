@@ -1,4 +1,8 @@
+"use client";
+
+import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { ScrollExperience } from "@/components/experience/scroll-experience";
+import { MobileHome } from "@/components/experience/mobile-home";
 import { HeroSlide } from "@/components/slides/01-hero";
 import { ManifestoSlide } from "@/components/slides/02-manifesto";
 import { ServicesSlide } from "@/components/slides/03-services";
@@ -18,5 +22,11 @@ const SLIDES = [
 ];
 
 export default function Home() {
+  const isMobile = useIsMobile();
+
+  if (isMobile) {
+    return <MobileHome />;
+  }
+
   return <ScrollExperience slides={SLIDES} />;
 }
