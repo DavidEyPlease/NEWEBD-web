@@ -2,17 +2,19 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 
 export function FinalCTA() {
+  const t = useTranslations("sections.cta");
+
   return (
     <section className="relative overflow-hidden bg-background py-24 sm:py-32">
       <Container size="wide">
         <div className="relative overflow-hidden rounded-3xl border border-border-strong bg-ink-900 p-10 sm:p-16 lg:p-20">
-          {/* Backdrop gradient */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 opacity-90 gradient-brand-soft"
@@ -46,8 +48,8 @@ export function FinalCTA() {
               transition={{ duration: 0.5 }}
               className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl"
             >
-              Listo para que tu negocio entre a{" "}
-              <span className="text-gradient-brand">la era de la IA.</span>
+              {t("titleA")}{" "}
+              <span className="text-gradient-brand">{t("titleHighlight")}</span>
             </motion.h2>
 
             <motion.p
@@ -57,8 +59,7 @@ export function FinalCTA() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mt-6 max-w-lg text-lg leading-relaxed text-foreground-muted"
             >
-              Cuéntanos qué quieres construir. Te respondemos rápido, sin
-              promesas vacías, con un plan claro y un precio honesto.
+              {t("body")}
             </motion.p>
 
             <motion.div
@@ -69,7 +70,7 @@ export function FinalCTA() {
               className="mt-10 flex flex-wrap items-center gap-4"
             >
               <Button href="/contacto" size="lg">
-                Cotiza tu proyecto
+                {t("ctaPrimary")}
                 <ArrowRight size={18} />
               </Button>
               <Button
@@ -78,7 +79,7 @@ export function FinalCTA() {
                 size="lg"
               >
                 <MessageCircle size={18} />
-                WhatsApp
+                {t("ctaSecondary")}
               </Button>
             </motion.div>
 
@@ -89,7 +90,7 @@ export function FinalCTA() {
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mt-8 text-sm text-foreground-subtle"
             >
-              O escríbenos a{" "}
+              {t("alt")}{" "}
               <a
                 href="mailto:hola@newebd.com"
                 className="text-foreground underline-offset-4 hover:underline"

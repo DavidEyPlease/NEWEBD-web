@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Code2, AppWindow, Database, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
@@ -17,18 +18,19 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 export function Services() {
+  const t = useTranslations("sections.services");
+
   return (
     <section id="servicios" className="relative bg-background py-24 sm:py-32">
       <Container size="wide">
         <div className="mx-auto max-w-2xl text-center">
-          <Badge variant="default">Lo que hacemos</Badge>
+          <Badge variant="default">{t("badge")}</Badge>
           <h2 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl">
-            4 pilares para llevar a tu negocio
-            <br className="hidden sm:block" /> a la era de la IA.
+            {t("titleA")}
+            <br className="hidden sm:block" /> {t("titleB")}
           </h2>
           <p className="mt-6 text-lg leading-relaxed text-foreground-muted">
-            Lo clásico bien hecho, y la capa que hoy marca la diferencia.
-            Empezamos donde tu negocio lo necesita.
+            {t("subtitle")}
           </p>
         </div>
 
@@ -88,7 +90,7 @@ export function Services() {
                         variant="outline"
                         className="border-white/20 text-foreground"
                       >
-                        Diferenciador NEWEBD
+                        {t("differentiator")}
                       </Badge>
                     )}
                   </div>
@@ -127,7 +129,7 @@ export function Services() {
                     href={`/servicios#${service.slug}`}
                     className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-brand-cyan"
                   >
-                    Conocer más
+                    {t("cta")}
                     <ArrowUpRight
                       size={14}
                       className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

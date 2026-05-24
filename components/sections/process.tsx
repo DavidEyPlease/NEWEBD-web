@@ -2,43 +2,23 @@
 
 import { motion } from "framer-motion";
 import { MessagesSquare, FileSearch, Wrench, Handshake } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 
-const STEPS = [
-  {
-    number: "01",
-    icon: MessagesSquare,
-    title: "Briefing",
-    description:
-      "Una conversación honesta sobre tu negocio, lo que duele y lo que quieres lograr. Sin jerga.",
-  },
-  {
-    number: "02",
-    icon: FileSearch,
-    title: "Propuesta",
-    description:
-      "Alcance claro, tiempos realistas, inversión transparente. Decisiones tomadas con datos, no con humo.",
-  },
-  {
-    number: "03",
-    icon: Wrench,
-    title: "Construcción",
-    description:
-      "Iteraciones cortas, visibilidad total, releases continuas. Trabajamos con tu equipo, no encerrados.",
-  },
-  {
-    number: "04",
-    icon: Handshake,
-    title: "Acompañamiento",
-    description:
-      "Cuando lanzamos, seguimos contigo. Soporte, evolución, métricas. No desaparecemos al firmar.",
-  },
+const STEPS: { number: string; icon: LucideIcon; titleKey: string; bodyKey: string }[] = [
+  { number: "01", icon: MessagesSquare, titleKey: "step1Title", bodyKey: "step1Body" },
+  { number: "02", icon: FileSearch, titleKey: "step2Title", bodyKey: "step2Body" },
+  { number: "03", icon: Wrench, titleKey: "step3Title", bodyKey: "step3Body" },
+  { number: "04", icon: Handshake, titleKey: "step4Title", bodyKey: "step4Body" },
 ];
 
 export function Process() {
+  const t = useTranslations("sections.process");
+
   return (
     <section className="relative overflow-hidden bg-background py-24 sm:py-32">
       {/* Isotipo decorativo — solo mobile */}
@@ -51,14 +31,13 @@ export function Process() {
 
       <Container size="wide">
         <div className="mx-auto max-w-2xl text-center">
-          <Badge variant="default">Cómo trabajamos</Badge>
+          <Badge variant="default">{t("badge")}</Badge>
           <h2 className="mt-5 text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
-            Un proceso pensado para que tú no tengas que pensarlo.
+            {t("title")}
           </h2>
         </div>
 
         <div className="mt-16 relative">
-          {/* Línea conectora horizontal en desktop */}
           <div
             aria-hidden
             className="pointer-events-none absolute left-0 right-0 top-7 hidden h-px bg-gradient-to-r from-transparent via-border-strong to-transparent lg:block"
@@ -92,10 +71,10 @@ export function Process() {
                   </div>
 
                   <h3 className="mt-6 text-xl font-semibold tracking-tight text-foreground">
-                    {step.title}
+                    {t(step.titleKey)}
                   </h3>
                   <p className="mt-2 text-[15px] leading-relaxed text-foreground-muted">
-                    {step.description}
+                    {t(step.bodyKey)}
                   </p>
                 </motion.li>
               );

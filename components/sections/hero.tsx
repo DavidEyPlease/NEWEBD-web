@@ -2,12 +2,15 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 
 export function Hero() {
+  const t = useTranslations("sections.hero");
+
   return (
     <section className="relative overflow-hidden bg-background pt-36 pb-28 sm:pt-44 sm:pb-36">
       {/* Aurora blobs */}
@@ -29,7 +32,7 @@ export function Hero() {
       />
       <div aria-hidden className="absolute inset-0 -z-10 bg-vignette" />
 
-      {/* Isotipo decorativo flotante — solo mobile (en desktop hay otro a la derecha) */}
+      {/* Isotipo decorativo flotante — solo mobile */}
       <div
         aria-hidden
         className="pointer-events-none absolute -right-16 top-[55%] -translate-y-1/2 opacity-60 mix-blend-screen lg:hidden"
@@ -37,7 +40,7 @@ export function Hero() {
         <Isotipo size={280} spin />
       </div>
 
-      {/* Degradado de salida hacia la siguiente sección */}
+      {/* Degradado de salida */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-background"
@@ -55,7 +58,7 @@ export function Hero() {
               <span className="inline-flex h-1.5 w-1.5 rounded-full bg-brand-cyan animate-pulse" />
               <Sparkles size={13} className="text-brand-magenta" />
               <span className="text-xs font-medium tracking-wide uppercase text-foreground-muted">
-                Desarrollo + IA · Desde México
+                {t("badge")}
               </span>
             </motion.div>
 
@@ -65,11 +68,11 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.1 }}
               className="mt-7 text-balance text-[2.75rem] font-semibold leading-[1.02] tracking-[-0.035em] text-foreground sm:text-6xl lg:text-[5.25rem]"
             >
-              El nuevo desarrollo
+              {t("titleA")}
               <br />
-              web es{" "}
+              {t("titleB")}{" "}
               <span className="relative whitespace-nowrap">
-                <span className="text-gradient-brand">con IA.</span>
+                <span className="text-gradient-brand">{t("titleC")}</span>
                 <span
                   aria-hidden
                   className="absolute inset-x-0 -bottom-1 h-px gradient-brand opacity-70"
@@ -83,11 +86,12 @@ export function Hero() {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="mt-7 max-w-xl text-lg leading-relaxed text-foreground-muted sm:text-xl"
             >
-              Integramos IA en tu negocio para que{" "}
-              <span className="text-foreground">crezcas</span>,{" "}
-              <span className="text-foreground">ahorres tiempo</span> y{" "}
-              <span className="text-foreground">dinero</span>. Webs, apps,
-              sistemas y agentes — hechos a la medida.
+              {t("subtitleA")}{" "}
+              <span className="text-foreground">{t("subtitleStrongA")}</span>,{" "}
+              <span className="text-foreground">{t("subtitleStrongB")}</span>{" "}
+              <span className="text-foreground-muted">{t("subtitleAnd")}</span>{" "}
+              <span className="text-foreground">{t("subtitleStrongC")}</span>
+              {t("subtitleB")}
             </motion.p>
 
             <motion.div
@@ -97,11 +101,11 @@ export function Hero() {
               className="mt-10 flex flex-wrap items-center gap-4"
             >
               <Button href="/contacto" size="lg">
-                Cotiza tu proyecto
+                {t("ctaPrimary")}
                 <ArrowRight size={18} />
               </Button>
               <Button href="/portafolio" variant="secondary" size="lg">
-                Ver portafolio
+                {t("ctaSecondary")}
               </Button>
             </motion.div>
 
@@ -113,11 +117,11 @@ export function Hero() {
             >
               <span className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-cyan" />
-                10+ años construyendo software real
+                {t("trustA")}
               </span>
               <span className="flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-brand-magenta" />
-                Equipo + IA, sin agencia pesada
+                {t("trustB")}
               </span>
             </motion.div>
           </div>

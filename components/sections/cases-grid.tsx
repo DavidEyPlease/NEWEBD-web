@@ -2,28 +2,31 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
+import { Link } from "@/i18n/navigation";
 import { OTHER_CASES } from "@/lib/content/cases";
 
 export function CasesGrid() {
+  const t = useTranslations("sections.casesGrid");
+
   return (
     <section className="relative bg-background py-24 sm:py-32">
       <Container size="wide">
         <div className="flex flex-wrap items-end justify-between gap-6">
           <div className="max-w-xl">
-            <Badge variant="default">Portafolio</Badge>
+            <Badge variant="default">{t("badge")}</Badge>
             <h2 className="mt-5 text-balance text-4xl font-semibold leading-[1.05] tracking-tight text-foreground sm:text-5xl">
-              Más empresas que ya operan con nosotros.
+              {t("title")}
             </h2>
           </div>
           <Link
             href="/portafolio"
             className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-brand-cyan"
           >
-            Ver portafolio completo
+            {t("viewAll")}
             <ArrowUpRight size={14} />
           </Link>
         </div>
@@ -74,8 +77,8 @@ export function CasesGrid() {
               </div>
 
               <Link
-                href={`/portafolio/${c.slug}`}
-                aria-label={`Ver caso ${c.client}`}
+                href={{ pathname: "/portafolio/[slug]", params: { slug: c.slug } }}
+                aria-label={c.client}
                 className="absolute inset-0"
               />
               <ArrowUpRight

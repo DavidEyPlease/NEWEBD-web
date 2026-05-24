@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
@@ -51,6 +52,7 @@ function Counter({
 }
 
 export function FeaturedCase() {
+  const t = useTranslations("sections.featuredCase");
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.25 });
   const c = FEATURED_CASE;
@@ -80,12 +82,12 @@ export function FeaturedCase() {
           <div className="relative grid items-center gap-12 lg:grid-cols-12">
             <div className="lg:col-span-7">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="brand">Caso estrella</Badge>
+                <Badge variant="brand">{t("badge")}</Badge>
                 <Badge variant="outline">{c.industry}</Badge>
               </div>
 
               <h2 className="mt-6 text-balance text-3xl font-semibold leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-                {c.client} —{" "}
+                {c.client} {t("titleConnector")}{" "}
                 <span className="text-foreground-muted">{c.tagline}</span>
               </h2>
 
@@ -109,7 +111,7 @@ export function FeaturedCase() {
                   href={`/portafolio/${c.slug}`}
                   className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-ink-900 transition-all hover:-translate-y-0.5"
                 >
-                  Ver caso completo
+                  {t("ctaPrimary")}
                   <ArrowUpRight size={16} />
                 </a>
                 <a
@@ -118,7 +120,7 @@ export function FeaturedCase() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium text-foreground-muted ring-1 ring-inset ring-border-strong transition-colors hover:text-foreground hover:bg-foreground/[0.04]"
                 >
-                  Visitar sitio
+                  {t("ctaSecondary")}
                   <ArrowUpRight size={16} />
                 </a>
               </div>

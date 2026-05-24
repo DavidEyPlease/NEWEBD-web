@@ -3,7 +3,9 @@
     "language": "Idioma",
     "switchLanguage": "Cambiar idioma",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "next": "Siguiente",
+    "prev": "Anterior"
   },
   "metadata": {
     "home": {
@@ -40,5 +42,80 @@
     "contactoSection": "Contacto",
     "cotizar": "Cotiza tu proyecto",
     "rights": "Todos los derechos reservados."
+  },
+  "sections": {
+    "hero": {
+      "badge": "Desarrollo + IA · Desde México",
+      "titleA": "El nuevo desarrollo",
+      "titleB": "web es",
+      "titleC": "con IA.",
+      "subtitleA": "Integramos IA en tu negocio para que",
+      "subtitleStrongA": "crezcas",
+      "subtitleStrongB": "ahorres tiempo",
+      "subtitleAnd": "y",
+      "subtitleStrongC": "dinero",
+      "subtitleB": ". Webs, apps, sistemas y agentes — hechos a la medida.",
+      "ctaPrimary": "Cotiza tu proyecto",
+      "ctaSecondary": "Ver portafolio",
+      "trustA": "10+ años construyendo software real",
+      "trustB": "Equipo + IA, sin agencia pesada"
+    },
+    "manifesto": {
+      "badge": "Manifiesto",
+      "quoteA": "La IA o te ayuda a",
+      "quoteHighlight": "revolucionar tu negocio",
+      "quoteB": ", o te deja en el pasado si no la aprovechas.",
+      "body": "No vendemos workshops abstractos ni implementaciones \"para después\". Somos el equipo que pone IA dentro de tu operación, conectada a lo que ya tienes y con resultados que se miden en tiempo y dinero ahorrado.",
+      "benefits": {
+        "growTitle": "Crecer",
+        "growBody": "Llega a más clientes, vende más, abre canales nuevos. La IA escala lo que tú haces bien.",
+        "timeTitle": "Ahorrar tiempo",
+        "timeBody": "Horas que se iban en tareas repetitivas vuelven al equipo. Para enfocarse en lo que sí pide criterio.",
+        "moneyTitle": "Ahorrar dinero",
+        "moneyBody": "Menos errores, menos doble captura, menos software disperso. Tu operación más liviana."
+      }
+    },
+    "services": {
+      "badge": "Lo que hacemos",
+      "titleA": "4 pilares para llevar a tu negocio",
+      "titleB": "a la era de la IA.",
+      "subtitle": "Lo clásico bien hecho, y la capa que hoy marca la diferencia. Empezamos donde tu negocio lo necesita.",
+      "cta": "Conocer más",
+      "differentiator": "Diferenciador NEWEBD"
+    },
+    "featuredCase": {
+      "badge": "Caso estrella",
+      "titleConnector": "—",
+      "ctaPrimary": "Ver caso completo",
+      "ctaSecondary": "Visitar sitio"
+    },
+    "casesGrid": {
+      "badge": "Portafolio",
+      "title": "Más empresas que ya operan con nosotros.",
+      "viewAll": "Ver portafolio completo"
+    },
+    "clients": {
+      "label": "Empresas que ya confían en cómo construimos"
+    },
+    "process": {
+      "badge": "Cómo trabajamos",
+      "title": "Un proceso pensado para que tú no tengas que pensarlo.",
+      "step1Title": "Briefing",
+      "step1Body": "Una conversación honesta sobre tu negocio, lo que duele y lo que quieres lograr. Sin jerga.",
+      "step2Title": "Propuesta",
+      "step2Body": "Alcance claro, tiempos realistas, inversión transparente. Decisiones tomadas con datos, no con humo.",
+      "step3Title": "Construcción",
+      "step3Body": "Iteraciones cortas, visibilidad total, releases continuas. Trabajamos con tu equipo, no encerrados.",
+      "step4Title": "Acompañamiento",
+      "step4Body": "Cuando lanzamos, seguimos contigo. Soporte, evolución, métricas. No desaparecemos al firmar."
+    },
+    "cta": {
+      "titleA": "Listo para que tu negocio entre a",
+      "titleHighlight": "la era de la IA.",
+      "body": "Cuéntanos qué quieres construir. Te respondemos rápido, sin promesas vacías, con un plan claro y un precio honesto.",
+      "ctaPrimary": "Cotiza tu proyecto",
+      "ctaSecondary": "WhatsApp",
+      "alt": "O escríbenos a"
+    }
   }
 }

@@ -1,18 +1,21 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import { DIRECT_CLIENTS } from "@/lib/content/clients";
 
 export function Clients() {
+  const t = useTranslations("sections.clients");
+
   return (
     <section className="relative border-y border-border bg-background py-20">
       <Container size="wide">
         <div className="flex flex-col items-center gap-3">
           <span aria-hidden className="h-px w-12 gradient-brand opacity-80" />
           <p className="text-center text-[11px] font-semibold uppercase tracking-[0.32em] text-foreground-muted">
-            Empresas que ya confían en cómo construimos
+            {t("label")}
           </p>
         </div>
 

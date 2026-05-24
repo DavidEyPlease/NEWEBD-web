@@ -3,7 +3,9 @@
     "language": "Language",
     "switchLanguage": "Switch language",
     "es": "Español",
-    "en": "English"
+    "en": "English",
+    "next": "Next",
+    "prev": "Previous"
   },
   "metadata": {
     "home": {
@@ -40,5 +42,80 @@
     "contactoSection": "Contact",
     "cotizar": "Get a quote",
     "rights": "All rights reserved."
+  },
+  "sections": {
+    "hero": {
+      "badge": "Development + AI · From Mexico",
+      "titleA": "The new web development",
+      "titleB": "is",
+      "titleC": "with AI.",
+      "subtitleA": "We integrate AI into your business so you",
+      "subtitleStrongA": "grow",
+      "subtitleStrongB": "save time",
+      "subtitleAnd": "and",
+      "subtitleStrongC": "money",
+      "subtitleB": ". Websites, apps, systems and agents — built to fit.",
+      "ctaPrimary": "Get a quote",
+      "ctaSecondary": "See portfolio",
+      "trustA": "10+ years building real software",
+      "trustB": "Team + AI, no heavy agency"
+    },
+    "manifesto": {
+      "badge": "Manifesto",
+      "quoteA": "AI either helps you",
+      "quoteHighlight": "transform your business",
+      "quoteB": ", or it leaves you behind if you don't use it.",
+      "body": "We don't sell abstract workshops or \"someday\" implementations. We're the team that puts AI inside your operation, connected to what you already have, with results measured in time and money saved.",
+      "benefits": {
+        "growTitle": "Grow",
+        "growBody": "Reach more customers, sell more, open new channels. AI scales what you already do well.",
+        "timeTitle": "Save time",
+        "timeBody": "Hours lost to repetitive tasks come back to your team. So they can focus on what actually needs judgment.",
+        "moneyTitle": "Save money",
+        "moneyBody": "Fewer errors, less double entry, less scattered software. A lighter operation."
+      }
+    },
+    "services": {
+      "badge": "What we do",
+      "titleA": "4 pillars to take your business",
+      "titleB": "into the AI era.",
+      "subtitle": "The classics done right, plus the layer that makes the difference today. We start where your business needs it.",
+      "cta": "Learn more",
+      "differentiator": "NEWEBD differentiator"
+    },
+    "featuredCase": {
+      "badge": "Featured case",
+      "titleConnector": "—",
+      "ctaPrimary": "See full case",
+      "ctaSecondary": "Visit site"
+    },
+    "casesGrid": {
+      "badge": "Portfolio",
+      "title": "More companies already operating with us.",
+      "viewAll": "See full portfolio"
+    },
+    "clients": {
+      "label": "Companies that already trust how we build"
+    },
+    "process": {
+      "badge": "How we work",
+      "title": "A process designed so you don't have to think about it.",
+      "step1Title": "Briefing",
+      "step1Body": "An honest conversation about your business, what hurts and what you want to achieve. No jargon.",
+      "step2Title": "Proposal",
+      "step2Body": "Clear scope, realistic timing, transparent investment. Decisions made with data, not smoke.",
+      "step3Title": "Build",
+      "step3Body": "Short iterations, full visibility, continuous releases. We work with your team, not locked away.",
+      "step4Title": "Aftercare",
+      "step4Body": "When we launch, we stay with you. Support, evolution, metrics. We don't disappear after signing."
+    },
+    "cta": {
+      "titleA": "Ready for your business to enter",
+      "titleHighlight": "the AI era.",
+      "body": "Tell us what you want to build. We respond fast, without empty promises, with a clear plan and an honest price.",
+      "ctaPrimary": "Get a quote",
+      "ctaSecondary": "WhatsApp",
+      "alt": "Or write us at"
+    }
   }
 }
