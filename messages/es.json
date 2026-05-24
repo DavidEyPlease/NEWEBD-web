@@ -1,0 +1,44 @@
+{
+  "common": {
+    "language": "Idioma",
+    "switchLanguage": "Cambiar idioma",
+    "es": "Español",
+    "en": "English"
+  },
+  "metadata": {
+    "home": {
+      "title": "NEWEBD — El nuevo desarrollo web es con IA",
+      "description": "Integramos IA en tu negocio para que crezcas, ahorres tiempo y dinero. Webs, apps, sistemas y agentes a la medida."
+    },
+    "servicios": {
+      "title": "Servicios",
+      "description": "Desarrollo web, aplicaciones a medida, sistemas empresariales y soluciones de IA. Catálogo completo de NEWEBD."
+    },
+    "portafolio": {
+      "title": "Portafolio",
+      "description": "Casos reales: Eyplease, Myanosa, Vegemex, CloverleafAWS, American English. Cómo construimos software con impacto medible."
+    },
+    "contacto": {
+      "title": "Contacto",
+      "description": "Cuéntanos qué quieres construir. Respondemos rápido en WhatsApp, email o con cotización formal."
+    }
+  },
+  "header": {
+    "servicios": "Servicios",
+    "portafolio": "Portafolio",
+    "contacto": "Contacto",
+    "cta": "Cotiza tu proyecto",
+    "openMenu": "Abrir menú",
+    "closeMenu": "Cerrar menú"
+  },
+  "footer": {
+    "tagline": "Integramos IA en tu negocio para que crezcas, ahorres tiempo y dinero. Desde México, para empresas listas para dar el siguiente paso.",
+    "servicios": "Servicios",
+    "empresa": "Empresa",
+    "portafolio": "Portafolio",
+    "contacto": "Contacto",
+    "contactoSection": "Contacto",
+    "cotizar": "Cotiza tu proyecto",
+    "rights": "Todos los derechos reservados."
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "common": {
+    "language": "Language",
+    "switchLanguage": "Switch language",
+    "es": "Español",
+    "en": "English"
+  },
+  "metadata": {
+    "home": {
+      "title": "NEWEBD — The new web development is with AI",
+      "description": "We integrate AI into your business so you grow, save time and money. Websites, apps, systems and custom agents."
+    },
+    "servicios": {
+      "title": "Services",
+      "description": "Web development, custom applications, enterprise systems and AI solutions. NEWEBD's full catalog."
+    },
+    "portafolio": {
+      "title": "Portfolio",
+      "description": "Real cases: Eyplease, Myanosa, Vegemex, CloverleafAWS, American English. How we build software with measurable impact."
+    },
+    "contacto": {
+      "title": "Contact",
+      "description": "Tell us what you want to build. We respond fast on WhatsApp, email or with a formal quote."
+    }
+  },
+  "header": {
+    "servicios": "Services",
+    "portafolio": "Portfolio",
+    "contacto": "Contact",
+    "cta": "Get a quote",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "footer": {
+    "tagline": "We integrate AI into your business so you grow, save time and money. From Mexico, for companies ready to take the next step.",
+    "servicios": "Services",
+    "empresa": "Company",
+    "portafolio": "Portfolio",
+    "contacto": "Contact",
+    "contactoSection": "Contact",
+    "cotizar": "Get a quote",
+    "rights": "All rights reserved."
+  }
+}
