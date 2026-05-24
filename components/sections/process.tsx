@@ -65,8 +65,9 @@ export function Process() {
                 <motion.li
                   key={step.number}
                   initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: 0.1 + idx * 0.1 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.45, delay: idx * 0.1 }}
                   className="relative flex flex-col items-start"
                 >
                   <div className="relative">

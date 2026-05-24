@@ -33,8 +33,9 @@ export function CasesGrid() {
             <motion.article
               key={c.slug}
               initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, delay: 0.1 + idx * 0.06 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: idx * 0.06 }}
               className="group relative overflow-hidden rounded-2xl border border-border bg-foreground/[0.02] p-7 transition-all hover:border-border-strong hover:bg-foreground/[0.04]"
             >
               <div

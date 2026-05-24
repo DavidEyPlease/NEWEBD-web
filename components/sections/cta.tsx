@@ -37,7 +37,8 @@ export function FinalCTA() {
           <div className="relative max-w-2xl">
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5 }}
               className="text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl"
             >
@@ -47,7 +48,8 @@ export function FinalCTA() {
 
             <motion.p
               initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               className="mt-6 max-w-lg text-lg leading-relaxed text-foreground-muted"
             >
@@ -57,7 +59,8 @@ export function FinalCTA() {
 
             <motion.div
               initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-10 flex flex-wrap items-center gap-4"
             >
@@ -77,7 +80,8 @@ export function FinalCTA() {
 
             <motion.p
               initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.5, delay: 0.4 }}
               className="mt-8 text-sm text-foreground-subtle"
             >

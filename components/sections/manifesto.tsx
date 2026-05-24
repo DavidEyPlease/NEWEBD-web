@@ -75,8 +75,9 @@ export function Manifesto() {
                   <motion.li
                     key={benefit.title}
                     initial={{ opacity: 0, x: 16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.45, delay: 0.1 + idx * 0.08 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true, amount: 0.3 }}
+                    transition={{ duration: 0.45, delay: idx * 0.08 }}
                     className="group relative flex items-start gap-5 rounded-2xl border border-border bg-foreground/[0.02] p-6 transition-all hover:border-border-strong hover:bg-foreground/[0.04]"
                   >
                     <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-xl gradient-brand text-white shadow-[0_10px_30px_-12px_rgba(139,92,246,0.6)]">

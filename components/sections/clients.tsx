@@ -1,3 +1,7 @@
+"use client";
+
+import { motion } from "framer-motion";
+
 import { Container } from "@/components/ui/container";
 import { DIRECT_CLIENTS } from "@/lib/content/clients";
 
@@ -16,9 +20,13 @@ export function Clients() {
           role="list"
           className="mt-12 grid grid-cols-2 items-center gap-y-10 sm:grid-cols-3 md:grid-cols-5"
         >
-          {DIRECT_CLIENTS.map((client) => (
-            <li
+          {DIRECT_CLIENTS.map((client, idx) => (
+            <motion.li
               key={client.slug}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.45, delay: idx * 0.06 }}
               className="group relative flex items-center justify-center md:[&:not(:last-child)]:before:absolute md:[&:not(:last-child)]:before:right-0 md:[&:not(:last-child)]:before:top-1/2 md:[&:not(:last-child)]:before:-translate-y-1/2 md:[&:not(:last-child)]:before:h-6 md:[&:not(:last-child)]:before:w-px md:[&:not(:last-child)]:before:bg-border"
             >
               <a
@@ -36,7 +44,7 @@ export function Clients() {
                   className="absolute inset-x-4 -bottom-1 h-px gradient-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 />
               </a>
-            </li>
+            </motion.li>
           ))}
         </ul>
       </Container>
