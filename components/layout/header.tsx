@@ -1,24 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Logo } from "@/components/brand/logo";
+import { LanguageSwitch } from "@/components/layout/language-switch";
 import { Button } from "@/components/ui/button";
+import { Link, usePathname } from "@/i18n/navigation";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 import { cn } from "@/lib/utils";
 
-const NAV = [
-  { href: "/servicios", label: "Servicios" },
-  { href: "/portafolio", label: "Portafolio" },
-  { href: "/contacto", label: "Contacto" },
+const NAV: { href: "/servicios" | "/portafolio" | "/contacto"; key: "servicios" | "portafolio" | "contacto" }[] = [
+  { href: "/servicios", key: "servicios" },
+  { href: "/portafolio", key: "portafolio" },
+  { href: "/contacto", key: "contacto" },
 ];
 
 const EXPERIENCE_ROUTES = ["/", "/contacto"];
 
 export function Header() {
+  const t = useTranslations("header");
   const pathname = usePathname();
   const isMobile = useIsMobile();
   // En mobile las rutas "experience" son scroll natural, así que el header
@@ -30,7 +32,6 @@ export function Header() {
 
   useEffect(() => {
     if (isExperience) {
-      // En slides el scroll no avanza la página; mantenemos el header transparente
       setScrolled(false);
       return;
     }
@@ -52,7 +53,6 @@ export function Header() {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 sm:px-8">
         <Logo size="sm" />
 
-        {/* Nav central — solo en páginas tradicionales */}
         {!isExperience && (
           <nav className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => (
@@ -66,26 +66,26 @@ export function Header() {
                     : "text-foreground-muted hover:text-foreground",
                 )}
               >
-                {item.label}
+                {t(item.key)}
               </Link>
             ))}
           </nav>
         )}
 
-        <div className="flex items-center gap-3">
-          {/* CTA — solo si no estamos ya en /contacto */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          <LanguageSwitch className="hidden sm:inline-flex" />
+
           {pathname !== "/contacto" && (
             <div className="hidden md:block">
               <Button href="/contacto" size="sm">
-                Cotiza tu proyecto
+                {t("cta")}
               </Button>
             </div>
           )}
 
-          {/* Hamburguesa siempre disponible en mobile, o en desktop si experience */}
           <button
             type="button"
-            aria-label={open ? "Cerrar menú" : "Abrir menú"}
+            aria-label={open ? t("closeMenu") : t("openMenu")}
             aria-expanded={open}
             onClick={() => setOpen((v) => !v)}
             className={cn(
@@ -113,7 +113,7 @@ export function Header() {
                     : "text-foreground-muted hover:text-foreground",
                 )}
               >
-                {item.label}
+                {t(item.key)}
               </Link>
             ))}
             {pathname !== "/contacto" && (
@@ -123,9 +123,12 @@ export function Header() {
                 className="mt-3"
                 onClick={() => setOpen(false)}
               >
-                Cotiza tu proyecto
+                {t("cta")}
               </Button>
             )}
+            <div className="mt-3 flex justify-start sm:hidden">
+              <LanguageSwitch />
+            </div>
           </div>
         </div>
       )}

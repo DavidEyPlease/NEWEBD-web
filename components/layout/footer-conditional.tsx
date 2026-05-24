@@ -1,8 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-
 import { Footer } from "@/components/layout/footer";
+import { usePathname } from "@/i18n/navigation";
 import { useIsMobile } from "@/lib/hooks/use-is-mobile";
 
 const EXPERIENCE_ROUTES = ["/", "/contacto"];

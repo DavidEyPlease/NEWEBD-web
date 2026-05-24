@@ -1,7 +1,7 @@
 import * as React from "react";
-import Link from "next/link";
 import { cva, type VariantProps } from "class-variance-authority";
 
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
@@ -57,8 +57,12 @@ export function Button(props: ButtonProps) {
         />
       );
     }
+    // El Link de next-intl espera una pathname tipada; aquí el href puede ser
+    // cualquier ruta interna válida (incluyendo /portafolio/[slug] resuelto),
+    // así que silenciamos el chequeo estricto.
     return (
       <Link
+        // @ts-expect-error -- href dinámico aceptado en runtime
         href={href}
         className={cn(buttonVariants({ variant, size }), className)}
         {...(rest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}

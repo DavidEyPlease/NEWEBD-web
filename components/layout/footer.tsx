@@ -1,35 +1,22 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Logo } from "@/components/brand/logo";
 import { Container } from "@/components/ui/container";
-
-const COLUMNS = [
-  {
-    title: "Servicios",
-    links: [
-      { href: "/servicios#desarrollo-web", label: "Desarrollo Web" },
-      { href: "/servicios#aplicaciones-a-medida", label: "Aplicaciones a Medida" },
-      { href: "/servicios#sistemas-empresariales", label: "Sistemas Empresariales" },
-      { href: "/servicios#soluciones-de-ia", label: "Soluciones de IA" },
-    ],
-  },
-  {
-    title: "Empresa",
-    links: [
-      { href: "/portafolio", label: "Portafolio" },
-      { href: "/contacto", label: "Contacto" },
-    ],
-  },
-  {
-    title: "Contacto",
-    links: [
-      { href: "mailto:hola@newebd.com", label: "hola@newebd.com" },
-      { href: "/contacto", label: "Cotiza tu proyecto" },
-    ],
-  },
-];
+import { Link } from "@/i18n/navigation";
 
 export function Footer() {
+  const t = useTranslations("footer");
+
+  // Las pathnames del Link tipado se localizan automáticamente al locale activo.
+  // Para anchors (#desarrollo-web etc.) usamos un anchor <a> normal porque
+  // van al fragmento actual de la página, no a otra ruta.
+  const servicios = [
+    { hash: "desarrollo-web", label: "Desarrollo Web" },
+    { hash: "aplicaciones-a-medida", label: "Aplicaciones a Medida" },
+    { hash: "sistemas-empresariales", label: "Sistemas Empresariales" },
+    { hash: "soluciones-de-ia", label: "Soluciones de IA" },
+  ];
+
   return (
     <footer className="border-t border-border bg-background">
       <Container size="wide" className="py-16">
@@ -37,37 +24,82 @@ export function Footer() {
           <div className="md:col-span-5">
             <Logo size="md" />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-foreground-muted">
-              Integramos IA en tu negocio para que crezcas, ahorres tiempo y
-              dinero. Desde México, para empresas listas para dar el siguiente paso.
+              {t("tagline")}
             </p>
           </div>
 
           <div className="grid grid-cols-2 gap-8 md:col-span-7 md:grid-cols-3">
-            {COLUMNS.map((col) => (
-              <div key={col.title}>
-                <h3 className="text-xs font-semibold tracking-widest uppercase text-foreground">
-                  {col.title}
-                </h3>
-                <ul className="mt-4 space-y-3">
-                  {col.links.map((link) => (
-                    <li key={link.href}>
-                      <Link
-                        href={link.href}
-                        className="text-sm text-foreground-muted transition-colors hover:text-foreground"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            <div>
+              <h3 className="text-xs font-semibold tracking-widest uppercase text-foreground">
+                {t("servicios")}
+              </h3>
+              <ul className="mt-4 space-y-3">
+                {servicios.map((s) => (
+                  <li key={s.hash}>
+                    <Link
+                      href={`/servicios#${s.hash}` as never}
+                      className="text-sm text-foreground-muted transition-colors hover:text-foreground"
+                    >
+                      {s.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-semibold tracking-widest uppercase text-foreground">
+                {t("empresa")}
+              </h3>
+              <ul className="mt-4 space-y-3">
+                <li>
+                  <Link
+                    href="/portafolio"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground"
+                  >
+                    {t("portafolio")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/contacto"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground"
+                  >
+                    {t("contacto")}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-xs font-semibold tracking-widest uppercase text-foreground">
+                {t("contactoSection")}
+              </h3>
+              <ul className="mt-4 space-y-3">
+                <li>
+                  <a
+                    href="mailto:hola@newebd.com"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground"
+                  >
+                    hola@newebd.com
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    href="/contacto"
+                    className="text-sm text-foreground-muted transition-colors hover:text-foreground"
+                  >
+                    {t("cotizar")}
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
 
         <div className="mt-14 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 text-xs text-foreground-subtle sm:flex-row sm:items-center">
           <p>
-            &copy; {new Date().getFullYear()} NEWEBD<sup>®</sup>. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} NEWEBD<sup>®</sup>. {t("rights")}
           </p>
           <p className="font-mono uppercase tracking-widest">
             newebd.com · niu-web-dí
