@@ -45,7 +45,7 @@ export function ScrollExperience({ slides }: Props) {
             duration: 0.7,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="absolute inset-0 flex items-center justify-center pt-20 pb-24 sm:pt-24 sm:pb-28"
+          className="absolute inset-0 flex items-center justify-center"
         >
           <Current
             isActive
