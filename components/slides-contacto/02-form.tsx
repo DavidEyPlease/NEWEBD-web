@@ -2,12 +2,15 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import { SERVICES } from "@/lib/content/services";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 export function ContactoFormSlide(_props: SlideProps) {
+  const t = useTranslations("contacto.form");
+
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -23,59 +26,28 @@ export function ContactoFormSlide(_props: SlideProps) {
           method="POST"
           className="mx-auto w-full max-w-2xl rounded-3xl border border-border-strong bg-ink-900/60 p-8 backdrop-blur sm:p-10"
         >
-          <input
-            type="hidden"
-            name="_subject"
-            value="Nueva cotización desde newebd.com"
-          />
+          <input type="hidden" name="_subject" value="Nueva cotización desde newebd.com" />
           <input type="hidden" name="_captcha" value="true" />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_next" value="/contacto?ok=1" />
 
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle">
-            Cotiza tu proyecto
+            {t("eyebrow")}
           </p>
           <h2 className="mt-3 text-balance text-3xl font-semibold leading-[1.1] tracking-[-0.025em] text-foreground sm:text-4xl">
-            Cuéntanos lo esencial.
+            {t("title")}
           </h2>
 
           <div className="mt-7 grid gap-4 sm:grid-cols-2">
-            <Field
-              label="Nombre"
-              name="nombre"
-              type="text"
-              required
-              placeholder="Tu nombre"
-            />
-            <Field
-              label="Empresa"
-              name="empresa"
-              type="text"
-              required
-              placeholder="Tu negocio"
-            />
-            <Field
-              label="Email"
-              name="email"
-              type="email"
-              required
-              placeholder="tu@correo.com"
-            />
-            <Field
-              label="Teléfono"
-              name="telefono"
-              type="tel"
-              placeholder="Opcional"
-            />
+            <Field label={t("nameLabel")} name="nombre" type="text" required placeholder={t("namePlaceholder")} />
+            <Field label={t("companyLabel")} name="empresa" type="text" required placeholder={t("companyPlaceholder")} />
+            <Field label={t("emailLabel")} name="email" type="email" required placeholder={t("emailPlaceholder")} />
+            <Field label={t("phoneLabel")} name="telefono" type="tel" placeholder={t("phonePlaceholder")} />
           </div>
 
           <div className="mt-4">
-            <label
-              htmlFor="servicio"
-              className="block text-sm font-medium text-foreground"
-            >
-              ¿Qué te interesa?{" "}
-              <span className="text-brand-magenta">*</span>
+            <label htmlFor="servicio" className="block text-sm font-medium text-foreground">
+              {t("serviceLabel")} <span className="text-brand-magenta">*</span>
             </label>
             <select
               id="servicio"
@@ -85,46 +57,38 @@ export function ContactoFormSlide(_props: SlideProps) {
               className="mt-2 w-full rounded-xl border border-border-strong bg-background px-4 py-3 text-base text-foreground focus:border-brand-purple focus:outline-none"
             >
               <option value="" disabled>
-                Selecciona una opción
+                {t("servicePlaceholder")}
               </option>
               {SERVICES.map((s) => (
                 <option key={s.slug} value={s.title}>
                   {s.title}
                 </option>
               ))}
-              <option value="Aun no estoy seguro">
-                Aún no estoy seguro
-              </option>
+              <option value="Unsure">{t("serviceUnsure")}</option>
             </select>
           </div>
 
           <div className="mt-4">
-            <label
-              htmlFor="ia"
-              className="block text-sm font-medium text-foreground"
-            >
-              ¿En qué parte de tu negocio aplicarías IA?{" "}
-              <span className="text-brand-magenta">*</span>
+            <label htmlFor="ia" className="block text-sm font-medium text-foreground">
+              {t("iaLabel")} <span className="text-brand-magenta">*</span>
             </label>
             <textarea
               id="ia"
               name="ia"
               rows={3}
               required
-              placeholder="Atención a cliente, automatización, análisis, generación de contenido…"
+              placeholder={t("iaPlaceholder")}
               className="mt-2 w-full rounded-xl border border-border-strong bg-background px-4 py-3 text-base text-foreground placeholder:text-foreground-subtle focus:border-brand-purple focus:outline-none"
             />
           </div>
 
           <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
-            <p className="text-xs text-foreground-subtle">
-              Tu info solo se usa para responderte.
-            </p>
+            <p className="text-xs text-foreground-subtle">{t("privacy")}</p>
             <button
               type="submit"
               className="inline-flex items-center gap-2 rounded-full gradient-brand px-7 py-3 text-sm font-semibold text-white shadow-[0_18px_56px_-12px_rgba(189,65,224,0.55)] transition-all hover:-translate-y-0.5"
             >
-              Enviar
+              {t("submit")}
               <ArrowRight size={16} />
             </button>
           </div>

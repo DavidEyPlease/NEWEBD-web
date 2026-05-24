@@ -2,14 +2,16 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
+import { Link } from "@/i18n/navigation";
 import { DIRECT_CLIENTS } from "@/lib/content/clients";
 import { OTHER_CASES } from "@/lib/content/cases";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 export function OtherCasesSlide(_props: SlideProps) {
+  const t = useTranslations("slides.otherCases");
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -24,7 +26,7 @@ export function OtherCasesSlide(_props: SlideProps) {
             transition={{ duration: 0.5 }}
             className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle"
           >
-            Portafolio
+            {t("eyebrow")}
           </motion.p>
 
           <motion.h2
@@ -33,7 +35,7 @@ export function OtherCasesSlide(_props: SlideProps) {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl"
           >
-            Y construimos para muchos más.
+            {t("title")}
           </motion.h2>
 
           {/* Muro de logos directos */}
@@ -86,7 +88,7 @@ export function OtherCasesSlide(_props: SlideProps) {
               href="/portafolio"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground transition-colors hover:text-brand-cyan"
             >
-              Ver portafolio completo
+              {t("viewAll")}
               <ArrowUpRight size={14} />
             </Link>
           </motion.div>

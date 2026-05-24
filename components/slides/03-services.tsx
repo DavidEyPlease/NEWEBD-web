@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { Code2, AppWindow, Database, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import { SERVICES } from "@/lib/content/services";
@@ -17,6 +18,7 @@ const ICONS: Record<string, LucideIcon> = {
 };
 
 export function ServicesSlide(_props: SlideProps) {
+  const t = useTranslations("slides.services");
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -32,10 +34,10 @@ export function ServicesSlide(_props: SlideProps) {
           className="mb-10 text-center"
         >
           <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle">
-            4 pilares
+            {t("eyebrow")}
           </p>
           <h2 className="mt-4 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl">
-            Esto construimos para ti.
+            {t("title")}
           </h2>
         </motion.div>
 

@@ -8,39 +8,20 @@ import {
   Handshake,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
-const STEPS: { number: string; icon: LucideIcon; title: string; sub: string }[] =
-  [
-    {
-      number: "01",
-      icon: MessagesSquare,
-      title: "Briefing",
-      sub: "Hablamos sin jerga.",
-    },
-    {
-      number: "02",
-      icon: FileSearch,
-      title: "Propuesta",
-      sub: "Alcance y precio claros.",
-    },
-    {
-      number: "03",
-      icon: Wrench,
-      title: "Construcción",
-      sub: "Iteraciones cortas, visibilidad total.",
-    },
-    {
-      number: "04",
-      icon: Handshake,
-      title: "Acompañamiento",
-      sub: "Seguimos contigo después.",
-    },
-  ];
+const STEPS: { number: string; icon: LucideIcon; titleKey: string; subKey: string }[] = [
+  { number: "01", icon: MessagesSquare, titleKey: "step1Title", subKey: "step1Sub" },
+  { number: "02", icon: FileSearch, titleKey: "step2Title", subKey: "step2Sub" },
+  { number: "03", icon: Wrench, titleKey: "step3Title", subKey: "step3Sub" },
+  { number: "04", icon: Handshake, titleKey: "step4Title", subKey: "step4Sub" },
+];
 
 export function ProcessSlide(_props: SlideProps) {
+  const t = useTranslations("slides.process");
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -56,10 +37,10 @@ export function ProcessSlide(_props: SlideProps) {
             className="text-center"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle">
-              Cómo trabajamos
+              {t("eyebrow")}
             </p>
             <h2 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl">
-              Cuatro pasos, cero misterios.
+              {t("title")}
             </h2>
           </motion.div>
 
@@ -95,10 +76,10 @@ export function ProcessSlide(_props: SlideProps) {
                       </span>
                     </div>
                     <h3 className="mt-6 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-                      {s.title}
+                      {t(s.titleKey)}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-foreground-muted">
-                      {s.sub}
+                      {t(s.subKey)}
                     </p>
                   </motion.li>
                 );

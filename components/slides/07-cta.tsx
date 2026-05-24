@@ -2,13 +2,15 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, MessageCircle } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Container } from "@/components/ui/container";
+import { Link } from "@/i18n/navigation";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 export function FinalCTASlide(_props: SlideProps) {
+  const t = useTranslations("slides.cta");
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       {/* Aurora maxima */}
@@ -39,7 +41,7 @@ export function FinalCTASlide(_props: SlideProps) {
             transition={{ duration: 0.5 }}
             className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-cyan"
           >
-            Te toca
+            {t("eyebrow")}
           </motion.p>
 
           <motion.h2
@@ -48,7 +50,7 @@ export function FinalCTASlide(_props: SlideProps) {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="mt-6 text-balance text-6xl font-semibold leading-[1.0] tracking-[-0.035em] text-foreground sm:text-7xl lg:text-[7rem]"
           >
-            Tu <span className="text-gradient-brand">turno</span>.
+            {t("titleA")} <span className="text-gradient-brand">{t("titleHighlight")}</span>.
           </motion.h2>
 
           <motion.p
@@ -57,8 +59,7 @@ export function FinalCTASlide(_props: SlideProps) {
             transition={{ duration: 0.6, delay: 0.35 }}
             className="mt-8 text-lg leading-relaxed text-foreground-muted sm:text-xl"
           >
-            Cuéntanos qué quieres construir. Respondemos rápido, sin promesas
-            vacías.
+            {t("body")}
           </motion.p>
 
           <motion.div
@@ -71,7 +72,7 @@ export function FinalCTASlide(_props: SlideProps) {
               href="/contacto"
               className="group inline-flex items-center gap-2 rounded-full gradient-brand px-8 py-4 text-base font-semibold text-white shadow-[0_18px_56px_-12px_rgba(189,65,224,0.75)] transition-all hover:-translate-y-0.5"
             >
-              Cotiza tu proyecto
+              {t("ctaPrimary")}
               <ArrowRight
                 size={18}
                 className="transition-transform group-hover:translate-x-1"
@@ -84,7 +85,7 @@ export function FinalCTASlide(_props: SlideProps) {
               className="inline-flex items-center gap-2 rounded-full px-6 py-4 text-base font-medium text-foreground ring-1 ring-inset ring-border-strong backdrop-blur transition-colors hover:bg-foreground/[0.06]"
             >
               <MessageCircle size={18} />
-              WhatsApp
+              {t("ctaSecondary")}
             </a>
           </motion.div>
 
@@ -94,7 +95,7 @@ export function FinalCTASlide(_props: SlideProps) {
             transition={{ duration: 0.6, delay: 0.8 }}
             className="mt-10 text-sm text-foreground-subtle"
           >
-            O escríbenos a{" "}
+            {t("alt")}{" "}
             <a
               href="mailto:hola@newebd.com"
               className="text-foreground underline-offset-4 hover:underline"

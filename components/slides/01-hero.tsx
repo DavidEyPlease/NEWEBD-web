@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Typewriter } from "@/components/experience/typewriter";
@@ -13,6 +14,7 @@ import type { SlideProps } from "@/components/experience/scroll-experience";
 type Phase = "q1" | "thinking" | "answer" | "done";
 
 export function HeroSlide({ isActive }: SlideProps) {
+  const t = useTranslations("slides.hero");
   const [phase, setPhase] = useState<Phase>("q1");
 
   // Resetear cuando el slide vuelva a activarse
@@ -62,7 +64,8 @@ export function HeroSlide({ isActive }: SlideProps) {
           <div className="min-h-[1.2em]">
             <h1 className="text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-7xl lg:text-[5.5rem]">
               <Typewriter
-                text="¿Usas la IA?"
+                key={t("question")}
+                text={t("question")}
                 startAfterMs={300}
                 charDelayMs={55}
                 showCursor
@@ -99,10 +102,11 @@ export function HeroSlide({ isActive }: SlideProps) {
                   transition={{ duration: 0.5 }}
                   className="text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] sm:text-7xl lg:text-[5.5rem]"
                 >
-                  <span className="text-foreground-muted">O </span>
+                  <span className="text-foreground-muted">{t("answerA")}</span>
                   <span className="text-gradient-brand">
                     <Typewriter
-                      text="la IA lo hará por ti."
+                      key={t("answerB")}
+                      text={t("answerB")}
                       startAfterMs={150}
                       charDelayMs={55}
                       showCursor
@@ -125,9 +129,7 @@ export function HeroSlide({ isActive }: SlideProps) {
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="mt-12 max-w-xl text-base leading-relaxed text-foreground-muted sm:text-lg"
               >
-                Somos el equipo que integra IA directamente en tu negocio.
-                Webs, apps, sistemas y agentes — para que crezcas, ahorres
-                tiempo y dinero.
+                {t("caption")}
               </motion.p>
             )}
           </AnimatePresence>

@@ -117,5 +117,113 @@
       "ctaSecondary": "WhatsApp",
       "alt": "O escríbenos a"
     }
+  },
+  "slides": {
+    "hero": {
+      "question": "¿Usas la IA?",
+      "answerA": "O ",
+      "answerB": "la IA lo hará por ti.",
+      "caption": "Somos el equipo que integra IA directamente en tu negocio. Webs, apps, sistemas y agentes — para que crezcas, ahorres tiempo y dinero."
+    },
+    "manifesto": {
+      "eyebrow": "Manifiesto",
+      "titleA": "La IA o te ayuda a",
+      "titleHighlight": "revolucionar",
+      "titleB": "tu negocio.",
+      "titleSub": "O te deja en el pasado.",
+      "growLabel": "Crecer",
+      "growSub": "más clientes, más canales",
+      "timeLabel": "Ahorrar tiempo",
+      "timeSub": "menos tareas repetitivas",
+      "moneyLabel": "Ahorrar dinero",
+      "moneySub": "operación más liviana"
+    },
+    "services": {
+      "eyebrow": "4 pilares",
+      "title": "Esto construimos para ti."
+    },
+    "featuredCase": {
+      "eyebrow": "Caso estrella",
+      "titleA": "ahorra",
+      "titleHighlight": "72 horas",
+      "titleB": "al 90% de sus clientes.",
+      "viewCase": "Ver caso completo",
+      "visitSite": "Visitar sitio"
+    },
+    "otherCases": {
+      "eyebrow": "Portafolio",
+      "title": "Y construimos para muchos más.",
+      "viewAll": "Ver portafolio completo"
+    },
+    "process": {
+      "eyebrow": "Cómo trabajamos",
+      "title": "Cuatro pasos, cero misterios.",
+      "step1Title": "Briefing",
+      "step1Sub": "Hablamos sin jerga.",
+      "step2Title": "Propuesta",
+      "step2Sub": "Alcance y precio claros.",
+      "step3Title": "Construcción",
+      "step3Sub": "Iteraciones cortas, visibilidad total.",
+      "step4Title": "Acompañamiento",
+      "step4Sub": "Seguimos contigo después."
+    },
+    "cta": {
+      "eyebrow": "Te toca",
+      "titleA": "Tu",
+      "titleHighlight": "turno",
+      "body": "Cuéntanos qué quieres construir. Respondemos rápido, sin promesas vacías.",
+      "ctaPrimary": "Cotiza tu proyecto",
+      "ctaSecondary": "WhatsApp",
+      "alt": "O escríbenos a"
+    },
+    "scrollHint": "Scroll para continuar"
+  },
+  "slideLabels": {
+    "home": "Inicio",
+    "manifesto": "Manifiesto",
+    "services": "Servicios",
+    "featuredCase": "Caso estrella",
+    "portfolio": "Portafolio",
+    "process": "Cómo trabajamos",
+    "closing": "Cierre",
+    "channels": "Canales",
+    "quote": "Cotización",
+    "done": "Listo"
+  },
+  "contacto": {
+    "eyebrow": "Contacto",
+    "title": "Hablemos.",
+    "subtitle": "Elige cómo prefieres. Respondemos rápido en todos los canales.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappSub": "Lo más rápido",
+    "emailTitle": "Email",
+    "cotizacionTitle": "Cotización",
+    "cotizacionSub": "Cuéntanos del proyecto",
+    "scrollHint": "Scroll para ir a la cotización",
+    "form": {
+      "eyebrow": "Cotiza tu proyecto",
+      "title": "Cuéntanos lo esencial.",
+      "nameLabel": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "companyLabel": "Empresa",
+      "companyPlaceholder": "Tu negocio",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@correo.com",
+      "phoneLabel": "Teléfono",
+      "phonePlaceholder": "Opcional",
+      "serviceLabel": "¿Qué te interesa?",
+      "servicePlaceholder": "Selecciona una opción",
+      "serviceUnsure": "Aún no estoy seguro",
+      "iaLabel": "¿En qué parte de tu negocio aplicarías IA?",
+      "iaPlaceholder": "Atención a cliente, automatización, análisis, generación de contenido…",
+      "submit": "Enviar",
+      "privacy": "Tu info solo se usa para responderte."
+    },
+    "thanks": {
+      "title": "Listo.",
+      "body": "Te contactamos pronto. En lo que tanto, échale ojo al portafolio o vuelve al inicio.",
+      "ctaPortfolio": "Ver portafolio",
+      "ctaHome": "Volver al inicio"
+    }
   }
 }

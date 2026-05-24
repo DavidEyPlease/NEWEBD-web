@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
+import { Link } from "@/i18n/navigation";
 import { FEATURED_CASE } from "@/lib/content/cases";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
@@ -46,6 +47,7 @@ function Counter({ value, active }: { value: string; active: boolean }) {
 }
 
 export function FeaturedCaseSlide({ isActive }: SlideProps) {
+  const t = useTranslations("slides.featuredCase");
   const c = FEATURED_CASE;
 
   return (
@@ -63,7 +65,7 @@ export function FeaturedCaseSlide({ isActive }: SlideProps) {
             transition={{ duration: 0.5 }}
             className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle"
           >
-            Caso estrella · {c.industry}
+            {t("eyebrow")} · {c.industry}
           </motion.p>
 
           <motion.h2
@@ -72,8 +74,9 @@ export function FeaturedCaseSlide({ isActive }: SlideProps) {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.025em] text-foreground sm:text-5xl lg:text-6xl"
           >
-            {c.client} ahorra <span className="text-gradient-brand">72 horas</span>{" "}
-            al 90% de sus clientes.
+            {c.client} {t("titleA")}{" "}
+            <span className="text-gradient-brand">{t("titleHighlight")}</span>{" "}
+            {t("titleB")}
           </motion.h2>
 
           <motion.div
@@ -107,10 +110,10 @@ export function FeaturedCaseSlide({ isActive }: SlideProps) {
             className="mt-10 flex flex-wrap justify-center gap-3"
           >
             <Link
-              href={`/portafolio/${c.slug}`}
+              href={{ pathname: "/portafolio/[slug]", params: { slug: c.slug } }}
               className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-ink-900 transition-all hover:-translate-y-0.5"
             >
-              Ver caso completo
+              {t("viewCase")}
               <ArrowUpRight size={16} />
             </Link>
             <a
@@ -119,7 +122,7 @@ export function FeaturedCaseSlide({ isActive }: SlideProps) {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium text-foreground-muted ring-1 ring-inset ring-border-strong transition-colors hover:text-foreground hover:bg-foreground/[0.04]"
             >
-              Visitar sitio
+              {t("visitSite")}
               <ArrowUpRight size={16} />
             </a>
           </motion.div>

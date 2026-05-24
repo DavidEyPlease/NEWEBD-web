@@ -117,5 +117,113 @@
       "ctaSecondary": "WhatsApp",
       "alt": "Or write us at"
     }
+  },
+  "slides": {
+    "hero": {
+      "question": "Do you use AI?",
+      "answerA": "Or ",
+      "answerB": "AI will do it for you.",
+      "caption": "We're the team that integrates AI directly into your business. Websites, apps, systems and agents — so you grow, save time and money."
+    },
+    "manifesto": {
+      "eyebrow": "Manifesto",
+      "titleA": "AI either helps you",
+      "titleHighlight": "transform",
+      "titleB": "your business.",
+      "titleSub": "Or it leaves you behind.",
+      "growLabel": "Grow",
+      "growSub": "more customers, more channels",
+      "timeLabel": "Save time",
+      "timeSub": "fewer repetitive tasks",
+      "moneyLabel": "Save money",
+      "moneySub": "leaner operation"
+    },
+    "services": {
+      "eyebrow": "4 pillars",
+      "title": "This is what we build for you."
+    },
+    "featuredCase": {
+      "eyebrow": "Featured case",
+      "titleA": "saves",
+      "titleHighlight": "72 hours",
+      "titleB": "for 90% of its customers.",
+      "viewCase": "See full case",
+      "visitSite": "Visit site"
+    },
+    "otherCases": {
+      "eyebrow": "Portfolio",
+      "title": "And we build for many more.",
+      "viewAll": "See full portfolio"
+    },
+    "process": {
+      "eyebrow": "How we work",
+      "title": "Four steps, no mystery.",
+      "step1Title": "Briefing",
+      "step1Sub": "We talk without jargon.",
+      "step2Title": "Proposal",
+      "step2Sub": "Clear scope and price.",
+      "step3Title": "Build",
+      "step3Sub": "Short iterations, full visibility.",
+      "step4Title": "Aftercare",
+      "step4Sub": "We stay with you afterwards."
+    },
+    "cta": {
+      "eyebrow": "Your move",
+      "titleA": "Your",
+      "titleHighlight": "turn",
+      "body": "Tell us what you want to build. We respond fast, no empty promises.",
+      "ctaPrimary": "Get a quote",
+      "ctaSecondary": "WhatsApp",
+      "alt": "Or write us at"
+    },
+    "scrollHint": "Scroll to continue"
+  },
+  "slideLabels": {
+    "home": "Home",
+    "manifesto": "Manifesto",
+    "services": "Services",
+    "featuredCase": "Featured case",
+    "portfolio": "Portfolio",
+    "process": "How we work",
+    "closing": "Closing",
+    "channels": "Channels",
+    "quote": "Quote",
+    "done": "Done"
+  },
+  "contacto": {
+    "eyebrow": "Contact",
+    "title": "Let's talk.",
+    "subtitle": "Choose how you prefer. We respond fast on every channel.",
+    "whatsappTitle": "WhatsApp",
+    "whatsappSub": "Fastest",
+    "emailTitle": "Email",
+    "cotizacionTitle": "Quote",
+    "cotizacionSub": "Tell us about your project",
+    "scrollHint": "Scroll to the quote form",
+    "form": {
+      "eyebrow": "Get a quote",
+      "title": "Tell us the essentials.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "companyLabel": "Company",
+      "companyPlaceholder": "Your business",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@email.com",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "Optional",
+      "serviceLabel": "What are you interested in?",
+      "servicePlaceholder": "Select an option",
+      "serviceUnsure": "Not sure yet",
+      "iaLabel": "Where in your business would you apply AI?",
+      "iaPlaceholder": "Customer support, automation, analytics, content generation…",
+      "submit": "Send",
+      "privacy": "Your info is only used to reply to you."
+    },
+    "thanks": {
+      "title": "Done.",
+      "body": "We'll contact you soon. Meanwhile, check out the portfolio or head back home.",
+      "ctaPortfolio": "View portfolio",
+      "ctaHome": "Back to home"
+    }
   }
 }

@@ -2,11 +2,14 @@
 
 import { motion } from "framer-motion";
 import { Mail, MessageCircle, FileText } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 export function ContactoIntroSlide({ next }: SlideProps) {
+  const t = useTranslations("contacto");
+
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -29,7 +32,7 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             transition={{ duration: 0.5 }}
             className="text-xs font-semibold uppercase tracking-[0.3em] text-brand-cyan"
           >
-            Contacto
+            {t("eyebrow")}
           </motion.p>
 
           <motion.h1
@@ -38,7 +41,7 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="mt-6 text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-6xl lg:text-7xl"
           >
-            Hablemos.
+            {t("title")}
           </motion.h1>
 
           <motion.p
@@ -47,7 +50,7 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted sm:text-xl"
           >
-            Elige cómo prefieres. Respondemos rápido en todos los canales.
+            {t("subtitle")}
           </motion.p>
 
           <motion.div
@@ -66,11 +69,9 @@ export function ContactoIntroSlide({ next }: SlideProps) {
                 <MessageCircle size={20} className="text-foreground" />
               </span>
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">
-                WhatsApp
+                {t("whatsappTitle")}
               </span>
-              <span className="text-sm text-foreground">
-                Lo más rápido
-              </span>
+              <span className="text-sm text-foreground">{t("whatsappSub")}</span>
             </a>
 
             <a
@@ -81,11 +82,9 @@ export function ContactoIntroSlide({ next }: SlideProps) {
                 <Mail size={20} className="text-foreground" />
               </span>
               <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground-subtle">
-                Email
+                {t("emailTitle")}
               </span>
-              <span className="text-sm text-foreground">
-                hola@newebd.com
-              </span>
+              <span className="text-sm text-foreground">hola@newebd.com</span>
             </a>
 
             <button
@@ -98,10 +97,10 @@ export function ContactoIntroSlide({ next }: SlideProps) {
                   <FileText size={20} />
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground">
-                  Cotización
+                  {t("cotizacionTitle")}
                 </span>
                 <span className="text-sm text-foreground-muted">
-                  Cuéntanos del proyecto
+                  {t("cotizacionSub")}
                 </span>
               </div>
             </button>
@@ -113,7 +112,7 @@ export function ContactoIntroSlide({ next }: SlideProps) {
             transition={{ duration: 0.5, delay: 0.9 }}
             className="mt-12 text-xs text-foreground-subtle"
           >
-            ↓ Scroll para ir a la cotización
+            ↓ {t("scrollHint")}
           </motion.p>
         </div>
       </Container>

@@ -2,13 +2,16 @@
 
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Container } from "@/components/ui/container";
+import { Link } from "@/i18n/navigation";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 export function ContactoThanksSlide(_props: SlideProps) {
+  const t = useTranslations("contacto.thanks");
+
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -42,7 +45,7 @@ export function ContactoThanksSlide(_props: SlideProps) {
             transition={{ duration: 0.6, delay: 0.15 }}
             className="mt-8 text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-6xl"
           >
-            Listo.
+            {t("title")}
           </motion.h2>
 
           <motion.p
@@ -51,8 +54,7 @@ export function ContactoThanksSlide(_props: SlideProps) {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-6 text-lg leading-relaxed text-foreground-muted sm:text-xl"
           >
-            Te contactamos pronto. En lo que tanto, échale ojo al portafolio
-            o vuelve al inicio.
+            {t("body")}
           </motion.p>
 
           <motion.div
@@ -65,13 +67,13 @@ export function ContactoThanksSlide(_props: SlideProps) {
               href="/portafolio"
               className="inline-flex items-center gap-1.5 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-ink-900 transition-all hover:-translate-y-0.5"
             >
-              Ver portafolio
+              {t("ctaPortfolio")}
             </Link>
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-medium text-foreground-muted ring-1 ring-inset ring-border-strong transition-colors hover:text-foreground hover:bg-foreground/[0.04]"
             >
-              Volver al inicio
+              {t("ctaHome")}
             </Link>
           </motion.div>
         </div>

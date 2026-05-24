@@ -3,23 +3,19 @@
 import { motion } from "framer-motion";
 import { TrendingUp, Clock, Wallet } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
-type Benefit = {
-  icon: LucideIcon;
-  label: string;
-  sub: string;
-};
-
-const BENEFITS: Benefit[] = [
-  { icon: TrendingUp, label: "Crecer", sub: "más clientes, más canales" },
-  { icon: Clock, label: "Ahorrar tiempo", sub: "menos tareas repetitivas" },
-  { icon: Wallet, label: "Ahorrar dinero", sub: "operación más liviana" },
+const BENEFIT_KEYS: { icon: LucideIcon; labelKey: string; subKey: string }[] = [
+  { icon: TrendingUp, labelKey: "growLabel", subKey: "growSub" },
+  { icon: Clock, labelKey: "timeLabel", subKey: "timeSub" },
+  { icon: Wallet, labelKey: "moneyLabel", subKey: "moneySub" },
 ];
 
 export function ManifestoSlide(_props: SlideProps) {
+  const t = useTranslations("slides.manifesto");
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -38,7 +34,7 @@ export function ManifestoSlide(_props: SlideProps) {
             transition={{ duration: 0.5 }}
             className="text-xs font-semibold uppercase tracking-[0.3em] text-foreground-subtle"
           >
-            Manifiesto
+            {t("eyebrow")}
           </motion.p>
 
           <motion.h2
@@ -47,13 +43,11 @@ export function ManifestoSlide(_props: SlideProps) {
             transition={{ duration: 0.7, delay: 0.15 }}
             className="mt-8 text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-6xl lg:text-7xl"
           >
-            La IA o te ayuda a{" "}
-            <span className="text-gradient-brand">revolucionar</span>{" "}
-            tu negocio.
+            {t("titleA")}{" "}
+            <span className="text-gradient-brand">{t("titleHighlight")}</span>{" "}
+            {t("titleB")}
             <br />
-            <span className="text-foreground-muted">
-              O te deja en el pasado.
-            </span>
+            <span className="text-foreground-muted">{t("titleSub")}</span>
           </motion.h2>
 
           <motion.div
@@ -62,11 +56,11 @@ export function ManifestoSlide(_props: SlideProps) {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-16 flex flex-wrap items-center justify-center gap-3 sm:gap-4"
           >
-            {BENEFITS.map((b, i) => {
+            {BENEFIT_KEYS.map((b, i) => {
               const Icon = b.icon;
               return (
                 <motion.div
-                  key={b.label}
+                  key={b.labelKey}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: 0.6 + i * 0.1 }}
@@ -77,10 +71,10 @@ export function ManifestoSlide(_props: SlideProps) {
                   </span>
                   <div className="text-left">
                     <p className="text-sm font-semibold text-foreground leading-none">
-                      {b.label}
+                      {t(b.labelKey)}
                     </p>
                     <p className="mt-0.5 text-xs text-foreground-muted">
-                      {b.sub}
+                      {t(b.subKey)}
                     </p>
                   </div>
                 </motion.div>
