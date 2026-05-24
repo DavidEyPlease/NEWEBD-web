@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { TrendingUp, Clock, Wallet, Quote } from "lucide-react";
 
+import { Isotipo } from "@/components/brand/isotipo";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 
@@ -38,6 +39,14 @@ export function Manifesto() {
         aria-hidden
         className="absolute inset-0 -z-10 bg-grid opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]"
       />
+
+      {/* Isotipo decorativo — solo mobile */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -left-12 bottom-12 opacity-50 mix-blend-screen lg:hidden"
+      >
+        <Isotipo size={180} spin />
+      </div>
 
       <Container size="wide">
         <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">

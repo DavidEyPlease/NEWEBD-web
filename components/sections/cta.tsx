@@ -26,12 +26,16 @@ export function FinalCTA() {
             className="pointer-events-none absolute -left-24 -top-24 h-[360px] w-[360px] rounded-full bg-brand-cyan/30 blur-[120px]"
           />
 
-          {/* Isotipo decorativo */}
+          {/* Isotipo decorativo — visible en todos los viewports */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-16 top-1/2 hidden -translate-y-1/2 opacity-30 mix-blend-screen lg:block"
+            className="pointer-events-none absolute -right-24 top-1/2 -translate-y-1/2 opacity-25 mix-blend-screen sm:-right-16 sm:opacity-30"
           >
-            <Isotipo size={360} spin />
+            <Isotipo
+              size={240}
+              spin
+              className="sm:h-[300px] sm:w-[300px] lg:h-[360px] lg:w-[360px]"
+            />
           </div>
 
           <div className="relative max-w-2xl">

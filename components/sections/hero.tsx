@@ -29,6 +29,14 @@ export function Hero() {
       />
       <div aria-hidden className="absolute inset-0 -z-10 bg-vignette" />
 
+      {/* Isotipo decorativo flotante — solo mobile (en desktop hay otro a la derecha) */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-16 top-[55%] -translate-y-1/2 opacity-60 mix-blend-screen lg:hidden"
+      >
+        <Isotipo size={280} spin />
+      </div>
+
       {/* Degradado de salida hacia la siguiente sección */}
       <div
         aria-hidden

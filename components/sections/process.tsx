@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { MessagesSquare, FileSearch, Wrench, Handshake } from "lucide-react";
 
+import { Isotipo } from "@/components/brand/isotipo";
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 
@@ -39,7 +40,15 @@ const STEPS = [
 
 export function Process() {
   return (
-    <section className="relative bg-background py-24 sm:py-32">
+    <section className="relative overflow-hidden bg-background py-24 sm:py-32">
+      {/* Isotipo decorativo — solo mobile */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-10 top-16 opacity-50 mix-blend-screen lg:hidden"
+      >
+        <Isotipo size={160} spin />
+      </div>
+
       <Container size="wide">
         <div className="mx-auto max-w-2xl text-center">
           <Badge variant="default">Cómo trabajamos</Badge>
