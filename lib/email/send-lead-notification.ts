@@ -28,49 +28,53 @@ function getTransporter(): Transporter | null {
   cachedTransporter = nodemailer.createTransport({
     host,
     port: Number(process.env.SMTP_PORT ?? 587),
-    // 465 es SMTPS (TLS desde el primer byte); 587 es STARTTLS.
     secure: Number(process.env.SMTP_PORT ?? 587) === 465,
     auth: { user, pass },
-    // Para Exim local con cert self-signed: aceptar el cert.
     tls: { rejectUnauthorized: false },
   });
   return cachedTransporter;
 }
 
 /**
- * Envía un email al equipo cuando llega un lead nuevo desde el chat web.
- *
- * Idempotente respecto al flujo principal: si SMTP falla o no está
- * configurado, el lead ya quedó guardado en Supabase. Solo loggeamos el
- * error y seguimos.
- *
- * Variables de entorno requeridas:
- *  - SMTP_HOST (ej. localhost en el VPS, o mail.newebd.com remoto)
- *  - SMTP_PORT (587 STARTTLS o 465 SMTPS, default 587)
- *  - SMTP_USER (noreply@newebd.com)
- *  - SMTP_PASS (password de la cuenta cPanel)
- *  - SMTP_FROM (display name + email, default "NEWEBD Leads <noreply@newebd.com>")
- *  - LEAD_NOTIFY_EMAIL (destinatario, default hola@newebd.com)
- *  - SUPABASE_URL (para construir link al row en el dashboard)
+ * Devuelve la lista de destinatarios para la notificación interna.
+ * LEAD_NOTIFY_EMAIL admite múltiples emails separados por coma.
  */
-export async function sendLeadNotification({
-  lead,
-  leadId,
-  conversation,
-  sessionId,
-  locale,
-}: SendArgs): Promise<void> {
+function getNotifyRecipients(): string[] {
+  const raw = process.env.LEAD_NOTIFY_EMAIL ?? "hola@newebd.com";
+  return raw
+    .split(",")
+    .map((e) => e.trim())
+    .filter(Boolean);
+}
+
+/**
+ * Envía email al equipo cuando llega un lead nuevo, y simultáneamente
+ * manda una confirmación al visitante. Ambos son fire-and-forget:
+ * si fallan, el lead ya está guardado en Supabase.
+ */
+export async function sendLeadNotification(args: SendArgs): Promise<void> {
   const transporter = getTransporter();
   if (!transporter) {
-    console.warn("[smtp] credenciales no configuradas — skipping email");
+    console.warn("[smtp] credenciales no configuradas — skipping emails");
     return;
   }
 
-  const to = process.env.LEAD_NOTIFY_EMAIL ?? "hola@newebd.com";
+  // Disparamos los 2 en paralelo (no bloquean uno al otro).
+  await Promise.all([
+    sendInternalNotification(transporter, args),
+    sendVisitorConfirmation(transporter, args),
+  ]);
+}
+
+async function sendInternalNotification(
+  transporter: Transporter,
+  args: SendArgs,
+): Promise<void> {
+  const to = getNotifyRecipients();
   const from = process.env.SMTP_FROM ?? "NEWEBD Leads <noreply@newebd.com>";
-  const html = renderLeadEmail({ lead, leadId, conversation, sessionId, locale });
-  const subject = renderSubject(lead, locale);
-  const text = renderPlainText({ lead, conversation, locale });
+  const html = renderInternalEmail(args);
+  const subject = renderInternalSubject(args.lead, args.locale);
+  const text = renderInternalText(args);
 
   try {
     const info = await transporter.sendMail({
@@ -79,15 +83,50 @@ export async function sendLeadNotification({
       subject,
       html,
       text,
-      replyTo: lead.email,
+      replyTo: args.lead.email,
     });
-    console.log(`[smtp] email enviado: ${info.messageId} → ${to}`);
+    console.log(
+      `[smtp] notificación interna enviada: ${info.messageId} → ${to.join(", ")}`,
+    );
   } catch (err) {
-    console.error("[smtp] error enviando email:", err);
+    console.error("[smtp] error notificación interna:", err);
   }
 }
 
-function renderSubject(lead: SaveLeadInput, locale: string): string {
+async function sendVisitorConfirmation(
+  transporter: Transporter,
+  args: SendArgs,
+): Promise<void> {
+  const from = process.env.SMTP_FROM ?? "NEWEBD <noreply@newebd.com>";
+  // Reply-To apunta a hola@ para que si el visitante responde, llegue al equipo
+  // y NO al noreply (que no tiene a nadie leyéndolo).
+  const replyTo = process.env.LEAD_REPLY_TO ?? "hola@newebd.com";
+  const html = renderVisitorEmail(args);
+  const subject = renderVisitorSubject(args.lead, args.locale);
+  const text = renderVisitorText(args);
+
+  try {
+    const info = await transporter.sendMail({
+      from,
+      to: args.lead.email,
+      subject,
+      html,
+      text,
+      replyTo,
+    });
+    console.log(
+      `[smtp] confirmación a visitante enviada: ${info.messageId} → ${args.lead.email}`,
+    );
+  } catch (err) {
+    console.error("[smtp] error confirmación visitante:", err);
+  }
+}
+
+// ============================================================================
+// SUBJECT LINES
+// ============================================================================
+
+function renderInternalSubject(lead: SaveLeadInput, locale: string): string {
   const flag =
     lead.calificacion === "caliente" ? "🔥" : lead.calificacion === "tibio" ? "🌡️" : "❄️";
   if (locale === "en") {
@@ -96,15 +135,23 @@ function renderSubject(lead: SaveLeadInput, locale: string): string {
   return `${flag} Nuevo lead: ${lead.nombre} (${lead.empresa}) — ${lead.servicio_interes}`;
 }
 
-function renderPlainText({
+function renderVisitorSubject(lead: SaveLeadInput, locale: string): string {
+  const firstName = lead.nombre.split(" ")[0];
+  if (locale === "en") {
+    return `We got your message, ${firstName} 👋`;
+  }
+  return `Recibimos tu mensaje, ${firstName} 👋`;
+}
+
+// ============================================================================
+// PLAIN TEXT (fallback para clientes sin HTML)
+// ============================================================================
+
+function renderInternalText({
   lead,
   conversation,
   locale,
-}: {
-  lead: SaveLeadInput;
-  conversation: ChatMessage[];
-  locale: string;
-}): string {
+}: SendArgs): string {
   const t = locale === "en" ? LABELS_EN : LABELS_ES;
   const lines: string[] = [];
   lines.push(`${lead.nombre} — ${lead.empresa}`);
@@ -125,7 +172,31 @@ function renderPlainText({
   return lines.join("\n");
 }
 
-function renderLeadEmail(args: SendArgs): string {
+function renderVisitorText({ lead, locale }: SendArgs): string {
+  const firstName = lead.nombre.split(" ")[0];
+  const tv = locale === "en" ? VISITOR_EN : VISITOR_ES;
+  return [
+    `${tv.greeting} ${firstName},`,
+    "",
+    tv.thanks,
+    "",
+    `${tv.understoodLabel}:`,
+    lead.resumen_proyecto,
+    "",
+    tv.followUp,
+    "",
+    tv.reply,
+    "",
+    `— ${tv.team}`,
+    "newebd.com",
+  ].join("\n");
+}
+
+// ============================================================================
+// HTML — Email interno (al equipo)
+// ============================================================================
+
+function renderInternalEmail(args: SendArgs): string {
   const { lead, leadId, conversation, sessionId, locale } = args;
   const supabaseProject = extractSupabaseRef(process.env.SUPABASE_URL ?? "");
   const supabaseLink = supabaseProject
@@ -184,7 +255,7 @@ function renderLeadEmail(args: SendArgs): string {
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>${escapeHtml(renderSubject(lead, locale))}</title>
+<title>${escapeHtml(renderInternalSubject(lead, locale))}</title>
 </head>
 <body style="margin:0;padding:0;background:#0d0420;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
   <div style="max-width:640px;margin:0 auto;padding:24px;">
@@ -238,6 +309,77 @@ function renderLeadEmail(args: SendArgs): string {
 </html>`;
 }
 
+// ============================================================================
+// HTML — Email confirmación al visitante
+// ============================================================================
+
+function renderVisitorEmail(args: SendArgs): string {
+  const { lead, locale } = args;
+  const tv = locale === "en" ? VISITOR_EN : VISITOR_ES;
+  const firstName = lead.nombre.split(" ")[0];
+  const homeUrl = locale === "en" ? "https://newebd.com/en" : "https://newebd.com";
+  const portfolioUrl =
+    locale === "en" ? "https://newebd.com/en/portfolio" : "https://newebd.com/portafolio";
+
+  return `<!DOCTYPE html>
+<html lang="${locale}">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>${escapeHtml(renderVisitorSubject(lead, locale))}</title>
+</head>
+<body style="margin:0;padding:0;background:#0d0420;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <div style="max-width:560px;margin:0 auto;padding:24px;">
+    <div style="background:linear-gradient(135deg,#ff24b8 0%,#bd41e0 40%,#6cbde7 100%);padding:1px;border-radius:20px;">
+      <div style="background:#1b073b;border-radius:19px;padding:36px 32px;">
+        <div style="text-align:center;margin-bottom:28px;">
+          <div style="font-size:18px;font-weight:700;letter-spacing:0.14em;color:#f5f3ff;text-transform:uppercase;">NEWEBD</div>
+          <div style="margin-top:8px;font-size:11px;letter-spacing:0.2em;color:#8b82a8;text-transform:uppercase;">${tv.tagline}</div>
+        </div>
+
+        <h1 style="margin:0 0 12px;font-size:28px;line-height:1.2;color:#f5f3ff;font-weight:600;">
+          ${tv.greeting} ${escapeHtml(firstName)} 👋
+        </h1>
+
+        <p style="margin:0 0 20px;font-size:16px;line-height:1.6;color:#c4bce0;">
+          ${tv.thanks}
+        </p>
+
+        <div style="margin:24px 0;padding:18px;background:rgba(245,243,255,0.03);border:1px solid rgba(245,243,255,0.08);border-radius:12px;">
+          <div style="font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.18em;color:#8b82a8;margin-bottom:8px;">${tv.understoodLabel}</div>
+          <p style="margin:0;font-size:14px;line-height:1.55;color:#f5f3ff;">${escapeHtml(lead.resumen_proyecto)}</p>
+        </div>
+
+        <p style="margin:20px 0 28px;font-size:15px;line-height:1.6;color:#c4bce0;">
+          ${tv.followUp}
+        </p>
+
+        <div style="text-align:center;margin:28px 0;">
+          <a href="${portfolioUrl}" style="display:inline-block;padding:12px 24px;background:linear-gradient(120deg,#ff24b8,#bd41e0,#6cbde7);color:#fff;text-decoration:none;border-radius:999px;font-size:14px;font-weight:600;">
+            ${tv.ctaPortfolio}
+          </a>
+        </div>
+
+        <p style="margin:24px 0 0;font-size:13px;line-height:1.5;color:#8b82a8;">
+          ${tv.reply}
+        </p>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(245,243,255,0.08);font-size:12px;color:#8b82a8;text-align:center;">
+          <a href="${homeUrl}" style="color:#6cbde7;text-decoration:none;">newebd.com</a>
+          <br /><br />
+          <span style="font-size:11px;">${tv.footer}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>`;
+}
+
+// ============================================================================
+// LABELS
+// ============================================================================
+
 const LABELS_ES = {
   email: "Email",
   phone: "Teléfono",
@@ -270,6 +412,38 @@ const LABELS_EN = {
   locale: "Language",
   session: "Session",
   visitor: "Visitor",
+};
+
+const VISITOR_ES = {
+  tagline: "El nuevo desarrollo web es con IA",
+  greeting: "Hola",
+  thanks:
+    "Gracias por escribirnos. Recibimos tu mensaje y el equipo ya lo está revisando.",
+  understoodLabel: "Esto fue lo que entendimos de tu proyecto",
+  followUp:
+    "Te contactaremos pronto, normalmente en menos de un día hábil. Si tu caso es urgente o quieres compartirnos más detalles, simplemente responde a este correo.",
+  ctaPortfolio: "Mira nuestros casos",
+  reply:
+    "Puedes responder este email directamente — llega al equipo (no a un buzón automático).",
+  team: "Equipo NEWEBD",
+  footer:
+    "Este correo se generó automáticamente porque iniciaste una conversación con nuestro agente IA en newebd.com.",
+};
+
+const VISITOR_EN = {
+  tagline: "The new web development is with AI",
+  greeting: "Hi",
+  thanks:
+    "Thanks for reaching out. We got your message and the team is already reviewing it.",
+  understoodLabel: "Here's what we understood about your project",
+  followUp:
+    "We'll get back to you soon, usually within one business day. If your case is urgent or you want to share more details, just reply to this email.",
+  ctaPortfolio: "See our cases",
+  reply:
+    "You can reply directly to this email — it goes straight to the team (not an automated mailbox).",
+  team: "NEWEBD Team",
+  footer:
+    "This email was generated automatically because you started a conversation with our AI agent at newebd.com.",
 };
 
 function escapeHtml(s: string): string {
