@@ -9,6 +9,7 @@ import type {
   HandoffInput,
   SaveLeadInput,
 } from "@/lib/agent/types";
+import { sendLeadNotification } from "@/lib/email/send-lead-notification";
 import { getSupabaseAdmin, type LeadRow } from "@/lib/supabase/client";
 
 export const runtime = "nodejs"; // Anthropic SDK necesita Node runtime
@@ -231,7 +232,11 @@ async function persistLead(
     user_agent: req.headers.get("user-agent") ?? null,
   };
 
-  const { error } = await supa.from("leads").insert(row);
+  const { data: inserted, error } = await supa
+    .from("leads")
+    .insert(row)
+    .select("id")
+    .single();
   if (error) {
     console.error("[supabase insert error]", error);
     return { ok: false, message: error.message };
@@ -246,6 +251,15 @@ async function persistLead(
       total_mensajes: conversation.length,
     })
     .eq("session_id", sessionId);
+
+  // Notificación email — fire-and-forget; si falla no rompe el flujo
+  void sendLeadNotification({
+    lead: input,
+    leadId: inserted?.id ?? "",
+    conversation,
+    sessionId,
+    locale,
+  });
 
   return {
     ok: true,
