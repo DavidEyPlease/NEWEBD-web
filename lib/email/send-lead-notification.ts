@@ -313,13 +313,28 @@ function renderInternalEmail(args: SendArgs): string {
 // HTML — Email confirmación al visitante
 // ============================================================================
 
+function trackUrl(leadId: string, url: string): string {
+  if (!leadId) return url;
+  return `https://newebd.com/api/track/click/${leadId}?to=${encodeURIComponent(url)}`;
+}
+
 function renderVisitorEmail(args: SendArgs): string {
-  const { lead, locale } = args;
+  const { lead, leadId, locale } = args;
   const tv = locale === "en" ? VISITOR_EN : VISITOR_ES;
   const firstName = lead.nombre.split(" ")[0];
   const homeUrl = locale === "en" ? "https://newebd.com/en" : "https://newebd.com";
   const portfolioUrl =
     locale === "en" ? "https://newebd.com/en/portfolio" : "https://newebd.com/portafolio";
+
+  // Pixel de tracking (1x1 transparente). El cliente lo carga al abrir el email.
+  const pixelUrl = leadId ? `https://newebd.com/api/track/open/${leadId}` : "";
+  const pixel = pixelUrl
+    ? `<img src="${pixelUrl}" width="1" height="1" alt="" style="display:block;border:0;outline:none;text-decoration:none;width:1px;height:1px;" />`
+    : "";
+
+  // Links wrappeados con click tracking
+  const trackedHome = trackUrl(leadId, homeUrl);
+  const trackedPortfolio = trackUrl(leadId, portfolioUrl);
 
   return `<!DOCTYPE html>
 <html lang="${locale}">
@@ -355,7 +370,7 @@ function renderVisitorEmail(args: SendArgs): string {
         </p>
 
         <div style="text-align:center;margin:28px 0;">
-          <a href="${portfolioUrl}" style="display:inline-block;padding:12px 24px;background:linear-gradient(120deg,#ff24b8,#bd41e0,#6cbde7);color:#fff;text-decoration:none;border-radius:999px;font-size:14px;font-weight:600;">
+          <a href="${trackedPortfolio}" style="display:inline-block;padding:12px 24px;background:linear-gradient(120deg,#ff24b8,#bd41e0,#6cbde7);color:#fff;text-decoration:none;border-radius:999px;font-size:14px;font-weight:600;">
             ${tv.ctaPortfolio}
           </a>
         </div>
@@ -365,13 +380,14 @@ function renderVisitorEmail(args: SendArgs): string {
         </p>
 
         <div style="margin-top:28px;padding-top:20px;border-top:1px solid rgba(245,243,255,0.08);font-size:12px;color:#8b82a8;text-align:center;">
-          <a href="${homeUrl}" style="color:#6cbde7;text-decoration:none;">newebd.com</a>
+          <a href="${trackedHome}" style="color:#6cbde7;text-decoration:none;">newebd.com</a>
           <br /><br />
           <span style="font-size:11px;">${tv.footer}</span>
         </div>
       </div>
     </div>
   </div>
+  ${pixel}
 </body>
 </html>`;
 }

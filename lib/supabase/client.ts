@@ -36,4 +36,6 @@ export type LeadRow = {
   utm_source?: string | null;
   utm_medium?: string | null;
   utm_campaign?: string | null;
+  idioma?: "es" | "en";
+  email_confirmacion_enviada_at?: string | null;
 };
