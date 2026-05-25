@@ -2,14 +2,16 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
-import { SERVICES } from "@/lib/content/services";
+import { getServices } from "@/lib/content/services";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 export function ContactoFormSlide(_props: SlideProps) {
   const t = useTranslations("contacto.form");
+  const locale = useLocale();
+  const services = getServices(locale);
 
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
@@ -59,7 +61,7 @@ export function ContactoFormSlide(_props: SlideProps) {
               <option value="" disabled>
                 {t("servicePlaceholder")}
               </option>
-              {SERVICES.map((s) => (
+              {services.map((s) => (
                 <option key={s.slug} value={s.title}>
                   {s.title}
                 </option>

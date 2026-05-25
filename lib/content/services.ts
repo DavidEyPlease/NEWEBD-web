@@ -15,7 +15,9 @@ export type ServiceCategory = {
   items: ServiceItem[];
 };
 
-export const SERVICES: ServiceCategory[] = [
+type LocaleKey = "es" | "en";
+
+const SERVICES_ES: ServiceCategory[] = [
   {
     slug: "desarrollo-web",
     number: "01",
@@ -265,3 +267,266 @@ export const SERVICES: ServiceCategory[] = [
     ],
   },
 ];
+
+const SERVICES_EN: ServiceCategory[] = [
+  {
+    slug: "desarrollo-web",
+    number: "01",
+    title: "Web Development",
+    tagline: "Your online presence with the professionalism it deserves.",
+    description:
+      "Websites and web experiences for brand and lead capture. No templates — design and code for real clients.",
+    highlights: [
+      "Corporate websites",
+      "Conversion landings",
+      "Online stores",
+      "Portals and microsites",
+    ],
+    items: [
+      {
+        title: "Corporate / institutional websites",
+        description:
+          "Your business online with the professionalism it deserves. Communicates who you are, what you do and why they should choose you.",
+        deliverables: [
+          "Custom visual design",
+          "Sections as needed",
+          "Responsive mobile/tablet/desktop",
+          "Contact form",
+          "Base SEO",
+          "Optional admin panel",
+        ],
+      },
+      {
+        title: "High-conversion landing pages",
+        description:
+          "Pages built to sell a product, capture leads or launch a campaign. Copy + data so the visitor does what you want.",
+        deliverables: [
+          "Conversion-oriented copywriting",
+          "Custom visual design",
+          "CRM or email integration",
+          "Tracking events (GA, Meta Pixel)",
+          "Embedded form or checkout",
+          "Optional A/B testing",
+        ],
+      },
+      {
+        title: "Online stores (e-commerce)",
+        description:
+          "Your own digital sales channel, independent from third-party marketplaces. Catalog, cart, payments and shipping to sell 24/7.",
+        deliverables: [
+          "Product catalog",
+          "Cart and checkout",
+          "Payment gateway (Stripe, PayPal, Mercado Pago)",
+          "Inventory management",
+          "Admin panel",
+          "Shipping integration",
+          "Electronic invoicing if applicable",
+        ],
+      },
+      {
+        title: "Portals and microsites",
+        description:
+          "Complex web platforms: client portals, member areas, campaign microsites, content platforms.",
+        deliverables: [
+          "User authentication",
+          "Private areas",
+          "Content management",
+          "Custom integrations",
+          "Personalized dashboards",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "aplicaciones-a-medida",
+    number: "02",
+    title: "Custom Applications",
+    tagline: "Custom software for end clients or internal users.",
+    description:
+      "Web apps, PWAs and mobile iOS/Android apps. Internal software that replaces Excel and connects departments.",
+    highlights: [
+      "Web apps and PWAs",
+      "iOS / Android apps",
+      "Internal software",
+      "Custom dashboards",
+    ],
+    items: [
+      {
+        title: "Web apps and PWAs",
+        description:
+          "Software accessible from any browser. PWAs that feel like native apps but update without going through the store. Ideal for internal tools, SaaS, dashboards.",
+        deliverables: [
+          "UX/UI design",
+          "Custom frontend",
+          "Backend with database",
+          "User authentication",
+          "Admin panel",
+          "Cloud deployment",
+          "Technical documentation",
+        ],
+      },
+      {
+        title: "Mobile apps (iOS / Android)",
+        description:
+          "Native or cross-platform apps so your business lives in your customers' or team's pocket. Built to perform, not to look like a wrapped website.",
+        deliverables: [
+          "Mobile UX/UI design",
+          "Cross-platform iOS + Android app",
+          "Connected backend",
+          "Publication on App Store and Google Play",
+          "Push notifications",
+          "Usage analytics",
+        ],
+      },
+      {
+        title: "Internal team applications",
+        description:
+          "Software custom-made to how your team operates. Replaces Excel, automates repetitive steps, connects departments. Makes people click less and do more real work.",
+        deliverables: [
+          "Current process mapping",
+          "Functional design",
+          "Web app with role-based permissions",
+          "Integration with existing systems",
+          "Team training",
+          "Initial support",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "sistemas-empresariales",
+    number: "03",
+    title: "Enterprise Systems",
+    tagline: "Operational software that supports your business.",
+    description:
+      "CRMs, admin systems, electronic invoicing and integrations. The layer that centralizes what today lives in 8 spreadsheets.",
+    highlights: [
+      "Custom CRMs",
+      "Admin systems",
+      "Electronic invoicing",
+      "Custom integrations",
+    ],
+    items: [
+      {
+        title: "Custom CRMs",
+        description:
+          "Your CRM shouldn't bend to your business — your business deserves a CRM built for it. Customer, opportunity and pipeline management your way.",
+        deliverables: [
+          "Custom modules (contacts, opportunities, activities, reports)",
+          "Email and WhatsApp integration",
+          "Follow-up automations",
+          "Management dashboards",
+        ],
+      },
+      {
+        title: "Admin systems",
+        description:
+          "Inventory, internal operations, process control. Software that centralizes what today lives in spreadsheets and depends on someone updating them.",
+        deliverables: [
+          "Modules per operation (inventory, purchases, sales, HR)",
+          "Role-based permissions",
+          "Operational reports",
+          "Accounting or invoicing integration",
+        ],
+      },
+      {
+        title: "Invoicing systems",
+        description:
+          "Electronic invoicing adapted to your country, industry and volume. Connected to the rest of your operation so there's no double entry.",
+        deliverables: [
+          "Document issuance per local regulations",
+          "Customer and catalog management",
+          "Tax reports",
+          "CRM or admin system integration",
+        ],
+      },
+      {
+        title: "Databases and backend",
+        description:
+          "The invisible foundation that holds everything else. Data modeling, APIs, business logic. When a project needs to be thought through from the ground up.",
+        deliverables: [
+          "Database design",
+          "Documented APIs",
+          "Business logic",
+          "Scalability from day one",
+          "Cloud infrastructure deployment",
+        ],
+      },
+      {
+        title: "System integrations",
+        description:
+          "Connect what you already have so they talk to each other. ERP with CRM, payment gateway with invoicing, WhatsApp with your system. So data flows without manual work.",
+        deliverables: [
+          "Analysis of systems to integrate",
+          "Custom connectors",
+          "Real-time or batch synchronization",
+          "Error handling",
+          "Monitoring",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "soluciones-de-ia",
+    number: "04",
+    title: "AI Solutions",
+    tagline: "The layer that makes your business intelligent.",
+    description:
+      "The layer that delivers on the tagline: integrating AI inside the business. Automations, analytics and agents that actually understand your operation.",
+    highlights: [
+      "Smart automations",
+      "AI-powered analytics",
+      "Custom agents",
+      "Integration in your channels",
+    ],
+    isDifferentiator: true,
+    items: [
+      {
+        title: "Smart automations",
+        description:
+          "AI workflows that do the repetitive work for you. Process invoices, generate reports, answer FAQs, move data between systems.",
+        deliverables: [
+          "Mapping of automatable processes",
+          "AI workflow (document reading, generation, decisions)",
+          "Integration with current systems",
+          "Time-saved metrics",
+        ],
+      },
+      {
+        title: "AI-powered analytics",
+        description:
+          "We turn your data into decisions. Sales prediction, automatic segmentation, pattern detection, dashboards that show what's coming.",
+        deliverables: [
+          "Audit of existing data",
+          "Predictive models per need",
+          "Interactive dashboards",
+          "Automatic alerts",
+          "Training to interpret results",
+        ],
+      },
+      {
+        title: "Custom agents",
+        description:
+          "AI agents trained with your business information. They serve your customers, qualify leads, assist support or sales, execute specific tasks.",
+        deliverables: [
+          "Definition of goals and scope",
+          "Knowledge base trained with your information",
+          "Channel integration (web, WhatsApp, internal system)",
+          "Continuous quality review",
+        ],
+      },
+    ],
+  },
+];
+
+const CATALOG: Record<LocaleKey, ServiceCategory[]> = {
+  es: SERVICES_ES,
+  en: SERVICES_EN,
+};
+
+export function getServices(locale: string): ServiceCategory[] {
+  return CATALOG[(locale as LocaleKey) in CATALOG ? (locale as LocaleKey) : "es"];
+}
+
+/** @deprecated Usar `getServices(locale)` en su lugar. Mantiene el array ES. */
+export const SERVICES = SERVICES_ES;

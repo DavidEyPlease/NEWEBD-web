@@ -1,18 +1,30 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { ArrowUpRight, Sparkles } from "lucide-react";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Container } from "@/components/ui/container";
-import { CASES } from "@/lib/content/cases";
+import { Link } from "@/i18n/navigation";
+import { getCases } from "@/lib/content/cases";
 
-export const metadata: Metadata = {
-  title: "Portafolio",
-  description:
-    "Casos reales: Eyplease, Myanosa, Vegemex, CloverleafAWS, American English. Cómo construimos software con impacto medible.",
-};
+type Props = { params: Promise<{ locale: string }> };
 
-export default function PortafolioPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.portafolio" });
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
+
+export default async function PortafolioPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("portafolioPage");
+  const tCase = await getTranslations("caseDetail");
+  const cases = getCases(locale);
+
   return (
     <>
       <section className="relative overflow-hidden bg-background pt-36 pb-20 sm:pt-44 sm:pb-24">
@@ -24,7 +36,6 @@ export default function PortafolioPage() {
           className="absolute inset-0 -z-10 bg-grid opacity-25 [mask-image:radial-gradient(ellipse_at_top,black_15%,transparent_70%)]"
         />
 
-        {/* Isotipo decorativo — solo mobile */}
         <div
           aria-hidden
           className="pointer-events-none absolute -left-16 top-28 opacity-50 mix-blend-screen lg:hidden"
@@ -37,23 +48,20 @@ export default function PortafolioPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-foreground/[0.04] px-4 py-1.5 backdrop-blur">
               <Sparkles size={13} className="text-brand-cyan" />
               <span className="text-xs font-medium tracking-wide uppercase text-foreground-muted">
-                Portafolio
+                {t("eyebrow")}
               </span>
             </div>
             <h1 className="mt-6 text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-6xl">
-              Software con impacto medible.
+              {t("title")}
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted sm:text-xl">
-              Cinco casos en industrias muy distintas — del SaaS para Mary Kay
-              al mobiliario premium para Nobu, Marriott y Vidanta. Lo que nos
-              une: construir bien, con métricas y sin humo.
+              {t("subtitle")}
             </p>
           </div>
         </Container>
       </section>
 
       <section className="relative overflow-hidden bg-background pb-24 sm:pb-32">
-        {/* Isotipo decorativo — solo mobile */}
         <div
           aria-hidden
           className="pointer-events-none absolute -right-14 top-1/3 opacity-40 mix-blend-screen lg:hidden"
@@ -63,7 +71,7 @@ export default function PortafolioPage() {
 
         <Container size="wide">
           <div className="grid gap-6 md:grid-cols-2">
-            {CASES.map((c, idx) => (
+            {cases.map((c, idx) => (
               <article
                 key={c.slug}
                 className={`group relative overflow-hidden rounded-2xl border bg-foreground/[0.02] p-8 transition-all hover:bg-foreground/[0.04] ${
@@ -128,9 +136,9 @@ export default function PortafolioPage() {
                 </div>
 
                 <Link
-                  href={`/portafolio/${c.slug}`}
+                  href={{ pathname: "/portafolio/[slug]", params: { slug: c.slug } }}
                   className="absolute inset-0"
-                  aria-label={`Ver caso ${c.client}`}
+                  aria-label={`${tCase("visitSite")} ${c.client}`}
                 />
                 <ArrowUpRight
                   size={18}

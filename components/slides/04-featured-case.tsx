@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
-import { FEATURED_CASE } from "@/lib/content/cases";
+import { getFeaturedCase } from "@/lib/content/cases";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 function Counter({ value, active }: { value: string; active: boolean }) {
@@ -48,7 +48,8 @@ function Counter({ value, active }: { value: string; active: boolean }) {
 
 export function FeaturedCaseSlide({ isActive }: SlideProps) {
   const t = useTranslations("slides.featuredCase");
-  const c = FEATURED_CASE;
+  const locale = useLocale();
+  const c = getFeaturedCase(locale);
 
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">

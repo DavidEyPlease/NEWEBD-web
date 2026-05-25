@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import { Code2, AppWindow, Database, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
-import { SERVICES } from "@/lib/content/services";
+import { getServices } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
@@ -19,6 +19,8 @@ const ICONS: Record<string, LucideIcon> = {
 
 export function ServicesSlide(_props: SlideProps) {
   const t = useTranslations("slides.services");
+  const locale = useLocale();
+  const services = getServices(locale);
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -42,7 +44,7 @@ export function ServicesSlide(_props: SlideProps) {
         </motion.div>
 
         <div className="grid gap-4 sm:grid-cols-2 sm:gap-5">
-          {SERVICES.map((s, i) => {
+          {services.map((s, i) => {
             const Icon = ICONS[s.slug] ?? Code2;
             const isHero = !!s.isDifferentiator;
             return (

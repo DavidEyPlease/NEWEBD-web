@@ -2,16 +2,18 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
 import { DIRECT_CLIENTS } from "@/lib/content/clients";
-import { OTHER_CASES } from "@/lib/content/cases";
+import { getOtherCases } from "@/lib/content/cases";
 import type { SlideProps } from "@/components/experience/scroll-experience";
 
 export function OtherCasesSlide(_props: SlideProps) {
   const t = useTranslations("slides.otherCases");
+  const locale = useLocale();
+  const otherCases = getOtherCases(locale);
   return (
     <section className="relative h-full w-full overflow-hidden bg-background">
       <div aria-hidden className="pointer-events-none absolute inset-0">
@@ -68,7 +70,7 @@ export function OtherCasesSlide(_props: SlideProps) {
             transition={{ duration: 0.5, delay: 0.9 }}
             className="mt-12 flex flex-wrap justify-center gap-2"
           >
-            {OTHER_CASES.map((c) => (
+            {otherCases.map((c) => (
               <span
                 key={c.slug}
                 className="rounded-full bg-foreground/[0.04] px-3 py-1 text-xs text-foreground-muted ring-1 ring-inset ring-border"

@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle, X, Send, RotateCcw, Sparkles } from "lucide-react";
+import { X, Send, RotateCcw, Sparkles } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { useChat } from "@/components/chat/use-chat";
 import { ChatMessageBubble } from "@/components/chat/chat-message";
+import { usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 /**
@@ -15,10 +16,15 @@ import { cn } from "@/lib/utils";
  * /contacto (donde el formulario completo es la vía principal de captura).
  */
 export function ChatWidget() {
+  const t = useTranslations("chat");
+  const locale = useLocale();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [draft, setDraft] = useState("");
-  const { messages, status, error, sendMessage, reset } = useChat();
+  const { messages, status, error, sendMessage, reset } = useChat({
+    welcomeText: t("welcome"),
+    locale,
+  });
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
@@ -65,7 +71,7 @@ export function ChatWidget() {
             exit={{ opacity: 0, scale: 0.85, y: 12 }}
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             onClick={() => setOpen(true)}
-            aria-label="Abrir chat con NEWEBD AI"
+            aria-label={t("openLabel")}
             className="group fixed bottom-6 right-6 z-40 inline-flex h-14 items-center gap-2 rounded-full p-[1px] gradient-brand shadow-[0_20px_60px_-15px_rgba(189,65,224,0.7)] transition-transform hover:scale-105 sm:bottom-8 sm:right-8"
           >
             <div className="flex h-full items-center gap-2.5 rounded-full bg-ink-900 pl-3 pr-5">
@@ -74,7 +80,7 @@ export function ChatWidget() {
                 <span className="absolute -top-0.5 -right-0.5 inline-flex h-2.5 w-2.5 rounded-full bg-brand-cyan ring-2 ring-ink-900 animate-pulse" />
               </span>
               <span className="hidden text-sm font-semibold tracking-wide text-foreground sm:inline">
-                Chat con IA
+                {t("openText")}
               </span>
             </div>
           </motion.button>
@@ -100,11 +106,11 @@ export function ChatWidget() {
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-foreground leading-none">
-                    NEWEBD AI
+                    {t("agentName")}
                   </p>
                   <p className="mt-1 flex items-center gap-1.5 text-[10px] uppercase tracking-[0.18em] text-foreground-subtle">
                     <span className="inline-flex h-1.5 w-1.5 rounded-full bg-brand-cyan animate-pulse" />
-                    En línea
+                    {t("online")}
                   </p>
                 </div>
               </div>
@@ -112,8 +118,8 @@ export function ChatWidget() {
                 <button
                   type="button"
                   onClick={reset}
-                  title="Reiniciar conversación"
-                  aria-label="Reiniciar conversación"
+                  title={t("reset")}
+                  aria-label={t("reset")}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
                 >
                   <RotateCcw size={14} />
@@ -121,7 +127,7 @@ export function ChatWidget() {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  aria-label="Cerrar chat"
+                  aria-label={t("close")}
                   className="inline-flex h-8 w-8 items-center justify-center rounded-full text-foreground-muted transition-colors hover:bg-foreground/[0.06] hover:text-foreground"
                 >
                   <X size={16} />
@@ -139,12 +145,12 @@ export function ChatWidget() {
               ))}
               {status === "streaming" && (
                 <p className="ml-9 text-[11px] uppercase tracking-[0.18em] text-foreground-subtle">
-                  IA escribiendo...
+                  {t("writing")}
                 </p>
               )}
               {status === "error" && error && (
                 <div className="rounded-xl border border-brand-magenta/40 bg-brand-magenta/10 px-3 py-2 text-xs text-foreground-muted">
-                  Algo falló: {error}. Intenta de nuevo.
+                  {t("errorPrefix")} {error}. {t("errorRetry")}
                 </div>
               )}
             </div>
@@ -153,7 +159,7 @@ export function ChatWidget() {
             <div className="border-t border-border bg-foreground/[0.02] px-4 py-2">
               <p className="flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-foreground-subtle">
                 <Sparkles size={10} className="text-brand-cyan" />
-                Conversación real con Claude
+                {t("hint")}
               </p>
             </div>
 
@@ -165,7 +171,7 @@ export function ChatWidget() {
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Cuéntame de tu proyecto..."
+                  placeholder={t("placeholder")}
                   rows={1}
                   className="flex-1 resize-none bg-transparent px-2 py-1.5 text-sm text-foreground placeholder:text-foreground-subtle focus:outline-none"
                   style={{ maxHeight: "120px" }}
@@ -174,7 +180,7 @@ export function ChatWidget() {
                   type="button"
                   onClick={handleSend}
                   disabled={!draft.trim() || status === "streaming"}
-                  aria-label="Enviar mensaje"
+                  aria-label={t("send")}
                   className={cn(
                     "inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-all",
                     draft.trim() && status !== "streaming"

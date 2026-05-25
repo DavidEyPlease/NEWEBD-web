@@ -178,6 +178,48 @@
     },
     "scrollHint": "Scroll para continuar"
   },
+  "chat": {
+    "openLabel": "Abrir chat con NEWEBD AI",
+    "openText": "Chat con IA",
+    "agentName": "NEWEBD AI",
+    "online": "En línea",
+    "reset": "Reiniciar conversación",
+    "close": "Cerrar chat",
+    "writing": "IA escribiendo...",
+    "errorPrefix": "Algo falló:",
+    "errorRetry": "Intenta de nuevo.",
+    "hint": "Conversación real con Claude",
+    "placeholder": "Cuéntame de tu proyecto...",
+    "send": "Enviar mensaje",
+    "welcome": "Hola, soy el agente IA de NEWEBD. Cuéntame del proyecto que tienes en mente — qué negocio, qué necesitas y dónde te gustaría aprovechar IA. Te ayudo a aterrizar la idea.",
+    "demoMessage": "Hola, soy NEWEBD AI (modo demo — sin API key conectada todavía). Cuando me conectes a Claude API, voy a poder conversar de verdad, calificar leads y guardar contactos. Por mientras, esto es solo un placeholder visual para que veas cómo se siente el chat.",
+    "leadSaved": "¡Listo! Guardé tu información. El equipo de NEWEBD te contacta directo en las próximas horas.",
+    "handoff": "Listo, te paso con un humano del equipo. Te van a contactar lo antes posible."
+  },
+  "serviciosPage": {
+    "eyebrow": "Catálogo de servicios",
+    "title": "Lo que construimos para tu negocio.",
+    "subtitle": "Cuatro categorías que cubren desde el sitio web hasta los agentes de IA dentro de tu operación. Cada proyecto es a medida.",
+    "differentiator": "Diferenciador",
+    "ctaService": "Cotiza este servicio",
+    "deliverables": "Entregables"
+  },
+  "portafolioPage": {
+    "eyebrow": "Portafolio",
+    "title": "Software con impacto medible.",
+    "subtitle": "Cinco casos en industrias muy distintas — del SaaS para Mary Kay al mobiliario premium para Nobu, Marriott y Vidanta. Lo que nos une: construir bien, con métricas y sin humo.",
+    "viewCase": "Ver caso"
+  },
+  "caseDetail": {
+    "back": "Volver al portafolio",
+    "challenge": "Reto",
+    "solution": "Solución",
+    "result": "Resultado",
+    "whyItMatters": "Por qué importa",
+    "visitSite": "Visitar sitio",
+    "location": "Ubicación",
+    "established": "Establecido"
+  },
   "slideLabels": {
     "home": "Inicio",
     "manifesto": "Manifiesto",

@@ -1,17 +1,21 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, MapPin, Calendar } from "lucide-react";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { CASES, getCaseBySlug } from "@/lib/content/cases";
+import { Link } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
+import { getCaseBySlug, getCases } from "@/lib/content/cases";
 
-type Params = Promise<{ slug: string }>;
+type Params = Promise<{ locale: string; slug: string }>;
 
 export function generateStaticParams() {
-  return CASES.map((c) => ({ slug: c.slug }));
+  return routing.locales.flatMap((locale) =>
+    getCases(locale).map((c) => ({ locale, slug: c.slug })),
+  );
 }
 
 export async function generateMetadata({
@@ -19,21 +23,24 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const { slug } = await params;
-  const c = getCaseBySlug(slug);
+  const { locale, slug } = await params;
+  const c = getCaseBySlug(slug, locale);
   if (!c) return {};
   return {
-    title: `${c.client} — Caso de estudio`,
+    title: `${c.client} — ${c.industry}`,
     description: c.description,
   };
 }
 
 export default async function CaseDetailPage({ params }: { params: Params }) {
-  const { slug } = await params;
-  const c = getCaseBySlug(slug);
+  const { locale, slug } = await params;
+  setRequestLocale(locale);
+  const c = getCaseBySlug(slug, locale);
   if (!c) notFound();
 
-  const otherCases = CASES.filter((other) => other.slug !== c.slug).slice(0, 3);
+  const t = await getTranslations("caseDetail");
+  const tFeatured = await getTranslations("sections.featuredCase");
+  const otherCases = getCases(locale).filter((other) => other.slug !== c.slug).slice(0, 3);
 
   return (
     <>
@@ -48,11 +55,11 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
             className="inline-flex items-center gap-1.5 text-sm text-foreground-muted transition-colors hover:text-foreground"
           >
             <ArrowLeft size={14} />
-            Portafolio
+            {t("back")}
           </Link>
 
           <div className="mt-8 flex flex-wrap items-center gap-2">
-            {c.featured && <Badge variant="brand">Caso estrella</Badge>}
+            {c.featured && <Badge variant="brand">{tFeatured("badge")}</Badge>}
             <Badge variant="outline">{c.industry}</Badge>
             {c.location && (
               <Badge variant="default">
@@ -63,7 +70,7 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
             {c.established && (
               <Badge variant="default">
                 <Calendar size={11} />
-                Desde {c.established}
+                {t("established")} {c.established}
               </Badge>
             )}
           </div>
@@ -77,11 +84,11 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
 
           <div className="mt-8 flex flex-wrap gap-3">
             <Button href={c.url} variant="secondary" size="md">
-              Visitar sitio
+              {t("visitSite")}
               <ArrowUpRight size={16} />
             </Button>
             <Button href="/contacto" size="md">
-              Quiero algo así
+              {tFeatured("ctaPrimary")}
             </Button>
           </div>
         </Container>
@@ -115,15 +122,15 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
       <section className="relative bg-background pb-20">
         <Container size="default">
           <div className="grid gap-12 lg:grid-cols-3">
-            <Block label="El reto" content={c.challenge} />
-            <Block label="La solución" content={c.solution} />
-            <Block label="El resultado" content={c.result} />
+            <Block label={t("challenge")} content={c.challenge} />
+            <Block label={t("solution")} content={c.solution} />
+            <Block label={t("result")} content={c.result} />
           </div>
 
           {c.whyItMatters && (
             <div className="mt-16 rounded-3xl border border-border-strong bg-ink-900/60 p-8 sm:p-12">
               <span className="text-xs font-semibold uppercase tracking-[0.22em] text-brand-cyan">
-                Por qué importa
+                {t("whyItMatters")}
               </span>
               <p className="mt-4 text-balance text-xl leading-relaxed text-foreground sm:text-2xl">
                 {c.whyItMatters}
@@ -146,23 +153,11 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
 
       <section className="relative bg-background py-20 border-t border-border">
         <Container size="wide">
-          <div className="flex items-end justify-between">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              Otros casos
-            </h2>
-            <Link
-              href="/portafolio"
-              className="text-sm font-medium text-foreground transition-colors hover:text-brand-cyan"
-            >
-              Ver todos →
-            </Link>
-          </div>
-
           <div className="mt-8 grid gap-5 sm:grid-cols-3">
             {otherCases.map((other) => (
               <Link
                 key={other.slug}
-                href={`/portafolio/${other.slug}`}
+                href={{ pathname: "/portafolio/[slug]", params: { slug: other.slug } }}
                 className="group rounded-2xl border border-border bg-foreground/[0.02] p-6 transition-all hover:border-border-strong hover:bg-foreground/[0.04]"
               >
                 <p className="text-xs font-medium uppercase tracking-[0.18em] text-foreground-subtle">
@@ -175,7 +170,7 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
                   {other.tagline}
                 </p>
                 <span className="mt-4 inline-flex items-center gap-1 text-sm text-foreground transition-colors group-hover:text-brand-cyan">
-                  Ver caso
+                  {tFeatured("ctaPrimary")}
                   <ArrowUpRight size={14} />
                 </span>
               </Link>

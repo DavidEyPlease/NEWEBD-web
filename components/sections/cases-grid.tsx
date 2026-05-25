@@ -2,15 +2,17 @@
 
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { Link } from "@/i18n/navigation";
-import { OTHER_CASES } from "@/lib/content/cases";
+import { getOtherCases } from "@/lib/content/cases";
 
 export function CasesGrid() {
   const t = useTranslations("sections.casesGrid");
+  const locale = useLocale();
+  const otherCases = getOtherCases(locale);
 
   return (
     <section className="relative bg-background py-24 sm:py-32">
@@ -32,7 +34,7 @@ export function CasesGrid() {
         </div>
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2">
-          {OTHER_CASES.map((c, idx) => (
+          {otherCases.map((c, idx) => (
             <motion.article
               key={c.slug}
               initial={{ opacity: 0, y: 16 }}

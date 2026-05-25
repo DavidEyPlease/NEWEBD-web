@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { hasLocale, NextIntlClientProvider } from "next-intl";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import "../globals.css";
 
@@ -24,37 +24,61 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://newebd.com"),
-  title: {
-    default: "NEWEBD — El nuevo desarrollo web es con IA",
-    template: "%s · NEWEBD",
-  },
-  description:
-    "Integramos IA en tu negocio para que crezcas, ahorres tiempo y dinero. Webs, apps, sistemas y agentes a la medida.",
-  applicationName: "NEWEBD",
-  authors: [{ name: "NEWEBD" }],
-  creator: "NEWEBD",
-  openGraph: {
-    type: "website",
-    url: "https://newebd.com",
-    siteName: "NEWEBD",
-  },
-  twitter: { card: "summary_large_image" },
-  robots: { index: true, follow: true },
+type Props = {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.home" });
+  const ogLocale = locale === "en" ? "en_US" : "es_MX";
+
+  return {
+    metadataBase: new URL("https://newebd.com"),
+    title: {
+      default: t("title"),
+      template: "%s · NEWEBD",
+    },
+    description: t("description"),
+    applicationName: "NEWEBD",
+    authors: [{ name: "NEWEBD" }],
+    creator: "NEWEBD",
+    alternates: {
+      canonical: locale === "es" ? "https://newebd.com/" : "https://newebd.com/en",
+      languages: {
+        "es-MX": "https://newebd.com/",
+        "en-US": "https://newebd.com/en",
+        "x-default": "https://newebd.com/",
+      },
+    },
+    openGraph: {
+      type: "website",
+      locale: ogLocale,
+      alternateLocale: ogLocale === "es_MX" ? "en_US" : "es_MX",
+      url: locale === "es" ? "https://newebd.com" : "https://newebd.com/en",
+      siteName: "NEWEBD",
+      title: t("title"),
+      description: t("description"),
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+    },
+    robots: { index: true, follow: true },
+  };
+}
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode;
-  params: Promise<{ locale: string }>;
-}) {
+export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) {
     notFound();

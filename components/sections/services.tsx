@@ -3,11 +3,11 @@
 import { motion } from "framer-motion";
 import { ArrowUpRight, Code2, AppWindow, Database, Brain } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
-import { SERVICES } from "@/lib/content/services";
+import { getServices } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -19,6 +19,8 @@ const ICONS: Record<string, LucideIcon> = {
 
 export function Services() {
   const t = useTranslations("sections.services");
+  const locale = useLocale();
+  const services = getServices(locale);
 
   return (
     <section id="servicios" className="relative bg-background py-24 sm:py-32">
@@ -35,7 +37,7 @@ export function Services() {
         </div>
 
         <div className="mt-16 grid gap-6 md:grid-cols-2">
-          {SERVICES.map((service, idx) => {
+          {services.map((service, idx) => {
             const Icon = ICONS[service.slug] ?? Code2;
             const isHero = !!service.isDifferentiator;
             return (

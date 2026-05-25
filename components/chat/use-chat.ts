@@ -33,16 +33,19 @@ function saveToStorage(key: string, value: unknown) {
 
 export type ChatStatus = "idle" | "streaming" | "error";
 
-const WELCOME: ChatMessage = {
-  id: "welcome",
-  role: "assistant",
-  content:
-    "Hola, soy el agente IA de NEWEBD. Cuéntame del proyecto que tienes en mente — qué negocio, qué necesitas y dónde te gustaría aprovechar IA. Te ayudo a aterrizar la idea.",
-  createdAt: Date.now(),
+type UseChatOptions = {
+  welcomeText: string;
+  locale: string;
 };
 
-export function useChat() {
-  const [messages, setMessages] = useState<ChatMessage[]>([WELCOME]);
+export function useChat({ welcomeText, locale }: UseChatOptions) {
+  const welcome: ChatMessage = {
+    id: "welcome",
+    role: "assistant",
+    content: welcomeText,
+    createdAt: Date.now(),
+  };
+  const [messages, setMessages] = useState<ChatMessage[]>([welcome]);
   const [status, setStatus] = useState<ChatStatus>("idle");
   const [error, setError] = useState<string | null>(null);
   const sessionIdRef = useRef<string>("");
@@ -108,6 +111,7 @@ export function useChat() {
               (m) => m.id !== "welcome",
             ),
             sessionId: sessionIdRef.current,
+            locale,
           }),
           signal: ctrl.signal,
         });
@@ -206,13 +210,20 @@ export function useChat() {
 
   const reset = useCallback(() => {
     abortRef.current?.abort();
-    setMessages([WELCOME]);
+    setMessages([
+      {
+        id: "welcome",
+        role: "assistant",
+        content: welcomeText,
+        createdAt: Date.now(),
+      },
+    ]);
     setStatus("idle");
     setError(null);
     if (typeof window !== "undefined") {
       window.localStorage.removeItem(HISTORY_STORAGE_KEY);
     }
-  }, []);
+  }, [welcomeText]);
 
   return { messages, status, error, sendMessage, cancel, reset };
 }

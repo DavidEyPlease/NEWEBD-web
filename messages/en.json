@@ -178,6 +178,48 @@
     },
     "scrollHint": "Scroll to continue"
   },
+  "chat": {
+    "openLabel": "Open chat with NEWEBD AI",
+    "openText": "AI Chat",
+    "agentName": "NEWEBD AI",
+    "online": "Online",
+    "reset": "Reset conversation",
+    "close": "Close chat",
+    "writing": "AI typing...",
+    "errorPrefix": "Something failed:",
+    "errorRetry": "Try again.",
+    "hint": "Real conversation with Claude",
+    "placeholder": "Tell me about your project...",
+    "send": "Send message",
+    "welcome": "Hi, I'm the NEWEBD AI agent. Tell me about the project you have in mind — what's your business, what you need and where you'd like to use AI. I'll help you land the idea.",
+    "demoMessage": "Hi, I'm NEWEBD AI (demo mode — no API key connected yet). Once you connect me to the Claude API, I'll be able to actually chat, qualify leads and save contacts. For now, this is just a visual placeholder so you can see how the chat feels.",
+    "leadSaved": "Done! I saved your info. The NEWEBD team will contact you directly in the next few hours.",
+    "handoff": "Got it, I'm passing you over to a human on the team. They'll contact you as soon as possible."
+  },
+  "serviciosPage": {
+    "eyebrow": "Services catalog",
+    "title": "What we build for your business.",
+    "subtitle": "Four categories spanning from the website to the AI agents inside your operation. Every project is custom.",
+    "differentiator": "Differentiator",
+    "ctaService": "Quote this service",
+    "deliverables": "Deliverables"
+  },
+  "portafolioPage": {
+    "eyebrow": "Portfolio",
+    "title": "Software with measurable impact.",
+    "subtitle": "Five cases across very different industries — from SaaS for Mary Kay to premium furniture for Nobu, Marriott and Vidanta. What unites them: building well, with metrics and no smoke.",
+    "viewCase": "View case"
+  },
+  "caseDetail": {
+    "back": "Back to portfolio",
+    "challenge": "Challenge",
+    "solution": "Solution",
+    "result": "Result",
+    "whyItMatters": "Why it matters",
+    "visitSite": "Visit site",
+    "location": "Location",
+    "established": "Established"
+  },
   "slideLabels": {
     "home": "Home",
     "manifesto": "Manifesto",

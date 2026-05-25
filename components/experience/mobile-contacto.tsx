@@ -2,11 +2,11 @@
 
 import { motion } from "framer-motion";
 import { ArrowRight, FileText, Mail, MessageCircle } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Container } from "@/components/ui/container";
-import { SERVICES } from "@/lib/content/services";
+import { getServices } from "@/lib/content/services";
 
 /**
  * Versión mobile de /contacto: scroll natural con Hero + canales + form.
@@ -15,6 +15,8 @@ import { SERVICES } from "@/lib/content/services";
 export function MobileContacto() {
   const t = useTranslations("contacto");
   const tf = useTranslations("contacto.form");
+  const locale = useLocale();
+  const services = getServices(locale);
 
   return (
     <>
@@ -202,7 +204,7 @@ export function MobileContacto() {
                 <option value="" disabled>
                   {tf("servicePlaceholder")}
                 </option>
-                {SERVICES.map((s) => (
+                {services.map((s) => (
                   <option key={s.slug} value={s.title}>
                     {s.title}
                   </option>

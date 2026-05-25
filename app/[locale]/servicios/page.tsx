@@ -8,12 +8,13 @@ import {
   Sparkles,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Isotipo } from "@/components/brand/isotipo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { SERVICES } from "@/lib/content/services";
+import { getServices } from "@/lib/content/services";
 import { cn } from "@/lib/utils";
 
 const ICONS: Record<string, LucideIcon> = {
@@ -23,16 +24,25 @@ const ICONS: Record<string, LucideIcon> = {
   "soluciones-de-ia": Brain,
 };
 
-export const metadata: Metadata = {
-  title: "Servicios",
-  description:
-    "Desarrollo web, aplicaciones a medida, sistemas empresariales y soluciones de IA. Catálogo completo de NEWEBD.",
-};
+type Props = { params: Promise<{ locale: string }> };
 
-export default function ServiciosPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "metadata.servicios" });
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
+
+export default async function ServiciosPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+  const t = await getTranslations("serviciosPage");
+  const services = getServices(locale);
+
   return (
     <>
-      {/* Hero pequeño */}
       <section className="relative overflow-hidden bg-background pt-36 pb-20 sm:pt-44 sm:pb-24">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute -top-32 left-1/2 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-brand-purple/25 blur-[160px]" />
@@ -42,7 +52,6 @@ export default function ServiciosPage() {
           className="absolute inset-0 -z-10 bg-grid opacity-25 [mask-image:radial-gradient(ellipse_at_top,black_15%,transparent_70%)]"
         />
 
-        {/* Isotipo decorativo — solo mobile */}
         <div
           aria-hidden
           className="pointer-events-none absolute -right-20 top-28 opacity-50 mix-blend-screen lg:hidden"
@@ -55,24 +64,22 @@ export default function ServiciosPage() {
             <div className="inline-flex items-center gap-2 rounded-full border border-border-strong bg-foreground/[0.04] px-4 py-1.5 backdrop-blur">
               <Sparkles size={13} className="text-brand-magenta" />
               <span className="text-xs font-medium tracking-wide uppercase text-foreground-muted">
-                Catálogo de servicios
+                {t("eyebrow")}
               </span>
             </div>
             <h1 className="mt-6 text-balance text-5xl font-semibold leading-[1.05] tracking-[-0.03em] text-foreground sm:text-6xl">
-              Lo que construimos para tu negocio.
+              {t("title")}
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted sm:text-xl">
-              Cuatro categorías que cubren desde el sitio web hasta los agentes
-              de IA dentro de tu operación. Cada proyecto es a medida.
+              {t("subtitle")}
             </p>
           </div>
 
-          {/* Mini nav anclas */}
           <nav
-            aria-label="Navegación de servicios"
+            aria-label="Services"
             className="mt-14 flex flex-wrap items-center justify-center gap-2"
           >
-            {SERVICES.map((s) => (
+            {services.map((s) => (
               <a
                 key={s.slug}
                 href={`#${s.slug}`}
@@ -88,8 +95,7 @@ export default function ServiciosPage() {
         </Container>
       </section>
 
-      {/* Una sección por categoría */}
-      {SERVICES.map((service, idx) => {
+      {services.map((service, idx) => {
         const Icon = ICONS[service.slug] ?? Code2;
         const isHero = !!service.isDifferentiator;
         const isEven = idx % 2 === 0;
@@ -126,7 +132,7 @@ export default function ServiciosPage() {
                     </span>
                     {isHero && (
                       <Badge variant="brand" className="ml-1">
-                        Diferenciador
+                        {t("differentiator")}
                       </Badge>
                     )}
                   </div>
@@ -142,7 +148,7 @@ export default function ServiciosPage() {
                   </p>
 
                   <Button href="/contacto" variant="secondary" className="mt-8">
-                    Cotiza este servicio
+                    {t("ctaService")}
                     <ArrowRight size={16} />
                   </Button>
                 </div>
@@ -166,7 +172,7 @@ export default function ServiciosPage() {
                             <span className="transition-transform group-open:rotate-90">
                               ›
                             </span>
-                            Entregables
+                            {t("deliverables")}
                           </summary>
                           <ul className="mt-3 grid grid-cols-1 gap-2 pl-4 sm:grid-cols-2">
                             {item.deliverables.map((d) => (

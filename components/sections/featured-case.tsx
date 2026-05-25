@@ -3,11 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
-import { FEATURED_CASE } from "@/lib/content/cases";
+import { getFeaturedCase } from "@/lib/content/cases";
 
 function Counter({
   value,
@@ -53,9 +53,10 @@ function Counter({
 
 export function FeaturedCase() {
   const t = useTranslations("sections.featuredCase");
+  const locale = useLocale();
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.25 });
-  const c = FEATURED_CASE;
+  const c = getFeaturedCase(locale);
 
   return (
     <section className="relative overflow-hidden bg-background py-24 sm:py-32">

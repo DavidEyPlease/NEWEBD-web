@@ -1,7 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import type { NextRequest } from "next/server";
 
-import { SYSTEM_PROMPT } from "@/lib/agent/system-prompt";
+import { getSystemPrompt } from "@/lib/agent/system-prompt";
 import { TOOLS } from "@/lib/agent/tools";
 import type {
   ChatMessage,
@@ -28,14 +28,14 @@ const MAX_TOKENS = 1500;
 export async function POST(req: NextRequest) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
 
-  let body: { messages: ChatMessage[]; sessionId: string };
+  let body: { messages: ChatMessage[]; sessionId: string; locale?: string };
   try {
     body = await req.json();
   } catch {
     return new Response("Invalid JSON", { status: 400 });
   }
 
-  const { messages: clientMessages, sessionId } = body;
+  const { messages: clientMessages, sessionId, locale = "es" } = body;
 
   if (!Array.isArray(clientMessages) || clientMessages.length === 0) {
     return new Response("Missing messages", { status: 400 });
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
 
   // Modo demo si no hay API key — útil para desarrollar la UI sin gastar tokens
   if (!apiKey) {
-    return streamDemoResponse();
+    return streamDemoResponse(locale);
   }
 
   const client = new Anthropic({ apiKey });
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
           system: [
             {
               type: "text",
-              text: SYSTEM_PROMPT,
+              text: getSystemPrompt(locale),
               cache_control: { type: "ephemeral" },
             },
           ],
@@ -104,6 +104,7 @@ export async function POST(req: NextRequest) {
                 sessionId,
                 clientMessages,
                 req,
+                locale,
               );
               send({
                 type: "lead_saved",
@@ -116,6 +117,7 @@ export async function POST(req: NextRequest) {
                 input,
                 sessionId,
                 clientMessages,
+                locale,
               );
               send({
                 type: "handoff_requested",
@@ -153,7 +155,22 @@ export async function POST(req: NextRequest) {
 /**
  * Modo demo: simula respuestas mientras no haya API key configurada.
  */
-function streamDemoResponse(): Response {
+const DEMO_TEXT: Record<string, string> = {
+  es: "Hola, soy NEWEBD AI (modo demo — sin API key conectada todavía). Cuando me conectes a Claude API, voy a poder conversar de verdad, calificar leads y guardar contactos.",
+  en: "Hi, I'm NEWEBD AI (demo mode — no API key connected yet). Once you connect me to the Claude API, I'll be able to actually chat, qualify leads and save contacts.",
+};
+
+const LEAD_SAVED_MESSAGE: Record<string, string> = {
+  es: "¡Listo! Guardé tu información. El equipo de NEWEBD te contacta directo en las próximas horas.",
+  en: "Done! I saved your info. The NEWEBD team will contact you directly in the next few hours.",
+};
+
+const HANDOFF_MESSAGE: Record<string, string> = {
+  es: "Listo, te paso con un humano del equipo. Te van a contactar lo antes posible.",
+  en: "Got it, passing you to a human on the team. They'll contact you as soon as possible.",
+};
+
+function streamDemoResponse(locale: string): Response {
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       const encoder = new TextEncoder();
@@ -161,8 +178,7 @@ function streamDemoResponse(): Response {
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(event)}\n\n`));
       };
 
-      const demoText =
-        "Hola, soy NEWEBD AI (modo demo — sin API key conectada todavía). Cuando me conectes a Claude API, voy a poder conversar de verdad, calificar leads y guardar contactos. Por mientras, esto es solo un placeholder visual para que veas cómo se siente el chat.";
+      const demoText = DEMO_TEXT[locale] ?? DEMO_TEXT.es;
 
       // Simular streaming carácter por carácter
       for (const char of demoText) {
@@ -188,6 +204,7 @@ async function persistLead(
   sessionId: string,
   conversation: ChatMessage[],
   req: NextRequest,
+  locale: string,
 ): Promise<{ ok: boolean; message: string }> {
   const supa = getSupabaseAdmin();
   if (!supa) {
@@ -232,8 +249,7 @@ async function persistLead(
 
   return {
     ok: true,
-    message:
-      "¡Listo! Guardé tu información. El equipo de NEWEBD te contacta directo en las próximas horas.",
+    message: LEAD_SAVED_MESSAGE[locale] ?? LEAD_SAVED_MESSAGE.es,
   };
 }
 
@@ -241,6 +257,7 @@ async function persistHandoff(
   input: HandoffInput,
   sessionId: string,
   conversation: ChatMessage[],
+  locale: string,
 ): Promise<{ ok: boolean; message: string }> {
   const supa = getSupabaseAdmin();
   if (!supa) {
@@ -263,7 +280,6 @@ async function persistHandoff(
 
   return {
     ok: true,
-    message:
-      "Listo, te paso con un humano del equipo. Te van a contactar lo antes posible.",
+    message: HANDOFF_MESSAGE[locale] ?? HANDOFF_MESSAGE.es,
   };
 }
