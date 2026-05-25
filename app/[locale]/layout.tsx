@@ -9,6 +9,7 @@ import "../globals.css";
 import { ChatWidget } from "@/components/chat/chat-widget";
 import { FooterConditional } from "@/components/layout/footer-conditional";
 import { Header } from "@/components/layout/header";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/json-ld";
 import { routing } from "@/i18n/routing";
 
 const poppins = Poppins({
@@ -90,6 +91,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       lang={locale}
       className={`${poppins.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <OrganizationJsonLd locale={locale} />
+        <WebSiteJsonLd locale={locale} />
+      </head>
       <body className="bg-background text-foreground min-h-full flex flex-col font-sans">
         <NextIntlClientProvider>
           <Header />

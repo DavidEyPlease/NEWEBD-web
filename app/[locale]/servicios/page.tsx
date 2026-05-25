@@ -11,6 +11,7 @@ import type { LucideIcon } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
 import { Isotipo } from "@/components/brand/isotipo";
+import { ServiceJsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -43,6 +44,9 @@ export default async function ServiciosPage({ params }: Props) {
 
   return (
     <>
+      {services.map((s) => (
+        <ServiceJsonLd key={s.slug} service={s} locale={locale} />
+      ))}
       <section className="relative overflow-hidden bg-background pt-36 pb-20 sm:pt-44 sm:pb-24">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute -top-32 left-1/2 h-[400px] w-[700px] -translate-x-1/2 rounded-full bg-brand-purple/25 blur-[160px]" />

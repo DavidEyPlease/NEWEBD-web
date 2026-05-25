@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, MapPin, Calendar } from "lucide-react";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 
+import { CaseStudyJsonLd } from "@/components/seo/json-ld";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -44,6 +45,7 @@ export default async function CaseDetailPage({ params }: { params: Params }) {
 
   return (
     <>
+      <CaseStudyJsonLd caseStudy={c} locale={locale} />
       <section className="relative overflow-hidden bg-background pt-32 pb-12 sm:pt-40 sm:pb-16">
         <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute -top-32 left-1/2 h-[360px] w-[720px] -translate-x-1/2 rounded-full bg-brand-purple/20 blur-[160px]" />
