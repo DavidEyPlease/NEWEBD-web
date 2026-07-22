@@ -75,10 +75,14 @@ const FASES = [
 ];
 
 const REUTILIZADO = [
-  { que: "Prototipo navegable de los 14 módulos", valor: "≈ $150 mil" },
-  { que: "Tu plataforma actual (accesos, cotizador, catálogos)", valor: "≈ $120 mil" },
-  { que: "Asistente IA diseñado y probado en el demo", valor: "≈ $60 mil" },
-  { que: "Sistema de diseño Vegemex (identidad aplicada)", valor: "≈ $40 mil" },
+  {
+    que: "Tu plataforma actual ya existe — accesos, cotizador y catálogos son tuyos. Los conectamos y extendemos; no los reconstruimos ni los volvemos a cobrar.",
+    valor: "te ahorra ≈ $120 mil",
+  },
+  {
+    que: "NEWEBD ya trabajó por adelantado — el diseño completo, el prototipo de los 14 módulos y el asistente IA de demostración (≈ $250 mil por separado) quedan cubiertos en la Fase 0, que además se acredita.",
+    valor: "lo cubre la Fase 0",
+  },
 ];
 
 const AHORROS = [
@@ -310,27 +314,42 @@ export default async function VegemexPage({ params }: Props) {
                   100% propio. Ambos con el asistente IA que ya viste en el demo.
                 </p>
               </div>
+              <div className="rounded-3xl border border-border bg-background/60 p-7">
+                <Badge>¿Y los $22 mil al mes?</Badge>
+                <p className="mt-3 text-sm text-foreground-muted">
+                  Es todo lo que el sistema necesita para vivir sano, en un pago fijo: los
+                  servidores donde vive tu información, respaldos diarios, alguien a quien
+                  llamar (con mejoras continuas) y el consumo de la IA.{" "}
+                  <span className="text-foreground">Para dimensionar:</span> un técnico de
+                  medio tiempo cuesta $25–40 mil al mes — sin servidores, sin respaldos y sin IA.
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Lo reutilizado — por qué el precio es el que es */}
+          {/* Por qué no pagas el precio completo */}
           <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-brand-cyan/25 bg-brand-cyan/[0.05] p-7">
             <h3 className="text-lg font-semibold">
-              Lo que ya está construido{" "}
-              <span className="text-gradient-brand">y no vuelves a pagar</span>
+              Por qué no pagas{" "}
+              <span className="text-gradient-brand">el precio completo</span>
             </h3>
-            <div className="mt-4 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+            <p className="mt-2 text-sm text-foreground-muted">
+              Un sistema así, construido desde cero, ronda los{" "}
+              <b className="text-foreground">$1.2–1.3 millones</b>. Tu inversión es menor por dos razones:
+            </p>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {REUTILIZADO.map((r) => (
-                <div key={r.que} className="flex items-baseline justify-between gap-3 border-b border-border/60 pb-2.5 text-sm">
-                  <span className="text-foreground-muted">{r.que}</span>
-                  <span className="shrink-0 font-semibold text-brand-cyan">{r.valor}</span>
+                <div key={r.valor} className="rounded-2xl border border-border/60 bg-background/40 p-4">
+                  <p className="text-sm font-semibold text-brand-cyan">{r.valor}</p>
+                  <p className="mt-1.5 text-sm text-foreground-muted">{r.que}</p>
                 </div>
               ))}
             </div>
             <p className="mt-4 text-sm text-foreground-muted">
-              <b className="text-foreground">≈ $370 mil MXN de trabajo ya resuelto</b> que el
-              proyecto aprovecha sin cobrarse de nuevo. Construido de cero, un sistema así
-              rondaría <b className="text-foreground">$1.2–1.3 millones</b>.
+              <b className="text-foreground">En corto:</b> lo que ya es tuyo se respeta, y el
+              trabajo adelantado te cuesta $70 mil que luego se descuentan. Resultado:{" "}
+              <b className="text-foreground">$840 mil en vez de $1.2–1.3 millones</b>, y 12
+              semanas en vez de 7 meses.
             </p>
           </div>
 
