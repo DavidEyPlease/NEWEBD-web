@@ -24,6 +24,11 @@ export const routing = defineRouting({
       es: "/contacto",
       en: "/contact",
     },
+    // Página de propuesta para cliente (no indexada, se comparte por liga)
+    "/vegemex": {
+      es: "/vegemex",
+      en: "/vegemex",
+    },
   },
 });
 
