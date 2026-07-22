@@ -64,6 +64,23 @@ const PASOS = [
   { sem: "Semana 12", titulo: "Arranque total", desc: "Migración final, capacitación del equipo y 60 días de soporte incluido." },
 ];
 
+const FASES = [
+  { f: "F0", sem: "Entregada ✓", titulo: "Diseño y prototipo", desc: "Ya está en tus manos — su valor se acredita al confirmar el proyecto.", precio: "$70,000", pct: 37, done: true },
+  { f: "F1", sem: "Sem 1–2", titulo: "Integración", desc: "API sobre tu backend, roles y migración inicial. Económica porque reutilizamos tu plataforma actual.", precio: "$90,000", pct: 47 },
+  { f: "F2", sem: "Sem 3–4", titulo: "Núcleo operativo", desc: "Embarques a producción + cosecha. Aquí se construye la tubería que todas las fases reaprovechan.", precio: "$180,000", pct: 95 },
+  { f: "F3", sem: "Sem 5–7", titulo: "Financiera + CFDI", desc: "La más alta — y debe serlo: timbrado, complementos de pago y pruebas exhaustivas contra el SAT.", precio: "$190,000", pct: 100 },
+  { f: "F4", sem: "Sem 8–9", titulo: "Cadena de frío", desc: "Fletes con tabulador, maquila e inventario, montados sobre la tubería ya construida.", precio: "$150,000", pct: 79 },
+  { f: "F5", sem: "Sem 10–11", titulo: "Calidad + IA", desc: "El asistente pasa de demo a producción: datos vivos, permisos, acciones y alertas.", precio: "$170,000", pct: 89 },
+  { f: "F6", sem: "Sem 12", titulo: "Arranque total", desc: "Migración final y capacitación. Económica: nuestra infraestructura ya existe.", precio: "$60,000", pct: 32 },
+];
+
+const REUTILIZADO = [
+  { que: "Prototipo navegable de los 14 módulos", valor: "≈ $150 mil" },
+  { que: "Tu plataforma actual (accesos, cotizador, catálogos)", valor: "≈ $120 mil" },
+  { que: "Asistente IA diseñado y probado en el demo", valor: "≈ $60 mil" },
+  { que: "Sistema de diseño Vegemex (identidad aplicada)", valor: "≈ $40 mil" },
+];
+
 const AHORROS = [
   {
     titulo: "Horas de captura recuperadas",
@@ -294,6 +311,76 @@ export default async function VegemexPage({ params }: Props) {
                 </p>
               </div>
             </div>
+          </div>
+
+          {/* Lo reutilizado — por qué el precio es el que es */}
+          <div className="mx-auto mt-10 max-w-4xl rounded-3xl border border-brand-cyan/25 bg-brand-cyan/[0.05] p-7">
+            <h3 className="text-lg font-semibold">
+              Lo que ya está construido{" "}
+              <span className="text-gradient-brand">y no vuelves a pagar</span>
+            </h3>
+            <div className="mt-4 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+              {REUTILIZADO.map((r) => (
+                <div key={r.que} className="flex items-baseline justify-between gap-3 border-b border-border/60 pb-2.5 text-sm">
+                  <span className="text-foreground-muted">{r.que}</span>
+                  <span className="shrink-0 font-semibold text-brand-cyan">{r.valor}</span>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-sm text-foreground-muted">
+              <b className="text-foreground">≈ $370 mil MXN de trabajo ya resuelto</b> que el
+              proyecto aprovecha sin cobrarse de nuevo. Construido de cero, un sistema así
+              rondaría <b className="text-foreground">$1.2–1.3 millones</b>.
+            </p>
+          </div>
+
+          {/* Desglose fase por fase */}
+          <div className="mx-auto mt-10 max-w-4xl">
+            <h3 className="text-center text-lg font-semibold">
+              ¿Dónde cuesta más y dónde menos?
+            </h3>
+            <p className="mx-auto mt-2 max-w-xl text-center text-sm text-foreground-muted">
+              Cada fase, con su porqué. Lo caro está donde debe estar: dinero fiscal,
+              la tubería de producción y la IA. Lo barato, donde reutilizamos.
+            </p>
+            <div className="mt-6 space-y-2.5">
+              {FASES.map((f) => (
+                <div
+                  key={f.f}
+                  className={
+                    f.done
+                      ? "rounded-2xl border border-brand-cyan/30 bg-brand-cyan/[0.05] p-4 sm:p-5"
+                      : "rounded-2xl border border-border bg-background/60 p-4 sm:p-5"
+                  }
+                >
+                  <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+                    <p className="text-sm font-semibold">
+                      <span className="mr-2 text-xs font-bold tracking-wide text-brand-cyan uppercase">
+                        {f.f} · {f.sem}
+                      </span>
+                      {f.titulo}
+                    </p>
+                    <p className="text-base font-extrabold tracking-tight tabular-nums">
+                      {f.precio}
+                      {f.done && (
+                        <span className="ml-2 text-xs font-semibold text-brand-cyan">se acredita</span>
+                      )}
+                    </p>
+                  </div>
+                  <div className="mt-2.5 h-1.5 overflow-hidden rounded-full bg-foreground/[0.07]">
+                    <div
+                      className={f.done ? "h-full rounded-full bg-brand-cyan/60" : "gradient-brand h-full rounded-full"}
+                      style={{ width: `${f.pct}%` }}
+                    />
+                  </div>
+                  <p className="mt-2 text-xs text-foreground-subtle">{f.desc}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-4 text-center text-sm text-foreground-muted">
+              Suma de fases <b className="text-foreground">$910,000</b> − crédito de Fase 0 ={" "}
+              <b className="text-gradient-brand">$840,000 MXN + IVA</b>
+            </p>
           </div>
         </Container>
       </section>
