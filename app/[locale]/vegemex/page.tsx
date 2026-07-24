@@ -379,19 +379,17 @@ export default async function VegemexPage({ params }: Props) {
                 </p>
               </div>
               <div className="rounded-3xl border border-border bg-background/60 p-7">
-                <Badge>Opcional · Correo con IA</Badge>
+                <Badge>Correo · recomendación en 2 pasos</Badge>
                 <p className="mt-3 text-sm text-foreground-muted">
-                  Tu correo @vegemex con la cara de Vegemex y el mismo asistente IA del
-                  demo. La única decisión: quién pone el motor por detrás.
+                  <b className="text-foreground">Paso 1 — Migrar a Microsoft o Google ($20 mil + mensualidad):</b>{" "}
+                  saca su correo del servidor blacklisteado, conserva las mismas direcciones y todos
+                  los correos. El spam se acaba porque salen desde IPs impecables. ~$80–140/buzón al mes.
                 </p>
                 <p className="mt-3 text-sm text-foreground-muted">
-                  <b className="text-foreground">Opción A (recomendada) — $60,000:</b> sobre
-                  Gmail/Outlook. Como rentar un local ya sólido y ponerle tu marca; se suma la
-                  renta de Google/Microsoft (~$150/buzón al mes). Más barato y confiable.
-                </p>
-                <p className="mt-2 text-sm text-foreground-muted">
-                  <b className="text-foreground">Opción B — $180,000:</b> correo 100% propio,
-                  sin depender de nadie, pero más caro de mantener. La IA es idéntica en ambas.
+                  <b className="text-foreground">Paso 2 (opcional) — Capa Vegemex IA ($65 mil):</b>{" "}
+                  el correo con su marca y un asistente que resume, redacta y —conectado a su sistema—
+                  hasta registra una cotización que llega por correo, con su aprobación. Se levanta
+                  cuando el sistema ya esté andando.
                 </p>
               </div>
               <div className="rounded-3xl border border-border bg-background/60 p-7">
