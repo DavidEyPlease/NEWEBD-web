@@ -383,13 +383,28 @@ export default async function VegemexPage({ params }: Props) {
                 <p className="mt-3 text-sm text-foreground-muted">
                   <b className="text-foreground">Paso 1 — Migrar a Microsoft o Google ($20 mil + mensualidad):</b>{" "}
                   saca su correo del servidor blacklisteado, conserva las mismas direcciones y todos
-                  los correos. El spam se acaba porque salen desde IPs impecables. ~$80–140/buzón al mes.
+                  los correos. El spam se acaba porque salen desde IPs impecables. Sus 17 buzones ≈ $1,400–2,400/mes en total (se paga a Microsoft/Google, y sustituye el servidor dedicado actual).
                 </p>
                 <p className="mt-3 text-sm text-foreground-muted">
                   <b className="text-foreground">Paso 2 (opcional) — Capa Vegemex IA ($65 mil):</b>{" "}
                   el correo con su marca y un asistente que resume, redacta y —conectado a su sistema—
                   hasta registra una cotización que llega por correo, con su aprobación. Se levanta
                   cuando el sistema ya esté andando.
+                </p>
+              </div>
+              <div className="rounded-3xl border border-brand-purple/30 bg-background/60 p-7">
+                <Badge variant="brand">WhatsApp IA · opcional</Badge>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold tracking-tight">$75,000</span>
+                  <span className="text-sm text-foreground-muted">MXN · una vez</span>
+                </div>
+                <p className="mt-3 text-sm text-foreground-muted">
+                  Sus proveedores y clientes viven en WhatsApp. Un número de negocio con un
+                  asistente conectado al sistema: su equipo consulta y captura en campo desde el
+                  celular, un proveedor manda un precio y{" "}
+                  <b className="text-foreground">la IA lo registra en el sistema con su aprobación</b>,
+                  y el sistema les avisa por WhatsApp lo que requiere atención. La misma inteligencia,
+                  en el canal que ya usan todos los días.
                 </p>
               </div>
               <div className="rounded-3xl border border-border bg-background/60 p-7">
@@ -402,6 +417,18 @@ export default async function VegemexPage({ params }: Props) {
                   medio tiempo cuesta $25–40 mil al mes — sin servidores, sin respaldos y sin IA.
                 </p>
               </div>
+            </div>
+          </div>
+
+          {/* Gran total con todo incluido */}
+          <div className="mx-auto mt-6 flex max-w-4xl flex-col items-start justify-between gap-3 rounded-3xl border border-brand-purple/30 bg-background/60 p-6 sm:flex-row sm:items-center">
+            <p className="text-sm text-foreground-muted">
+              <b className="text-foreground">Sumando todo</b> — sistema $840K + correo ($20K migración + $65K capa IA) +
+              WhatsApp $75K. El sistema va primero; correo y WhatsApp son opcionales y conservan su precio.
+            </p>
+            <div className="shrink-0 text-right">
+              <div className="text-2xl font-extrabold tracking-tight">$1,000,000</div>
+              <div className="text-xs text-foreground-muted">MXN + IVA · un solo pago, por avances</div>
             </div>
           </div>
 
