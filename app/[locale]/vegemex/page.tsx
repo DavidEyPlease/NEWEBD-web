@@ -85,26 +85,26 @@ const REUTILIZADO = [
   },
 ];
 
-const AHORROS = [
+const PERDIDAS = [
   {
-    titulo: "Horas de captura recuperadas",
-    monto: "$25–35 mil/mes",
-    desc: "Hoy tu equipo captura y consolida la misma información en varios archivos. El sistema lo hace una sola vez, en un solo lugar.",
+    titulo: "Horas de captura, al mes",
+    monto: "$25–35 mil",
+    desc: "Tu equipo captura la misma carga 3+ veces: en cargas, en fletes, en facturación. Ese tiempo cuesta — y no agrega nada.",
   },
   {
-    titulo: "Embarques rechazados evitados",
-    monto: "$150–250 mil c/u",
-    desc: "Una sola carga rechazada en destino cuesta más que dos fases del proyecto. La trazabilidad y las alertas de calidad reducen ese riesgo.",
+    titulo: "Por cada embarque rechazado",
+    monto: "$150–250 mil",
+    desc: "Un solo rechazo en destino, por un dato mal seguido, se lleva en un día lo que cuesta media fase del proyecto.",
   },
   {
-    titulo: "Fletes dentro de tabulador",
-    monto: "$3–8 mil/viaje",
-    desc: "El sistema alerta automáticamente cuando un flete cotizado excede tu precio máximo autorizado por ruta.",
+    titulo: "Por viaje, en fletes de más",
+    monto: "$3–8 mil",
+    desc: "Sin alerta automática, los fletes fuera de tu tabulador se pagan de más y se descubren semanas tarde, en la conciliación.",
   },
   {
-    titulo: "Cobranza y pagos a tiempo",
-    monto: "Flujo sano",
-    desc: "Facturas por vencer, complementos pendientes y liquidaciones en revisión — visibles antes de que sean problema.",
+    titulo: "Cobranza y pagos a destiempo",
+    monto: "Flujo",
+    desc: "Facturas por vencer y complementos pendientes que nadie ve a tiempo. El dinero que ya es tuyo, entrando tarde.",
   },
 ];
 
@@ -215,6 +215,79 @@ export default async function VegemexPage({ params }: Props) {
                 {d}
               </div>
             ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ===== Lo que pierden hoy ===== */}
+      <section className="py-20 sm:py-24">
+        <Container>
+          <div className="text-center">
+            <Badge>La fuga silenciosa</Badge>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+              Lo que tu operación <span className="text-gradient-brand">pierde hoy</span>, cada mes
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-foreground-muted">
+              Antes de hablar de lo que cuesta resolverlo, hablemos de lo que cuesta
+              no resolverlo. Números conservadores, de tu propia operación:
+            </p>
+          </div>
+
+          <div className="mt-12 grid gap-4 sm:grid-cols-2">
+            {PERDIDAS.map((p) => (
+              <div key={p.titulo} className="rounded-3xl border border-rose-500/25 bg-rose-500/[0.04] p-6">
+                <div className="text-3xl font-extrabold tracking-tight text-rose-400">{p.monto}</div>
+                <h3 className="mt-2 text-base font-semibold">{p.titulo}</h3>
+                <p className="mt-1.5 text-sm text-foreground-muted">{p.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mx-auto mt-8 max-w-2xl overflow-hidden rounded-3xl bg-gradient-to-br from-rose-500 to-red-600 p-7 text-center text-white shadow-[0_20px_50px_-24px_rgba(220,38,38,0.6)]">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] opacity-90">La cuenta conservadora, cada mes</p>
+            <p className="mt-1.5 text-4xl font-extrabold tracking-tight sm:text-5xl">$45–70 mil</p>
+            <p className="mx-auto mt-3 max-w-md text-sm opacity-95">
+              Es lo que tu operación paga hoy, en silencio, por seguir en Excel —{" "}
+              <b>y eso sin contar un solo embarque rechazado.</b> Más de medio millón de
+              pesos al año que se van sin que nadie los vea salir.
+            </p>
+          </div>
+        </Container>
+      </section>
+
+      {/* ===== ¿Contratar más gente? ===== */}
+      <section className="border-y border-border bg-foreground/[0.02] py-20 sm:py-24">
+        <Container size="narrow">
+          <div className="text-center">
+            <Badge>La salida que casi todos toman</Badge>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
+              ¿Y si la solución fuera <span className="text-gradient-brand">contratar más gente?</span>
+            </h2>
+            <p className="mx-auto mt-3 max-w-xl text-foreground-muted">
+              Es lo que casi toda empresa hace al crecer: contratar para tapar los
+              huecos. Alguien que capture, alguien que concilie, alguien que dé
+              seguimiento. Hagamos la cuenta:
+            </p>
+          </div>
+
+          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-8">
+            <div className="text-center">
+              <div className="text-3xl font-extrabold tracking-tight text-rose-400 sm:text-4xl">3–4 personas</div>
+              <div className="mt-1 text-sm text-foreground-muted">para capturar y conciliar</div>
+            </div>
+            <div className="text-2xl font-extrabold text-foreground-subtle">=</div>
+            <div className="text-center">
+              <div className="text-3xl font-extrabold tracking-tight text-rose-400 sm:text-4xl">$60–80 mil/mes</div>
+              <div className="mt-1 text-sm text-foreground-muted">$720–960 mil al año · cada año</div>
+            </div>
+          </div>
+
+          <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-brand-cyan/30 bg-brand-cyan/[0.06] p-6 text-center text-foreground-muted">
+            Ese presupuesto de <b className="text-foreground">un solo año</b> paga el sistema
+            completo. La diferencia: el sistema{" "}
+            <b className="text-foreground">no renuncia, no se enferma, no pide aguinaldo y trabaja 24/7</b> —
+            y tu gente actual deja de capturar para dedicarse a lo que sí importa.{" "}
+            <b className="text-foreground">Es una herramienta que hace el trabajo de un equipo, y se paga una sola vez.</b>
           </div>
         </Container>
       </section>
@@ -401,39 +474,33 @@ export default async function VegemexPage({ params }: Props) {
               <b className="text-gradient-brand">$840,000 MXN + IVA</b>
             </p>
           </div>
-        </Container>
-      </section>
 
-      {/* ===== Lo que se ahorran ===== */}
-      <section className="py-20 sm:py-24">
-        <Container>
-          <div className="text-center">
-            <Badge>El retorno</Badge>
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-              Lo que el sistema <span className="text-gradient-brand">te devuelve</span>
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-foreground-muted">
-              Estimaciones conservadoras a partir de tu propia operación — las
-              afinamos juntos en la junta:
-            </p>
-          </div>
-
-          <div className="mt-12 grid gap-4 sm:grid-cols-2">
-            {AHORROS.map((a) => (
-              <div key={a.titulo} className="rounded-3xl border border-border bg-foreground/[0.03] p-6">
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="text-base font-semibold">{a.titulo}</h3>
-                  <span className="text-gradient-brand shrink-0 text-lg font-extrabold">{a.monto}</span>
-                </div>
-                <p className="mt-2 text-sm text-foreground-muted">{a.desc}</p>
+          {/* Se paga solo — atado a las pérdidas */}
+          <div className="mx-auto mt-10 max-w-3xl rounded-3xl border border-brand-cyan/30 bg-brand-cyan/[0.06] p-7">
+            <h3 className="text-center text-lg font-semibold">
+              El sistema se paga con <span className="text-gradient-brand">lo que ya estás perdiendo</span>
+            </h3>
+            <div className="mx-auto mt-5 max-w-lg divide-y divide-border text-sm">
+              <div className="flex items-baseline justify-between gap-3 py-2.5">
+                <span className="text-foreground-muted">Lo que pierdes hoy, cada mes</span>
+                <b className="text-rose-400">$45–70 mil</b>
               </div>
-            ))}
-          </div>
-
-          <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-brand-cyan/30 bg-brand-cyan/[0.06] p-5 text-center text-sm text-foreground-muted">
-            Con ahorros conservadores de <b className="text-foreground">$45–70 mil MXN al mes</b> —
-            sin contar un solo embarque rechazado evitado — el sistema{" "}
-            <b className="text-foreground">se paga solo en 12–18 meses</b>. Todo lo demás es ganancia operativa.
+              <div className="flex items-baseline justify-between gap-3 py-2.5">
+                <span className="text-foreground-muted">3–4 personas nuevas, cada mes</span>
+                <b className="text-rose-400">$60–80 mil</b>
+              </div>
+              <div className="flex items-baseline justify-between gap-3 py-2.5">
+                <span className="text-foreground-muted">Mensualidad del sistema, todo incluido</span>
+                <b className="text-foreground">$22 mil</b>
+              </div>
+            </div>
+            <p className="mx-auto mt-5 max-w-xl text-center text-sm text-foreground-muted">
+              La mensualidad de <b className="text-foreground">$22 mil</b> es menos de lo que
+              pierdes en <b className="text-foreground">una sola semana</b>. Y el sistema completo
+              cuesta menos de lo que se te fuga en <b className="text-foreground">año y medio</b> —
+              o un año de los sueldos que pagarías para resolverlo a mano. Con una diferencia:
+              esto se paga <b className="text-foreground">una vez</b>, y no renuncia.
+            </p>
           </div>
         </Container>
       </section>
