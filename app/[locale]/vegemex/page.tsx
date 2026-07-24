@@ -407,6 +407,20 @@ export default async function VegemexPage({ params }: Props) {
                   en el canal que ya usan todos los días.
                 </p>
               </div>
+              <div className="rounded-3xl border border-brand-purple/30 bg-background/60 p-7">
+                <Badge variant="brand">Chat interno IA · opcional</Badge>
+                <div className="mt-3 flex items-baseline gap-2">
+                  <span className="text-2xl font-extrabold tracking-tight">$90,000</span>
+                  <span className="text-sm text-foreground-muted">MXN · una vez</span>
+                </div>
+                <p className="mt-3 text-sm text-foreground-muted">
+                  Un chat de equipo <b className="text-foreground">dentro del portal</b>, sin depender
+                  de WhatsApp: todos hablan por canales, todo queda guardado con nombre y hora, y la IA
+                  lee, registra y marca pendientes al vuelo. Alguien escribe “llegó la carga de apio” y{" "}
+                  <b className="text-foreground">la IA actualiza el embarque en el sistema</b>. El
+                  conocimiento del equipo deja de vivir en cabezas y chats sueltos.
+                </p>
+              </div>
               <div className="rounded-3xl border border-border bg-background/60 p-7">
                 <Badge>¿Y los $22 mil al mes?</Badge>
                 <p className="mt-3 text-sm text-foreground-muted">
@@ -424,10 +438,11 @@ export default async function VegemexPage({ params }: Props) {
           <div className="mx-auto mt-6 flex max-w-4xl flex-col items-start justify-between gap-3 rounded-3xl border border-brand-purple/30 bg-background/60 p-6 sm:flex-row sm:items-center">
             <p className="text-sm text-foreground-muted">
               <b className="text-foreground">Sumando todo</b> — sistema $840K + correo ($20K migración + $65K capa IA) +
-              WhatsApp $75K. El sistema va primero; correo y WhatsApp son opcionales y conservan su precio.
+              WhatsApp $75K + chat interno $90K. El sistema va primero; correo, WhatsApp y chat interno son
+              opcionales y conservan su precio.
             </p>
             <div className="shrink-0 text-right">
-              <div className="text-2xl font-extrabold tracking-tight">$1,000,000</div>
+              <div className="text-2xl font-extrabold tracking-tight">$1,090,000</div>
               <div className="text-xs text-foreground-muted">MXN + IVA · un solo pago, por avances</div>
             </div>
           </div>
