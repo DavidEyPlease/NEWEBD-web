@@ -379,12 +379,19 @@ export default async function VegemexPage({ params }: Props) {
                 </p>
               </div>
               <div className="rounded-3xl border border-border bg-background/60 p-7">
-                <Badge>Opcional · Correo @vegemex</Badge>
+                <Badge>Opcional · Correo con IA</Badge>
                 <p className="mt-3 text-sm text-foreground-muted">
-                  <span className="font-semibold text-foreground">$60,000</span> con buzón
-                  administrado (recomendado) o{" "}
-                  <span className="font-semibold text-foreground">$180,000</span> con webmail
-                  100% propio. Ambos con el asistente IA que ya viste en el demo.
+                  Tu correo @vegemex con la cara de Vegemex y el mismo asistente IA del
+                  demo. La única decisión: quién pone el motor por detrás.
+                </p>
+                <p className="mt-3 text-sm text-foreground-muted">
+                  <b className="text-foreground">Opción A (recomendada) — $60,000:</b> sobre
+                  Gmail/Outlook. Como rentar un local ya sólido y ponerle tu marca; se suma la
+                  renta de Google/Microsoft (~$150/buzón al mes). Más barato y confiable.
+                </p>
+                <p className="mt-2 text-sm text-foreground-muted">
+                  <b className="text-foreground">Opción B — $180,000:</b> correo 100% propio,
+                  sin depender de nadie, pero más caro de mantener. La IA es idéntica en ambas.
                 </p>
               </div>
               <div className="rounded-3xl border border-border bg-background/60 p-7">
