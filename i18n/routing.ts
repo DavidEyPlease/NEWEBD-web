@@ -24,10 +24,15 @@ export const routing = defineRouting({
       es: "/contacto",
       en: "/contact",
     },
-    // Página de propuesta para cliente (no indexada, se comparte por liga)
+    // Página del proyecto Vegemex (no indexada, se comparte por liga)
     "/vegemex": {
       es: "/vegemex",
       en: "/vegemex",
+    },
+    // Cotización/propuesta original, preservada como sub-ruta
+    "/vegemex/cotizacion": {
+      es: "/vegemex/cotizacion",
+      en: "/vegemex/cotizacion",
     },
   },
 });
