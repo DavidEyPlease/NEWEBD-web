@@ -437,13 +437,13 @@ export default async function VegemexPage({ params }: Props) {
           {/* Gran total con todo incluido */}
           <div className="mx-auto mt-6 flex max-w-4xl flex-col items-start justify-between gap-3 rounded-3xl border border-brand-purple/30 bg-background/60 p-6 sm:flex-row sm:items-center">
             <p className="text-sm text-foreground-muted">
-              <b className="text-foreground">Sumando todo</b> — sistema $840K + correo ($20K migración + $65K capa IA) +
-              WhatsApp $75K + chat interno $90K. El sistema va primero; correo, WhatsApp y chat interno son
-              opcionales y conservan su precio.
+              <b className="text-foreground">Lo que quedó contratado</b> — sistema $840K + correo ($20K migración +
+              $65K capa IA) + chat interno $90K, y el monitoreo de empleados de cortesía.{" "}
+              <b className="text-foreground">WhatsApp IA ($75K) no se incluyó</b> — queda disponible a futuro.
             </p>
             <div className="shrink-0 text-right">
-              <div className="text-2xl font-extrabold tracking-tight">$1,090,000</div>
-              <div className="text-xs text-foreground-muted">MXN + IVA · un solo pago, por avances</div>
+              <div className="text-2xl font-extrabold tracking-tight">$1,015,000</div>
+              <div className="text-xs text-foreground-muted">MXN + IVA · o 24 mensualidades de $49,058.33</div>
             </div>
           </div>
 

@@ -168,14 +168,15 @@ const HTML = `
 <div class="wrap">
 
   <section class="hero">
-    <span class="eyebrow"><span class="dot"></span> Integración entregada · Julio 2026</span>
+    <span class="eyebrow"><span class="dot"></span> Integración entregada · actualizado agosto 2026</span>
     <h1>Tu operación real, ya <span class="g">viva dentro del portal.</span></h1>
     <p class="lede">Partimos de una propuesta. Luego leímos tus Excel, entendimos toda la cadena de exportación y la <strong>ejecutamos directamente</strong> en el sistema. Ya no es una demo: son <strong>tres temporadas de tu operación</strong> —cargadas, verificadas en vivo y listas para que el equipo las use hoy.</p>
     <div class="cta-row">
       <a class="btn btn-primary" href="https://panel.vegemex.com.mx" target="_blank" rel="noopener">Abrir el portal
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-      <a class="btn btn-ghost" href="#ejecutamos">Ver qué integramos</a>
+      <a class="btn btn-ghost" href="#entregas">Ver lo más reciente</a>
+      <a class="btn btn-ghost" href="/vegemex/cotizacion">Ver la cotización</a>
     </div>
     <div class="hero-chips">
       <span class="chip"><span class="tick">✓</span> En producción en panel.vegemex.com.mx</span>
@@ -320,15 +321,84 @@ const HTML = `
     </div>
   </section>
 
+
+  <section class="sec" id="entregas">
+    <p class="kicker">Lo más reciente · agosto 2026</p>
+    <h2>Lo que entregamos después de la carga.</h2>
+    <p class="sec-lede">Con tu operación ya dentro, seguimos construyendo sobre ella. Esto es lo que se sumó al portal en las últimas semanas — todo en vivo.</p>
+    <div class="mods">
+      <div class="mod reveal">
+        <span class="badge">Nuevo</span>
+        <h3>Torre de control</h3>
+        <span class="route">/dashboard</span>
+        <p>El tablero de inicio ahora gira alrededor del programa de cargas: qué se mueve hoy, qué expediente está incompleto, qué llega tarde y el retorno real de la temporada — todo en vivo, sin abrir un módulo.</p>
+        <span class="pdf">◆ Alertas de lo que requiere tu atención</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Nuevo</span>
+        <h3>Roles y permisos por área</h3>
+        <span class="route">/permisos</span>
+        <p>Cada persona entra solo a lo suyo. Dirección y administración ven todo y deciden, con interruptores, qué área toca a cada rol operativo — con excepciones por persona cuando hace falta.</p>
+        <span class="pdf">◆ Finanzas y expedientes legales, protegidos</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Nuevo</span>
+        <h3>Expediente de la carga</h3>
+        <span class="route">/embarques</span>
+        <p>La carga es el centro de todo: una línea de tiempo de siembra a entrega, el porcentaje de llenado del expediente y los días que faltan para entregar. Lo que falta se llena ahí mismo.</p>
+        <span class="pdf">◆ Cosecha, manifiestos y costeo en un solo lugar</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Unificado</span>
+        <h3>Materiales, inventario y compras</h3>
+        <span class="route">/materiales</span>
+        <p>Un solo lugar: existencias, movimientos y órdenes de compra. La orden de compra entra sola al inventario y la carga descuenta sola lo que consume.</p>
+        <span class="pdf">◆ Automático de punta a punta</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Ampliado</span>
+        <h3>Manifiestos, los cuatro tipos</h3>
+        <span class="route">Desde el expediente</span>
+        <p>Maquila, proveedor, cliente y embarque. Se crean desde la carga, se rellenan solos con lo que ya capturaste y heredan supervisores y transporte del manifiesto hermano.</p>
+        <span class="pdf">◆ PDF con el formato oficial de cada tipo</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Nuevo</span>
+        <h3>Área jurídica con firma digital</h3>
+        <span class="route">/contratos</span>
+        <p>Contratos por agricultor con sus anexos reales —calidad, programa de cargas y plan de pagos— y firma por liga: el agricultor firma desde su celular y queda registrada.</p>
+        <span class="pdf">◆ Expediente de documentos por proveedor</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="kicker">La propuesta</p>
+    <h2>La cotización, siempre a la mano.</h2>
+    <p class="sec-lede">El acuerdo completo: alcance, fases, inversión y el despliegue de pagos a 24 meses.</p>
+    <div class="cta-row" style="margin-top:6px;">
+      <a class="btn btn-primary" href="/vegemex/cotizacion">Ver la cotización completa
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a class="btn btn-ghost" href="/vegemex/Cotizacion-NEWEBD-Vegemex.pdf" target="_blank" rel="noopener">Descargar en PDF</a>
+    </div>
+    <div class="hero-chips" style="margin-top:16px;">
+      <span class="chip"><span class="tick">✓</span> Inversión acordada · $1,015,000 MXN + IVA</span>
+      <span class="chip"><span class="tick">✓</span> 24 mensualidades de $49,058.33 con IVA</span>
+      <span class="chip"><span class="tick">✓</span> Sin intereses ni costo financiero</span>
+    </div>
+  </section>
+
   <section class="sec">
     <p class="kicker">Lo que sigue (opcional)</p>
     <h2>Sobre esta base, los próximos pasos.</h2>
     <p class="sec-lede">La operación ya está adentro. Lo demás es enriquecerla cuando lo decidas.</p>
     <div class="road">
       <span class="rd reveal"><span class="d"></span>Activar el asistente de IA del portal</span>
+      <span class="rd reveal"><span class="d"></span>Correo automático de recordatorio para firmar contratos</span>
       <span class="rd reveal"><span class="d"></span>Notas de remisión y evidencias de temperatura</span>
-      <span class="rd reveal"><span class="d"></span>Enriquecer clientes con contactos y contratos</span>
-      <span class="rd reveal"><span class="d"></span>Pulido cosmético de acentos en 1–2 nombres</span>
+      <span class="rd reveal"><span class="d"></span>Enriquecer clientes con contactos y datos fiscales</span>
+      <span class="rd reveal"><span class="d"></span>WhatsApp IA — disponible cuando lo decidan</span>
     </div>
   </section>
 
@@ -347,7 +417,7 @@ const HTML = `
         </div>
       </div>
     </div>
-    <p class="cotz">¿Buscas la propuesta original? <a href="/vegemex/cotizacion">Ver la cotización completa →</a></p>
+    <p class="cotz">¿Buscas la propuesta? <a href="/vegemex/cotizacion">Ver la cotización completa →</a> · <a href="/vegemex/Cotizacion-NEWEBD-Vegemex.pdf" target="_blank" rel="noopener">Descargar PDF →</a></p>
   </section>
 
 </div>
