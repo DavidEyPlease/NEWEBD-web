@@ -121,6 +121,20 @@ const CSS = `
 .vgm .val h4{font-family:var(--fd); font-weight:600; font-size:1rem; margin:0 0 4px;}
 .vgm .val p{margin:0; color:var(--muted); font-size:.9rem; line-height:1.5;}
 
+.vgm .chk{display:grid; gap:10px;}
+.vgm .ck{display:flex; gap:14px; align-items:flex-start; background:var(--surface); border:1px solid var(--border); border-radius:13px; padding:16px 18px; transition:.2s;}
+.vgm .ck:hover{border-color:var(--ring);}
+.vgm .ck .box{flex:none; width:20px; height:20px; margin-top:2px; border-radius:6px; border:1.5px solid var(--border-strong); display:flex; align-items:center; justify-content:center; color:var(--c2); font-size:11px;}
+.vgm .ck .txt{min-width:0;}
+.vgm .ck h4{font-family:var(--fd); font-weight:600; font-size:1rem; margin:0 0 3px; display:flex; flex-wrap:wrap; align-items:baseline; gap:9px;}
+.vgm .ck .rt{font-family:var(--fm); font-size:11.5px; color:var(--c3); font-weight:400;}
+.vgm .ck p{margin:0; color:var(--muted); font-size:.91rem; line-height:1.55;}
+.vgm .need{display:grid; gap:11px; margin-top:6px;}
+.vgm .nd{display:flex; gap:14px; align-items:flex-start; border:1px solid var(--border); border-left:3px solid var(--warn); border-radius:12px; padding:16px 18px; background:var(--bg-2);}
+.vgm .nd h4{font-family:var(--fd); font-weight:600; font-size:.99rem; margin:0 0 3px;}
+.vgm .nd p{margin:0; color:var(--muted); font-size:.9rem; line-height:1.55;}
+.vgm .nd .num{flex:none; font-family:var(--fm); font-size:12px; font-weight:700; color:var(--warn); width:22px;}
+
 .vgm .road{display:flex; flex-wrap:wrap; gap:12px;}
 .vgm .rd{border:1px dashed var(--border-strong); border-radius:12px; padding:13px 17px; background:var(--bg-2); font-size:.92rem; color:var(--muted); display:flex; align-items:center; gap:10px;}
 .vgm .rd .d{width:8px; height:8px; border-radius:50%; background:var(--warn); flex:none;}
@@ -176,6 +190,7 @@ const HTML = `
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
       <a class="btn btn-ghost" href="#entregas">Ver lo más reciente</a>
+      <a class="btn btn-ghost" href="#revision">Lo que hay que revisar</a>
       <a class="btn btn-ghost" href="/vegemex/cotizacion">Ver la cotización</a>
     </div>
     <div class="hero-chips">
@@ -369,6 +384,101 @@ const HTML = `
         <p>Contratos por agricultor con sus anexos reales —calidad, programa de cargas y plan de pagos— y firma por liga: el agricultor firma desde su celular y queda registrada.</p>
         <span class="pdf">◆ Expediente de documentos por proveedor</span>
       </div>
+      <div class="mod reveal">
+        <span class="badge">Ampliado</span>
+        <h3>El expediente, completo</h3>
+        <span class="route">/embarques → abrir una carga</span>
+        <p>Servicio de empaque, costo del flete con su tabulador, aduana de cruce y los dos despachos, carga consolidada de varios productos, y la cita en destino con los días de retraso que se recalculan solos.</p>
+        <span class="pdf">◆ Inocuidad del agricultor, dentro de la carga</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Ampliado</span>
+        <h3>Concentrado de gastos</h3>
+        <span class="route">Expediente → flujo de dinero</span>
+        <p>Los 18 conceptos de sus hojas de costeo, editables, más el pago al agricultor. Suma todo, calcula el retorno y les dice qué concepto falta capturar.</p>
+        <span class="pdf">◆ Avisa cuando el retorno guardado no cuadra</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Fiel al formato</span>
+        <h3>Manifiestos con su machote real</h3>
+        <span class="route">Expediente → manifiestos</span>
+        <p>La orden de salida de empaque con sus dos listas de verificación y sus tablas de entrada y desglose; el manifiesto de embarque con origen, cliente, factura, registro FDA, sello, termógrafo y los dos despachos aduanales.</p>
+        <span class="pdf">◆ Cada documento dice para qué sirve</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Nuevo</span>
+        <h3>Termógrafos Copeland</h3>
+        <span class="route">Expediente → ruta y traslado</span>
+        <p>El número GO del termógrafo vive en la carga. Desde ahí se abre el rastreo del portal de Copeland y el sistema arma los datos del envío listos para pegar: el folio de la carga ya es el nombre del viaje.</p>
+        <span class="pdf">◆ Falta que Copeland comparta su API</span>
+      </div>
+      <div class="mod reveal">
+        <span class="badge">Nuevo</span>
+        <h3>Programa de cosecha en tres capas</h3>
+        <span class="route">/cosecha</span>
+        <p>Lo comprometido con el cliente por producto y mes; quién surte cada semana con el semáforo contra las cargas reales; y la postura completa de campo, de la semilla al lote.</p>
+        <span class="pdf">◆ Las fechas se calculan con la ficha del cultivo</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="revision">
+    <p class="kicker">Para su equipo</p>
+    <h2>Lo que necesitamos que revisen.</h2>
+    <p class="sec-lede">Todo lo de arriba ya está en línea y verificado técnicamente. Lo que falta es el visto bueno de quien lo usa todos los días. Esta es la lista, en el orden en que conviene recorrerla.</p>
+    <div class="chk">
+      <div class="ck reveal"><span class="box">1</span><div class="txt">
+        <h4>Los nombres <span class="rt">todo el portal</span></h4>
+        <p>Maquila ahora se lee <strong>Empaque</strong> en todas partes, y a la empresa le pusimos <strong>empacadora</strong>. «Flete y transporte» quedó como <strong>Flete</strong> y «fletero» como <strong>proveedor</strong>. Si prefieren otra palabra, se cambia en minutos.</p>
+      </div></div>
+      <div class="ck reveal"><span class="box">2</span><div class="txt">
+        <h4>El expediente de una carga <span class="rt">/embarques → abrir cualquiera</span></h4>
+        <p>Recorran los grupos: empaque, flete, cliente y destino, fechas, flujo de dinero, ruta, manifiestos e inocuidad. ¿Falta algún campo que usan a diario? ¿Sobra alguno?</p>
+      </div></div>
+      <div class="ck reveal"><span class="box">3</span><div class="txt">
+        <h4>Los cuatro manifiestos y sus PDF <span class="rt">expediente → manifiestos</span></h4>
+        <p>Generen uno de cada tipo y compárenlo contra su formato en papel. Los de <strong>empaque</strong> y <strong>embarque</strong> los hicimos con sus machotes reales; los de <strong>proveedor</strong> y <strong>cliente</strong> todavía no.</p>
+      </div></div>
+      <div class="ck reveal"><span class="box">4</span><div class="txt">
+        <h4>El concentrado de gastos <span class="rt">expediente → flujo de dinero</span></h4>
+        <p>Abran una carga con costeo y revisen si los 18 conceptos son los correctos. <strong>Ojo aquí:</strong> el retorno guardado no cuadra en 131 de 246 cargas porque el pago al agricultor viene capturado por caja, no completo. El sistema lo señala y ofrece el cálculo, pero no pisa su cifra sin que ustedes lo decidan.</p>
+      </div></div>
+      <div class="ck reveal"><span class="box">5</span><div class="txt">
+        <h4>El porcentaje del expediente <span class="rt">/embarques y torre de control</span></h4>
+        <p>Bajó a 44 % en promedio a propósito: ahora exige cuatro datos nuevos (servicio de empaque, costo de flete, aduana y agente aduanal). No es que se haya perdido información — es que ahora mide lo que de verdad falta.</p>
+      </div></div>
+      <div class="ck reveal"><span class="box">6</span><div class="txt">
+        <h4>El programa de cosecha <span class="rt">/cosecha</span></h4>
+        <p>Tres pestañas nuevas. Revisen si la rejilla del compromiso refleja cómo lo manejan, si el semáforo semanal les sirve, y si la ficha del cultivo de la iceberg quedó bien cargada.</p>
+      </div></div>
+      <div class="ck reveal"><span class="box">7</span><div class="txt">
+        <h4>La contraseña de Copeland <span class="rt">acción de seguridad</span></h4>
+        <p>El documento interno de termógrafos trae usuario y contraseña en texto plano y circula por correo. <strong>Recomendamos cambiarla</strong> y capturarla en el portal, donde queda protegida y nadie la ve completa.</p>
+      </div></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <p class="kicker">Lo que falta</p>
+    <h2>Depende de ustedes, no de nosotros.</h2>
+    <p class="sec-lede">Cuatro cosas están detenidas esperando información que solo Vegemex tiene. En cuanto llegue, se construyen.</p>
+    <div class="need">
+      <div class="nd reveal"><span class="num">01</span><div>
+        <h4>La API de Copeland</h4>
+        <p>Para que la temperatura y la posición se vean dentro del expediente hace falta que Copeland comparta su documentación: cómo autentica y cuál es el endpoint de lecturas por número GO. El conector ya está escrito esperándola.</p>
+      </div></div>
+      <div class="nd reveal"><span class="num">02</span><div>
+        <h4>Los machotes de manifiesto de proveedor y de cliente</h4>
+        <p>Con los de empaque y embarque quedaron idénticos a su formato. Faltan esos dos ejemplos reales para dejarlos igual de fieles.</p>
+      </div></div>
+      <div class="nd reveal"><span class="num">03</span><div>
+        <h4>Los programas de siembra de los otros seis cultivos</h4>
+        <p>Tenemos el de lechuga iceberg. Con los de apio, brócoli, coliflor, romaine, green leaf y red leaf se carga la temporada completa y cada cultivo tiene su ficha.</p>
+      </div></div>
+      <div class="nd reveal"><span class="num">04</span><div>
+        <h4>Su visto bueno de la lista de arriba</h4>
+        <p>Sobre esa revisión salen los ajustes finos. Nada de lo entregado se toca sin que ustedes lo pidan.</p>
+      </div></div>
     </div>
   </section>
 
@@ -396,8 +506,9 @@ const HTML = `
     <div class="road">
       <span class="rd reveal"><span class="d"></span>Activar el asistente de IA del portal</span>
       <span class="rd reveal"><span class="d"></span>Correo automático de recordatorio para firmar contratos</span>
-      <span class="rd reveal"><span class="d"></span>Notas de remisión y evidencias de temperatura</span>
+      <span class="rd reveal"><span class="d"></span>Alertas del programa de cosecha en la torre de control</span>
       <span class="rd reveal"><span class="d"></span>Enriquecer clientes con contactos y datos fiscales</span>
+      <span class="rd reveal"><span class="d"></span>Notas de remisión y evidencias de temperatura</span>
       <span class="rd reveal"><span class="d"></span>WhatsApp IA — disponible cuando lo decidan</span>
     </div>
   </section>
