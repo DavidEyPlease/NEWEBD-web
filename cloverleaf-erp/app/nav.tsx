@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { ThemeToggle } from "./theme";
 
-const GROUPS: { label: string; items: { href: string; icon: string; text: string }[] }[] = [
+const GROUPS: { label: string; items: { href: string; icon: string; text: string; exact?: boolean }[] }[] = [
   {
     label: "Overview",
     items: [{ href: "/", icon: "◧", text: "Dashboard" }],
@@ -45,7 +45,11 @@ const GROUPS: { label: string; items: { href: string; icon: string; text: string
   },
   {
     label: "Website",
-    items: [{ href: "/website/", icon: "▣", text: "Site Feedback" }],
+    items: [
+      // exact: si no, "/website/" tambien se marcaria activo dentro de /website/team/
+      { href: "/website/", icon: "▣", text: "Site Feedback", exact: true },
+      { href: "/website/team/", icon: "☺", text: "Our Team" },
+    ],
   },
 ];
 
@@ -64,9 +68,13 @@ export function Nav() {
           <div key={g.label}>
             <div className="grp">{g.label}</div>
             {g.items.map((it) => {
-              // El dashboard solo se marca activo en la raíz exacta; el resto,
-              // también en sus subpáginas (p. ej. el detalle de una auditoría).
-              const active = it.href === "/" ? pathname === "/" : pathname.startsWith(it.href);
+              // Las rutas marcadas exact (y la raíz) solo se activan en su propia
+              // página; el resto también en sus subpáginas, como el detalle de
+              // una auditoría.
+              const active =
+                it.exact || it.href === "/"
+                  ? pathname === it.href
+                  : pathname.startsWith(it.href);
               return (
                 <Link key={it.href} href={it.href} className={active ? "item on" : "item"}>
                   <span className="ic">{it.icon}</span>
@@ -97,7 +105,8 @@ export function MobileNav() {
   return (
     <nav className="mobnav">
       {items.map((it) => {
-        const active = it.href === "/" ? pathname === "/" : pathname.startsWith(it.href);
+        const active =
+          it.exact || it.href === "/" ? pathname === it.href : pathname.startsWith(it.href);
         return (
           <Link key={it.href} href={it.href} className={active ? "mitem on" : "mitem"}>
             {it.text}
