@@ -36,6 +36,14 @@ const GROUPS: { label: string; items: { href: string; icon: string; text: string
     items: [{ href: "/auditors/", icon: "☗", text: "Auditor Competence" }],
   },
   {
+    label: "Team",
+    items: [
+      { href: "/directory/", icon: "☰", text: "Directory" },
+      { href: "/roles/", icon: "⚿", text: "Roles & Access" },
+      { href: "/team/", icon: "◐", text: "Workload" },
+    ],
+  },
+  {
     label: "Website",
     items: [{ href: "/website/", icon: "▣", text: "Site Feedback" }],
   },
