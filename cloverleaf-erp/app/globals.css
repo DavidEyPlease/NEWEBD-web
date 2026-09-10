@@ -531,15 +531,6 @@ table.matrix tbody td:first-child::before{display:none;}
 }
 
 /* ------------------------------------------------- Gestor de Our Team */
-/* Aviso de procedencia: el contenido es recuperado, no vivo. */
-.recov{
-  display:flex; gap:13px; padding:15px 17px; border-radius:var(--r);
-  background:linear-gradient(90deg,rgba(184,152,71,.14),rgba(92,155,106,.05));
-  border:1px solid rgba(184,152,71,.32);
-}
-.recov strong{font-size:13px; display:block;}
-.recov p{margin:6px 0 0; font-size:12.5px; color:var(--muted); line-height:1.55; max-width:88ch;}
-
 .tmlist{display:flex; flex-direction:column; gap:9px;}
 .tmrow{
   display:flex; align-items:center; gap:12px; padding:10px 11px;
@@ -549,14 +540,26 @@ table.matrix tbody td:first-child::before{display:none;}
 .tmrow:hover{border-color:var(--line-hi); transform:translateY(-1px);}
 .tmrow.on{border-color:var(--gold); box-shadow:0 0 0 3px rgba(184,152,71,.13);}
 
-.tmord{display:flex; flex-direction:column; align-items:center; gap:1px; flex:none; width:20px;}
-.tmord span{font-size:11px; color:var(--faint); font-variant-numeric:tabular-nums;}
-.tmord button{
-  border:0; background:none; color:var(--faint); font-size:8px; cursor:pointer;
-  padding:1px; line-height:1; transition:color .15s;
+/* Asa de arrastre: es lo único que inicia el reordenado, así que hacer clic en
+   la fila sigue sirviendo para seleccionar sin mover nada por accidente. */
+.tmgrip{
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px;
+  flex:none; width:26px; padding:6px 0; border:0; border-radius:7px;
+  background:none; color:var(--faint); cursor:grab; touch-action:none;
+  transition:background .18s var(--ease), color .18s var(--ease);
 }
-.tmord button:hover:not(:disabled){color:var(--gold-deep);}
-.tmord button:disabled{opacity:.25; cursor:default;}
+.tmgrip:hover{background:var(--hover); color:var(--gold-deep);}
+.tmgrip:active{cursor:grabbing;}
+.tmgrip:focus-visible{outline:2px solid var(--gold); outline-offset:1px;}
+.tmgrip .grip{font-size:13px; line-height:1;}
+.tmgrip .pos{font-size:10.5px; font-variant-numeric:tabular-nums;}
+
+/* La fila que se está arrastrando se despega del resto. */
+.tmrow.drag{
+  border-color:var(--gold); box-shadow:var(--shadow-lift);
+  transform:scale(1.015); opacity:.97; cursor:grabbing;
+}
+.tmrow.drag .tmgrip{cursor:grabbing;}
 
 .tmph{
   width:48px; height:48px; border-radius:9px; object-fit:cover; flex:none;
