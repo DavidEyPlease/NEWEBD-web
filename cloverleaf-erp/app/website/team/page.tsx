@@ -3,20 +3,30 @@
 import { useCallback, useEffect, useState } from "react";
 import { PageHeader, Card, Badge } from "../../ui";
 import {
-  GAP_LABEL, LANGS, RECOVERY, gapsOf, recoveredTeam,
+  GAP_LABEL, LANGS, RECOVERY, SEED_VERSION, blankMember, gapsOf, recoveredTeam,
   type Lang, type Member,
 } from "@/lib/site-team";
 
 const STORE = "clv-site-team";
+const STORE_VERSION = "clv-site-team-v";
 
 export default function TeamManagerPage() {
   const [members, setMembers] = useState<Member[]>(recoveredTeam);
   const [selected, setSelected] = useState<string>(recoveredTeam[0].id);
   const [lang, setLang] = useState<Lang>("en");
   const [dirty, setDirty] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
 
   useEffect(() => {
     try {
+      // Si la semilla cambió (alguien entró o salió del equipo), el borrador
+      // guardado en este navegador queda obsoleto y se descarta.
+      const stored = Number(localStorage.getItem(STORE_VERSION) ?? 0);
+      if (stored !== SEED_VERSION) {
+        localStorage.removeItem(STORE);
+        localStorage.setItem(STORE_VERSION, String(SEED_VERSION));
+        return;
+      }
       const raw = localStorage.getItem(STORE);
       if (raw) setMembers(JSON.parse(raw) as Member[]);
     } catch {
@@ -59,10 +69,28 @@ export default function TeamManagerPage() {
     persist(list);
   };
 
+  const addMember = () => {
+    const next = [...members, blankMember(members.length + 1)];
+    persist(next);
+    setSelected(next[next.length - 1].id);
+    setLang("en");
+  };
+
+  const removeMember = (id: string) => {
+    const rest = members
+      .filter((m) => m.id !== id)
+      .sort((a, b) => a.order - b.order)
+      .map((m, i) => ({ ...m, order: i + 1 })); // recolocar el orden sin huecos
+    persist(rest);
+    setConfirmDelete(null);
+    if (rest.length) setSelected(rest[0].id);
+  };
+
   const reset = () => {
     try { localStorage.removeItem(STORE); } catch { /* nada que limpiar */ }
     setMembers(recoveredTeam);
     setDirty(false);
+    setSelected(recoveredTeam[0].id);
   };
 
   const needsWork = members.filter((m) => gapsOf(m).length > 0).length;
@@ -84,7 +112,7 @@ export default function TeamManagerPage() {
         </div>
 
         <div className="kpis stagger" style={{ marginTop: 16 }}>
-          <div className="kpi"><div className="l">Recovered profiles</div><div className="v">{members.length}</div><div className="d">7 with a biography, 6 with a photo</div></div>
+          <div className="kpi"><div className="l">Recovered profiles</div><div className="v">{members.length}</div><div className="d">{members.filter((m) => m.bio.en?.trim()).length} with a biography, {members.filter((m) => m.photo).length} with a photo</div></div>
           <div className="kpi acc-warn"><div className="l">Need your attention</div><div className="v">{needsWork}</div><div className="d">missing data or translations</div></div>
           <div className="kpi acc-ok"><div className="l">Ready to publish</div><div className="v">{publishable}</div><div className="d">complete in all three languages</div></div>
           <div className="kpi acc-crit"><div className="l">Live on the site today</div><div className="v">0</div><div className="d">the section is hidden — the API is gone</div></div>
@@ -93,6 +121,9 @@ export default function TeamManagerPage() {
         <div className="split" style={{ marginTop: 4 }}>
           <Card title={`Profiles — ${members.length}`}>
             <div className="body">
+              <button className="btn-solid" style={{ width: "100%", marginBottom: 12 }} onClick={addMember}>
+                + Add team member
+              </button>
               <div className="tmlist">
                 {ordered.map((m, i) => {
                   const gaps = gapsOf(m);
@@ -169,6 +200,23 @@ export default function TeamManagerPage() {
                   <span>Show on the website</span>
                 </label>
                 {current.photo && <span className="muted">Photo: {current.photo.split("/").pop()}</span>}
+              </div>
+
+              <div className="danger">
+                {confirmDelete === current.id ? (
+                  <>
+                    <span>Remove {current.name || "this profile"} from the team?</span>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <button className="btn-danger" onClick={() => removeMember(current.id)}>Yes, remove</button>
+                      <button className="btn-quiet" onClick={() => setConfirmDelete(null)}>Cancel</button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <span>No longer part of the team?</span>
+                    <button className="btn-quiet" onClick={() => setConfirmDelete(current.id)}>Remove profile</button>
+                  </>
+                )}
               </div>
 
               {dirty && (
