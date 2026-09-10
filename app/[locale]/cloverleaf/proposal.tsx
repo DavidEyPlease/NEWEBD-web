@@ -181,15 +181,15 @@ const HTML = `
     <h1>Your website is back. Now the <span class="g">system behind it.</span></h1>
     <p class="lede">The server your site lived on is gone. We rebuilt the site on new infrastructure and <strong>it is live today</strong>. Along the way we found things worth telling you about. This page is both: what we already delivered, and what we propose building next &mdash; <strong>one system that runs certification end to end</strong>, from the first inquiry to the certificate and its renewal.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://cloverleaf.newebd.com" target="_blank" rel="noopener">See the site live
+      <a class="btn btn-primary" href="https://cloverleaf-erp.newebd.com" target="_blank" rel="noopener">Open the ERP portal
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-      <a class="btn btn-ghost" href="#findings">What we found</a>
       <a class="btn btn-ghost" href="#system">The system</a>
-      <a class="btn btn-ghost" href="#needs">What we need from you</a>
+      <a class="btn btn-ghost" href="#findings">What we found</a>
+      <a class="btn btn-ghost" href="https://cloverleaf.newebd.com" target="_blank" rel="noopener">See the site live</a>
     </div>
     <div class="hero-chips">
-      <span class="chip"><span class="tick">&#10003;</span> Live on new infrastructure</span>
+      <span class="chip"><span class="tick">&#10003;</span> ERP portal open to explore</span>
       <span class="chip"><span class="tick">&#10003;</span> HTTPS with automatic renewal</span>
       <span class="chip"><span class="tick">&#10003;</span> English, Spanish and Portuguese verified</span>
     </div>
@@ -329,7 +329,13 @@ const HTML = `
   <section class="sec reveal" id="portal">
     <p class="kicker">The portal</p>
     <h2>Three doors into the same system.</h2>
-    <p class="sec-lede">One system, but nobody sees more than their job requires. The client door is the one that quietly saves your team the most time.</p>
+    <p class="sec-lede">One system, but nobody sees more than their job requires. The client door is the one that quietly saves your team the most time. <strong>The internal portal is already built and open below</strong> &mdash; go in and use it.</p>
+    <div class="cta-row" style="margin:-14px 0 30px;">
+      <a class="btn btn-primary" href="https://cloverleaf-erp.newebd.com" target="_blank" rel="noopener">Open the ERP portal
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <span class="chip">Navigable, with sample data</span>
+    </div>
     <div class="doors">
       <div class="door"><div class="door-in">
         <div class="who">Internal team</div>
@@ -383,7 +389,7 @@ const HTML = `
         <h2>The website is back. The operation is the next step.</h2>
         <p>What we propose is not software for its own sake. It is the difference between certification work that lives in spreadsheets and inboxes, and an operation you can prove, audit and scale across four continents.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="https://cloverleaf.newebd.com" target="_blank" rel="noopener">See the site live
+          <a class="btn btn-primary" href="https://cloverleaf-erp.newebd.com" target="_blank" rel="noopener">Open the ERP portal
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
           <a class="btn btn-ghost" href="https://newebd.com/contacto">Talk to NEWEBD</a>
