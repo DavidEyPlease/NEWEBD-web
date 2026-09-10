@@ -613,6 +613,37 @@ table.matrix tbody td:first-child::before{display:none;}
   .tmph{width:40px; height:40px;}
 }
 
+/* Subida de foto */
+.drop{
+  display:flex; align-items:center; gap:13px; padding:11px;
+  border:1px dashed var(--line-hi); border-radius:11px; background:var(--surf-2);
+  cursor:pointer; position:relative; transition:border-color .2s var(--ease), background .2s var(--ease);
+}
+.drop:hover{border-color:var(--gold); background:var(--hover);}
+.drop.over{border-color:var(--gold); background:rgba(184,152,71,.1); border-style:solid;}
+.drop.busy{opacity:.6; pointer-events:none;}
+.drop > img{
+  width:58px; height:58px; object-fit:cover; border-radius:9px; flex:none;
+  border:1px solid var(--line); background:var(--bg-2);
+}
+.drop-none{
+  width:58px; height:58px; border-radius:9px; flex:none; border:1px dashed var(--line-hi);
+  display:flex; align-items:center; justify-content:center; font-size:9.5px;
+  color:var(--faint); text-align:center;
+}
+.drop-txt{flex:1; min-width:0;}
+.drop-txt strong{display:block; font-size:12.5px; font-weight:600;}
+.drop-txt span{display:block; font-size:11.5px; color:var(--muted); margin-top:2px;}
+.drop-x{
+  flex:none; border:1px solid var(--line); background:var(--surf); color:var(--muted);
+  border-radius:7px; padding:5px 10px; font-size:11px; cursor:pointer;
+  transition:all .18s var(--ease);
+}
+.drop-x:hover{color:var(--crit); border-color:var(--crit-line); background:var(--crit-bg);}
+.drop-err{
+  margin:8px 0 0; font-size:11.5px; color:var(--crit); line-height:1.45;
+}
+
 /* Zona de baja del editor de equipo */
 .danger{
   display:flex; align-items:center; justify-content:space-between; gap:12px;

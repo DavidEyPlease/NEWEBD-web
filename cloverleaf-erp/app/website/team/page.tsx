@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { PageHeader, Card, Badge } from "../../ui";
+import { ImageError, dataUrlBytes, preparePhoto } from "@/lib/image";
 import {
   GAP_LABEL, LANGS, SEED_VERSION, blankMember, gapsOf, recoveredTeam,
   type Lang, type Member,
@@ -16,6 +17,10 @@ export default function TeamManagerPage() {
   const [lang, setLang] = useState<Lang>("en");
   const [dirty, setDirty] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [overDrop, setOverDrop] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     try {
@@ -39,8 +44,11 @@ export default function TeamManagerPage() {
     setDirty(true);
     try {
       localStorage.setItem(STORE, JSON.stringify(next));
+      return true;
     } catch {
-      /* el guardado puede fallar en modo privado; los cambios siguen en pantalla */
+      // Modo privado o cuota llena. El cambio sigue en pantalla, pero hay que
+      // decirlo: si no, se pierde al recargar sin que nadie se entere.
+      return false;
     }
   }, []);
 
@@ -128,6 +136,38 @@ export default function TeamManagerPage() {
     setDraggingId(null);
   };
 
+  const applyPhoto = async (file: File) => {
+    setPhotoError(null);
+    setUploading(true);
+    try {
+      const photo = await preparePhoto(file);
+      const next = members.map((m) => (m.id === current.id ? { ...m, photo } : m));
+      const saved = persist(next);
+      if (!saved) {
+        setPhotoError(
+          `Photo applied (${Math.round(dataUrlBytes(photo) / 1024)} KB) but it could not be stored on this device. It will be lost if you reload.`,
+        );
+      }
+    } catch (err) {
+      setPhotoError(err instanceof ImageError ? err.message : "Could not use that image.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const onPickFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) void applyPhoto(file);
+    e.target.value = ""; // permite volver a elegir el mismo archivo
+  };
+
+  const onDropPhoto = (e: React.DragEvent) => {
+    e.preventDefault();
+    setOverDrop(false);
+    const file = e.dataTransfer.files?.[0];
+    if (file) void applyPhoto(file);
+  };
+
   const addMember = () => {
     const next = [...members, blankMember(members.length + 1)];
     persist(next);
@@ -180,7 +220,7 @@ export default function TeamManagerPage() {
                       key={m.id}
                       data-mid={m.id}
                       className={`tmrow${m.id === current.id ? " on" : ""}${m.id === draggingId ? " drag" : ""}`}
-                      onClick={() => setSelected(m.id)}
+                      onClick={() => { setSelected(m.id); setPhotoError(null); }}
                     >
                       {/* El asa también responde al teclado: arrastrar no es
                           una opción para quien navega sin ratón. */}
@@ -257,12 +297,47 @@ export default function TeamManagerPage() {
                 />
               </label>
 
+              <div className="fld">
+                <span>Photo</span>
+                <div
+                  className={`drop${overDrop ? " over" : ""}${uploading ? " busy" : ""}`}
+                  onDragOver={(e) => { e.preventDefault(); setOverDrop(true); }}
+                  onDragLeave={() => setOverDrop(false)}
+                  onDrop={onDropPhoto}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  {current.photo
+                    ? <img src={current.photo} alt={current.name || "Team member"} />
+                    : <span className="drop-none">No photo</span>}
+                  <div className="drop-txt">
+                    <strong>{uploading ? "Processing…" : current.photo ? "Replace photo" : "Upload a photo"}</strong>
+                    <span>Drop an image here, or click to choose one</span>
+                  </div>
+                  {current.photo && (
+                    <button
+                      className="drop-x"
+                      onClick={(e) => { e.stopPropagation(); setPhotoError(null); persist(members.map((m) => (m.id === current.id ? { ...m, photo: null } : m))); }}
+                      aria-label="Remove photo"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={onPickFile}
+                  style={{ display: "none" }}
+                />
+                {photoError && <p className="drop-err">{photoError}</p>}
+              </div>
+
               <div className="fld-row">
                 <label className="tgl">
                   <input type="checkbox" checked={current.published} onChange={(e) => update({ published: e.target.checked })} />
                   <span>Show on the website</span>
                 </label>
-                {current.photo && <span className="muted">Photo: {current.photo.split("/").pop()}</span>}
               </div>
 
               <div className="danger">
