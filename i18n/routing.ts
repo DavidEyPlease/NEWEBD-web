@@ -34,6 +34,11 @@ export const routing = defineRouting({
       es: "/vegemex/cotizacion",
       en: "/vegemex/cotizacion",
     },
+    // Propuesta de ERP para CloverleafAWS (no indexada, se comparte por liga)
+    "/cloverleaf": {
+      es: "/cloverleaf",
+      en: "/cloverleaf",
+    },
   },
 });
 
