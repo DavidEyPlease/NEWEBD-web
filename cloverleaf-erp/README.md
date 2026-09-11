@@ -17,12 +17,12 @@ conoce.
 
 ```bash
 # en el VPS, como wwvpsm, dentro de /home/wwvpsm/cloverleaf-api
-runuser -u wwvpsm -- node dist/cli.js user:create <usuario> "<Nombre visible>"
-runuser -u wwvpsm -- node dist/cli.js user:reset <usuario>   # olvidó la contraseña
+runuser -u wwvpsm -- node dist/cli.js user:create <correo> "<Nombre visible>"
+runuser -u wwvpsm -- node dist/cli.js user:reset <correo>    # olvidó la contraseña
 ```
 
 Enlace de invitación con todo precargado:
-`https://admin.cloverleafaws.com/login/#u=<usuario>&c=<CODIGO>`. El código va en
+`https://admin.cloverleafaws.com/login/#u=<correo con @ como %40>&c=<CODIGO>`. El código va en
 el fragmento (`#`), que el navegador nunca envía al servidor.
 
 ## Qué es y qué no es

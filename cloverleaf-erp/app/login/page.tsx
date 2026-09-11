@@ -24,7 +24,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const firstField = useRef<HTMLInputElement>(null);
 
-  // Enlace de invitación: /login/#u=jason&c=ABCD-EFGH. Va en el fragmento, que
+  // Enlace de invitación: /login/#u=jason%40cloverleafaws.com&c=ABCD-EFGH. Va en el fragmento, que
   // el navegador nunca envía al servidor, y se borra de la barra al leerlo.
   useEffect(() => {
     const h = new URLSearchParams(window.location.hash.slice(1));
@@ -43,6 +43,8 @@ export default function LoginPage() {
   }, [step]);
 
   const u = username.trim().toLowerCase();
+  // Con un correo, la contraseña no debe contener el nombre (antes de la @).
+  const local = u.split("@")[0];
 
   const go = (next: Step) => {
     setError(null);
@@ -54,7 +56,7 @@ export default function LoginPage() {
 
   const rules = [
     { ok: password.length >= MIN, text: `At least ${MIN} characters` },
-    { ok: password.length > 0 && !password.toLowerCase().includes(u), text: "Doesn't contain your username" },
+    { ok: password.length > 0 && !!local && !password.toLowerCase().includes(local), text: "Doesn't contain your name" },
     { ok: password.length > 0 && password === confirm, text: "Both passwords match" },
   ];
 
@@ -114,18 +116,20 @@ export default function LoginPage() {
           {step === "user" && (
             <>
               <h2>Sign in</h2>
-              <p className="lg-sub">Enter your username to continue.</p>
+              <p className="lg-sub">Enter your work email to continue.</p>
               {error && <div className="lg-err" role="alert">{error}</div>}
               <label className="lg-field">
-                <span>Username</span>
+                <span>Email</span>
                 <input
                   ref={firstField}
+                  type="email"
+                  inputMode="email"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   autoComplete="username"
                   autoCapitalize="none"
                   spellCheck={false}
-                  placeholder="e.g. jason"
+                  placeholder="you@cloverleafaws.com"
                 />
               </label>
               <button className="lg-btn" disabled={u.length < 2 || busy}>
