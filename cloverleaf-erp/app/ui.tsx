@@ -1,10 +1,20 @@
 import type { ReactNode } from "react";
 
-export function PageHeader({ title, sub }: { title: string; sub: string }) {
+/**
+ * Cabecera de cada pantalla. Por defecto marca la página como vista previa: solo
+ * Site Feedback y Our Team pasan mode="live", porque son lo único que el
+ * cliente puede editar de verdad.
+ */
+export function PageHeader({ title, sub, mode = "preview" }: { title: string; sub: string; mode?: "preview" | "live" }) {
   return (
     <header className="topbar">
       <div>
-        <h1>{title}</h1>
+        <div className="ph-title">
+          <h1>{title}</h1>
+          {mode === "live"
+            ? <span className="ph-tag live">Editable</span>
+            : <span className="ph-tag preview">Preview · sample data</span>}
+        </div>
         <div className="sub">{sub}</div>
       </div>
       <div className="who">
@@ -37,6 +47,8 @@ const TONE: Record<string, string> = {
   // Leads
   New: "b-info", Contacted: "b-info", Qualified: "b-warn", Proposal: "b-warn",
   Won: "b-ok", Lost: "b-mute",
+  // Our Team y redes sociales
+  Published: "b-ok", Hidden: "b-mute", Draft: "b-mute", "Needs approval": "b-warn",
 };
 
 export function Badge({ children }: { children: string }) {

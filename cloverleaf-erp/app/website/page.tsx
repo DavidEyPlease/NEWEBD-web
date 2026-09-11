@@ -195,7 +195,7 @@ export default function WebsitePage() {
 
   return (
     <>
-      <PageHeader title="Site Feedback" sub="Review your website, mark an area and tell us what to change" />
+      <PageHeader mode="live" title="Site Feedback" sub="Review your website, mark an area and tell us what to change" />
       <div className="content enter">
         <div className="toolbar">
           <div className="chips">

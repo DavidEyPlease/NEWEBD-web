@@ -197,7 +197,7 @@ export default function TeamManagerPage() {
 
   return (
     <>
-      <PageHeader title="Our Team" sub="The team shown on your About Us page — drag to reorder, click to edit" />
+      <PageHeader mode="live" title="Our Team" sub="The team shown on your About Us page — drag to reorder, click to edit" />
       <div className="content enter">
         <div className="kpis stagger">
           <div className="kpi"><div className="l">Team profiles</div><div className="v">{members.length}</div><div className="d">{members.filter((m) => m.bio.en?.trim()).length} with a biography, {members.filter((m) => m.photo).length} with a photo</div></div>

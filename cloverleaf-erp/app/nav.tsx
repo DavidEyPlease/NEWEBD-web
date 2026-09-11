@@ -4,8 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { ThemeToggle } from "./theme";
+import { openDemoModal } from "./demo-modal";
 
-const GROUPS: { label: string; items: { href: string; icon: string; text: string; exact?: boolean }[] }[] = [
+const GROUPS: { label: string; items: { href: string; icon: string; text: string; exact?: boolean; editable?: boolean }[] }[] = [
   {
     label: "Overview",
     items: [{ href: "/", icon: "◧", text: "Dashboard" }],
@@ -47,9 +48,13 @@ const GROUPS: { label: string; items: { href: string; icon: string; text: string
     label: "Website",
     items: [
       // exact: si no, "/website/" tambien se marcaria activo dentro de /website/team/
-      { href: "/website/", icon: "▣", text: "Site Feedback", exact: true },
-      { href: "/website/team/", icon: "☺", text: "Our Team" },
+      { href: "/website/", icon: "▣", text: "Site Feedback", exact: true, editable: true },
+      { href: "/website/team/", icon: "☺", text: "Our Team", editable: true },
     ],
+  },
+  {
+    label: "Marketing",
+    items: [{ href: "/social/", icon: "✎", text: "Social Media" }],
   },
 ];
 
@@ -79,6 +84,7 @@ export function Nav() {
                 <Link key={it.href} href={it.href} className={active ? "item on" : "item"}>
                   <span className="ic">{it.icon}</span>
                   {it.text}
+                  {it.editable && <span className="edt">Edit</span>}
                 </Link>
               );
             })}
@@ -86,7 +92,7 @@ export function Nav() {
         ))}
       </nav>
       <div className="foot">
-        <span>Built by NEWEBD</span>
+        <button className="about-demo" onClick={openDemoModal}>About this demo</button>
         <ThemeToggle />
       </div>
     </aside>
