@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { PageHeader, Card } from "../../ui";
 import { api } from "@/lib/api";
+import { ComplianceCard } from "../compliance";
 
 type Row = { key: string; value: number };
 type Summary = {
@@ -76,6 +77,8 @@ export default function AnalyticsPage() {
             Open the website ↗
           </a>
         </div>
+
+        <ComplianceCard />
 
         {state === "error" && (
           <Card title="Analytics"><div className="body loadcard"><span>We couldn&apos;t load the numbers right now.</span></div></Card>

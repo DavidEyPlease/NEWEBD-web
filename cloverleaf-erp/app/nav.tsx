@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 import { ThemeToggle } from "./theme";
 import { openDemoModal } from "./demo-modal";
+import { openAssistant } from "./assistant";
 
 type Item = { href: string; icon: string; text: string; exact?: boolean; editable?: boolean; external?: boolean };
 
@@ -85,6 +86,11 @@ export function Nav() {
         <div className="s">Certification ERP</div>
       </div>
       <nav>
+        {/* La IA, a un toque y "viva": su orbe respira. */}
+        <button className="ai-entry" onClick={openAssistant}>
+          <span className="cp-orb sm" aria-hidden><span /></span>
+          <span className="ai-entry-t"><b>CloverLeaf AI</b><small>Ask anything about your admin</small></span>
+        </button>
         {GROUPS.map((g) => (
           <div key={g.label}>
             <div className="grp">{g.label}</div>

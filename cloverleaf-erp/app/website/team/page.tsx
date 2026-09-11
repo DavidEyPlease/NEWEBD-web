@@ -5,6 +5,7 @@ import { PageHeader, Card, Badge } from "../../ui";
 import { ImageError, preparePhoto } from "@/lib/image";
 import { GAP_LABEL, LANGS, gapsOf, type Lang, type Member } from "@/lib/site-team";
 import { api, ApiError } from "@/lib/api";
+import { ComplianceStrip } from "../compliance";
 
 /** Forma en la que la API devuelve cada ficha. */
 type ApiMember = {
@@ -324,6 +325,7 @@ export default function TeamManagerPage() {
     <>
       {header}
       <div className="content enter">
+        <ComplianceStrip />
         <div className="kpis stagger">
           <div className="kpi"><div className="l">Team profiles</div><div className="v">{members.length}</div><div className="d">{members.filter((m) => m.bio.en?.trim()).length} with a biography, {members.filter((m) => m.photo).length} with a photo</div></div>
           <div className="kpi acc-warn"><div className="l">Need your attention</div><div className="v">{needsWork}</div><div className="d">missing data or translations</div></div>

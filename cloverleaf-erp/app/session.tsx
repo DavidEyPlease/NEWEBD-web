@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { api, UNAUTHORIZED_EVENT } from "@/lib/api";
 import { Nav, MobileNav } from "./nav";
 import { DemoModal, DemoInfoButton } from "./demo-modal";
+import { Assistant } from "./assistant";
 
 export type SessionUser = { username: string; displayName: string };
 type Status = "loading" | "in" | "out";
@@ -79,6 +80,7 @@ export function SessionShell({ children }: { children: ReactNode }) {
     body = (
       <>
         <DemoModal />
+        <Assistant />
         <div className="shell">
           <Nav />
           <div className="main">

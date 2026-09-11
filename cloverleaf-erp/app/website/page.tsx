@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { PageHeader, Card, Badge } from "../ui";
 import { api, ApiError } from "@/lib/api";
 import { useSession } from "../session";
+import { ComplianceStrip } from "./compliance";
 import { NOTE_KINDS, sitePages, type NoteKind, type SiteNote } from "@/lib/site-pages";
 
 /** Rectángulo en coordenadas del contenedor mostrado (no de la imagen real). */
@@ -200,6 +201,7 @@ export default function WebsitePage() {
     <>
       <PageHeader mode="live" title="Site Feedback" sub="Review your website, mark an area and tell us what to change" />
       <div className="content enter">
+        <ComplianceStrip />
         <div className="toolbar">
           <div className="chips">
             {sitePages.map((p) => (
