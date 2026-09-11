@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { WhoAmI } from "./session";
 
 /**
  * Cabecera de cada pantalla. Por defecto marca la página como vista previa: solo
@@ -17,10 +18,7 @@ export function PageHeader({ title, sub, mode = "preview" }: { title: string; su
         </div>
         <div className="sub">{sub}</div>
       </div>
-      <div className="who">
-        <span>Helen Marsh · Certification Manager</span>
-        <span className="av">HM</span>
-      </div>
+      <WhoAmI />
     </header>
   );
 }
@@ -49,6 +47,8 @@ const TONE: Record<string, string> = {
   Won: "b-ok", Lost: "b-mute",
   // Our Team y redes sociales
   Published: "b-ok", Hidden: "b-mute", Draft: "b-mute", "Needs approval": "b-warn",
+  // Site Feedback
+  Done: "b-ok",
 };
 
 export function Badge({ children }: { children: string }) {

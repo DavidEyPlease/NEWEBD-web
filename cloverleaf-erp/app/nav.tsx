@@ -6,10 +6,20 @@ import { usePathname } from "next/navigation";
 import { ThemeToggle } from "./theme";
 import { openDemoModal } from "./demo-modal";
 
-const GROUPS: { label: string; items: { href: string; icon: string; text: string; exact?: boolean; editable?: boolean }[] }[] = [
+type Item = { href: string; icon: string; text: string; exact?: boolean; editable?: boolean; external?: boolean };
+
+const GROUPS: { label: string; items: Item[] }[] = [
   {
     label: "Overview",
     items: [{ href: "/", icon: "◧", text: "Dashboard" }],
+  },
+  {
+    // La propuesta y la cotización viven en newebd.com: se abren aparte.
+    label: "Your project",
+    items: [
+      { href: "https://newebd.com/cloverleaf", icon: "◆", text: "Proposal", external: true },
+      { href: "https://newebd.com/cloverleaf/cotizacion", icon: "▭", text: "Quote", external: true },
+    ],
   },
   {
     label: "Commercial",
@@ -73,6 +83,15 @@ export function Nav() {
           <div key={g.label}>
             <div className="grp">{g.label}</div>
             {g.items.map((it) => {
+              if (it.external) {
+                return (
+                  <a key={it.href} href={it.href} target="_blank" rel="noopener" className="item">
+                    <span className="ic">{it.icon}</span>
+                    {it.text}
+                    <span className="ext" aria-label="opens in a new tab">↗</span>
+                  </a>
+                );
+              }
               // Las rutas marcadas exact (y la raíz) solo se activan en su propia
               // página; el resto también en sus subpáginas, como el detalle de
               // una auditoría.
@@ -111,6 +130,13 @@ export function MobileNav() {
   return (
     <nav className="mobnav">
       {items.map((it) => {
+        if (it.external) {
+          return (
+            <a key={it.href} href={it.href} target="_blank" rel="noopener" className="mitem">
+              {it.text} ↗
+            </a>
+          );
+        }
         const active =
           it.exact || it.href === "/" ? pathname === it.href : pathname.startsWith(it.href);
         return (

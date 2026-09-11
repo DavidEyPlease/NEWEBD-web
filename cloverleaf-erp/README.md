@@ -1,10 +1,29 @@
-# CloverLeaf — Certification ERP (demo)
+# CloverLeaf — Admin
 
-Demo navegable del ERP propuesto a CloverleafAWS. Es el destino de los botones
-de la propuesta en [newebd.com/cloverleaf](https://newebd.com/cloverleaf), igual
-que `/vegemex` abre `panel.vegemex.com.mx`.
+El admin de CloverleafAWS. Dos partes son reales y están conectadas a su web
+(**Site Feedback** y **Our Team**); el resto es la vista previa navegable del
+ERP propuesto en [newebd.com/cloverleaf](https://newebd.com/cloverleaf), con
+datos de muestra.
 
-**En vivo:** https://cloverleaf-erp.newebd.com
+**En vivo:** https://admin.cloverleafaws.com (y, mientras llega su certificado,
+https://cloverleaf-erp.newebd.com, que sirve lo mismo).
+
+## Acceso
+
+Hace falta sesión para entrar. Las cuentas se crean en el servidor con la CLI
+de `cloverleaf-api`, que da un código de un solo uso (7 días); la persona entra
+con su usuario, escribe el código y elige su propia contraseña. Nadie más la
+conoce.
+
+```bash
+# en el VPS, como wwvpsm, dentro de /home/wwvpsm/cloverleaf-api
+runuser -u wwvpsm -- node dist/cli.js user:create <usuario> "<Nombre visible>"
+runuser -u wwvpsm -- node dist/cli.js user:reset <usuario>   # olvidó la contraseña
+```
+
+Enlace de invitación con todo precargado:
+`https://admin.cloverleafaws.com/login/#u=<usuario>&c=<CODIGO>`. El código va en
+el fragmento (`#`), que el navegador nunca envía al servidor.
 
 ## Qué es y qué no es
 
@@ -12,14 +31,16 @@ que `/vegemex` abre `panel.vegemex.com.mx`.
   sí: los certificados corresponden a sus auditorías, los hallazgos a sus
   instalaciones, y cada auditor solo aparece en especies para las que está
   calificado. Una barra permanente lo advierte en pantalla.
-- **Sin backend.** Es un export estático de Next.js, así que se sirve desde un
-  subdominio cPanel sin proceso Node detrás y no hay nada que se pueda caer.
+- **Export estático** de Next.js servido por Apache. Lo editable habla con la
+  API (`cloverleaf-api`, NestJS en PM2) en `/api` del mismo dominio: Apache la
+  pasa a `127.0.0.1:3010`, así que la cookie de sesión viaja sola y no hay CORS.
 
 ## Pantallas
 
 Dashboard · Leads & CRM · Clients & Facilities · Audits (con detalle de cada
 auditoría) · Findings & CAPA · Certificates · Public Registry · Auditor
-Competence · Site Feedback.
+Competence · Directory · Roles & Access · Workload · **Site Feedback** ·
+**Our Team** · Social Media. En el menú, además, la propuesta y la cotización.
 
 ## Site Feedback
 
@@ -28,14 +49,21 @@ rectángulo sobre la zona que quiere comentar y escribe una nota. El recorte de
 esa zona se genera en el navegador con canvas y se adjunta como JPEG.
 
 Los campos que guarda (`pageUrl`, `viewport`, `region`, `thumb`) siguen el
-modelo de anotaciones de `newebd-platform`, para que encajen al conectar el
-backend real. Hoy las notas viven en `localStorage` y se exportan a JSON.
+modelo de anotaciones de `newebd-platform`. Las notas se guardan en la API en
+cuanto se envían; el recorte solo se sirve con sesión. Para verlas desde el
+servidor: `node dist/cli.js feedback:list`.
+
+## Our Team
+
+Lo que se edita aquí es lo que muestra About Us en cloverleafaws.com: la web
+lee `GET /api/public/team` (solo lo publicado, en orden). Los cambios se
+guardan solos y se ven en la web en menos de un minuto.
 
 ## Desarrollo
 
 ```bash
 npm install
-npm run dev
+npm run dev     # hace proxy de /api a la API local (API_DEV_URL, por defecto 127.0.0.1:3099)
 ```
 
 ## Regenerar las capturas del sitio
@@ -53,9 +81,12 @@ otra ruta, pásala con `CHROMIUM_PATH=...`.
 
 ```bash
 npm run build            # genera out/
-rsync -az --delete --exclude cgi-bin --exclude .well-known --exclude .htaccess \
-  -e ssh out/ newebd-vps:/home/wwvpsm/cloverleaf-erp.newebd.com/
+for d in admin.cloverleafaws.com cloverleaf-erp.newebd.com; do
+  rsync -az --delete --exclude cgi-bin --exclude .well-known --exclude .htaccess \
+    -e ssh out/ newebd-vps:/home/wwvpsm/$d/
+done
 ```
 
-El `.htaccess` del subdominio (cache de `/_next/static/`, `noindex`) se gestiona
-en el servidor y por eso queda excluido del rsync.
+El `.htaccess` de cada dominio (proxy de `/api`, caché de `/_next/static/`,
+`noindex`, cabeceras) se gestiona en el servidor y por eso queda excluido del
+rsync.

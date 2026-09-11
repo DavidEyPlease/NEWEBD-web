@@ -43,10 +43,12 @@ export type SiteNote = {
   text: string;
   /** Región marcada, en coordenadas reales de la página capturada. */
   region: { x: number; y: number; w: number; h: number };
-  /** Recorte de esa región, en JPEG base64. */
-  thumb: string;
+  /** URL del recorte guardado en el servidor (solo se sirve con sesión). */
+  thumb: string | null;
   viewport: { width: number; height: number };
   createdAt: string;
   author: string;
-  status: "Draft" | "Queued";
+  authorUsername: string;
+  /** New → In progress → Done, según lo va atendiendo NEWEBD. */
+  status: string;
 };

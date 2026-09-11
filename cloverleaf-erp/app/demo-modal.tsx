@@ -76,15 +76,15 @@ export function DemoModal() {
         </h2>
         <p className="nw-lede">
           NEWEBD built this demo so you can see how CloverLeaf&apos;s certification work would run in one
-          place. Two parts are already yours to use; the rest shows what&apos;s coming, with sample data.
+          place. Everything here can be tailored to how you work. Two parts are already live; the rest shows what&apos;s coming, with sample data.
         </p>
 
         <div className="nw-cols">
           <div className="nw-col live">
             <b>Yours to use today</b>
             <ul>
-              <li><strong>Site Feedback</strong> — mark any part of your website and write what you&apos;d change.</li>
-              <li><strong>Our Team</strong> — edit profiles, photos, order and translations.</li>
+              <li><strong>Site Feedback</strong> — mark any part of your website and tell us what you&apos;d change.</li>
+              <li><strong>Our Team</strong> — edit the profiles, photos, order and translations shown on your About Us page.</li>
             </ul>
           </div>
           <div className="nw-col">
@@ -97,7 +97,8 @@ export function DemoModal() {
         </div>
 
         <p className="nw-note">
-          For now, your edits are saved on this device. Once the platform goes live, they&apos;ll sync to your account.
+          Site Feedback and Our Team are connected: notes reach NEWEBD as soon as you send them, and team changes
+          show on cloverleafaws.com within a minute.
         </p>
 
         <div className="nw-actions">

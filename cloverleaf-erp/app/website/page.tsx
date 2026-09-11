@@ -1,10 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { PageHeader, Card } from "../ui";
+import { PageHeader, Card, Badge } from "../ui";
+import { api, ApiError } from "@/lib/api";
+import { useSession } from "../session";
 import { NOTE_KINDS, sitePages, type NoteKind, type SiteNote } from "@/lib/site-pages";
-
-const STORE = "clv-site-notes";
 
 /** Rectángulo en coordenadas del contenedor mostrado (no de la imagen real). */
 type Box = { x: number; y: number; w: number; h: number };
@@ -27,29 +27,28 @@ export default function WebsitePage() {
   const [text, setText] = useState("");
   const [kind, setKind] = useState<NoteKind>("change");
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loadState, setLoadState] = useState<"loading" | "ready" | "error">("loading");
+  const { user } = useSession();
 
   const stageRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const page = sitePages.find((p) => p.slug === pageSlug)!;
 
-  // --- Persistencia local ---------------------------------------------------
-  useEffect(() => {
+  // --- Notas en el servidor: llegan a NEWEBD en cuanto se envían ------------
+  const load = useCallback(async () => {
     try {
-      const raw = localStorage.getItem(STORE);
-      if (raw) setNotes(JSON.parse(raw) as SiteNote[]);
+      const r = await api<{ data: SiteNote[] }>("/feedback");
+      setNotes(r.data);
+      setLoadState("ready");
     } catch {
-      /* sin almacenamiento: las notas duran lo que la pestaña */
+      setLoadState("error");
     }
   }, []);
 
-  const persist = useCallback((next: SiteNote[]) => {
-    setNotes(next);
-    try {
-      localStorage.setItem(STORE, JSON.stringify(next));
-    } catch {
-      /* el guardado puede fallar en modo privado; la nota sigue en pantalla */
-    }
-  }, []);
+  useEffect(() => {
+    void load();
+  }, [load]);
 
   // --- Selección de la zona -------------------------------------------------
   const pointIn = (e: React.MouseEvent) => {
@@ -134,11 +133,14 @@ export default function WebsitePage() {
   const crop = (box: Box): { thumb: string; region: Box } => {
     const img = imgRef.current!;
     const scale = page.width / img.clientWidth; // mostrado → real
+    // Recortada a los límites de la captura: el arrastre puede salirse del borde.
+    const x = Math.max(0, Math.round(box.x * scale));
+    const y = Math.max(0, Math.round(box.y * scale));
     const region = {
-      x: Math.round(box.x * scale),
-      y: Math.round(box.y * scale),
-      w: Math.round(box.w * scale),
-      h: Math.round(box.h * scale),
+      x,
+      y,
+      w: Math.max(1, Math.min(page.width - x, Math.round(box.w * scale))),
+      h: Math.max(1, Math.min(page.height - y, Math.round(box.h * scale))),
     };
 
     const canvas = document.createElement("canvas");
@@ -153,42 +155,43 @@ export default function WebsitePage() {
     return { thumb: canvas.toDataURL("image/jpeg", 0.75), region };
   };
 
-  const save = () => {
-    if (!draft || text.trim().length < 3) return;
+  const save = async () => {
+    if (!draft || text.trim().length < 3 || saving) return;
     setSaving(true);
-    const { thumb, region } = crop(draft);
-
-    const note: SiteNote = {
-      id: `n${Date.now()}`,
-      pageSlug: page.slug,
-      pageUrl: page.url,
-      kind,
-      text: text.trim(),
-      region,
-      thumb,
-      viewport: { width: window.innerWidth, height: window.innerHeight },
-      createdAt: new Date().toISOString(),
-      author: "Helen Marsh",
-      status: "Queued",
-    };
-
-    persist([note, ...notes]);
-    setDraft(null);
-    setText("");
-    setSaving(false);
+    setError(null);
+    try {
+      const { thumb, region } = crop(draft);
+      const note = await api<SiteNote>("/feedback", {
+        method: "POST",
+        body: {
+          pageSlug: page.slug,
+          pageUrl: page.url,
+          kind,
+          text: text.trim(),
+          region,
+          thumb,
+          viewport: { width: Math.round(window.innerWidth), height: Math.round(window.innerHeight) },
+        },
+      });
+      setNotes((list) => [note, ...list]);
+      setDraft(null);
+      setText("");
+    } catch (err) {
+      // El borrador se queda en pantalla para poder reintentar sin reescribirlo.
+      setError(err instanceof ApiError ? err.message : "Could not send the note. Please try again.");
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const remove = (id: string) => persist(notes.filter((n) => n.id !== id));
-
-  /** Exporta las notas para poder enviarlas mientras no hay backend. */
-  const exportNotes = () => {
-    const blob = new Blob([JSON.stringify(notes, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `cloverleaf-site-notes-${new Date().toISOString().slice(0, 10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+  const remove = async (id: string) => {
+    setError(null);
+    try {
+      await api(`/feedback/${id}`, { method: "DELETE" });
+      setNotes((list) => list.filter((n) => n.id !== id));
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : "Could not remove the note.");
+    }
   };
 
   const forPage = notes.filter((n) => n.pageSlug === page.slug);
@@ -273,11 +276,12 @@ export default function WebsitePage() {
                       placeholder="What should change here? Be as specific as you like."
                       rows={4}
                     />
+                    {error && <p className="drop-err">{error}</p>}
                     <div style={{ display: "flex", gap: 9, marginTop: 11 }}>
-                      <button className="btn-solid" onClick={save} disabled={text.trim().length < 3 || saving}>
-                        Save note
+                      <button className="btn-solid" onClick={() => void save()} disabled={text.trim().length < 3 || saving}>
+                        {saving ? "Sending…" : "Send to NEWEBD"}
                       </button>
-                      <button className="btn-quiet" onClick={() => { setDraft(null); setText(""); }}>
+                      <button className="btn-quiet" onClick={() => { setDraft(null); setText(""); setError(null); }}>
                         Cancel
                       </button>
                     </div>
@@ -293,9 +297,16 @@ export default function WebsitePage() {
 
             <Card title={`Notes — ${notes.length}`}>
               <div className="body">
-                {notes.length === 0 ? (
+                {loadState === "loading" ? (
+                  <p style={{ margin: 0, color: "var(--muted)", fontSize: 13 }}>Loading notes…</p>
+                ) : loadState === "error" ? (
                   <p style={{ margin: 0, color: "var(--muted)", fontSize: 13 }}>
-                    Nothing yet. Your notes stay on this device until they are sent.
+                    We couldn&apos;t load your notes right now.{" "}
+                    <button className="btn-quiet" onClick={() => { setLoadState("loading"); void load(); }}>Try again</button>
+                  </p>
+                ) : notes.length === 0 ? (
+                  <p style={{ margin: 0, color: "var(--muted)", fontSize: 13 }}>
+                    Nothing yet. Notes you send here go straight to the NEWEBD team.
                   </p>
                 ) : (
                   <>
@@ -305,25 +316,26 @@ export default function WebsitePage() {
                         const pg = sitePages.find((p) => p.slug === n.pageSlug);
                         return (
                           <div className="note" key={n.id}>
-                            <img src={n.thumb} alt="Marked area" />
+                            {n.thumb ? <img src={n.thumb} alt="Marked area" /> : <span className="note-nothumb" />}
                             <div className="note-b">
                               <span className={`badge ${k.tone}`}>{k.label}</span>
                               <p>{n.text}</p>
                               <div className="note-m">
-                                {pg?.title} · {new Date(n.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "short" })}
-                                <button onClick={() => remove(n.id)} aria-label="Delete note">Delete</button>
+                                <Badge>{n.status}</Badge>
+                                {pg?.title} · {n.author} · {new Date(n.createdAt).toLocaleDateString("en-US", { day: "numeric", month: "short" })}
+                                {/* Cada quien retira las suyas mientras NEWEBD no las haya tomado. */}
+                                {n.authorUsername === user?.username && n.status === "New" && (
+                                  <button onClick={() => void remove(n.id)} aria-label="Delete note">Delete</button>
+                                )}
                               </div>
                             </div>
                           </div>
                         );
                       })}
                     </div>
-                    <button className="btn-solid" style={{ width: "100%", marginTop: 13 }} onClick={exportNotes}>
-                      Export notes for NEWEBD
-                    </button>
-                    <p style={{ fontSize: 11.5, color: "var(--faint)", marginTop: 9, marginBottom: 0 }}>
-                      Sending straight to NEWEBD is the next step. For now the export gives you a file
-                      you can email us, and nothing is lost.
+                    <p style={{ fontSize: 11.5, color: "var(--faint)", marginTop: 12, marginBottom: 0 }}>
+                      Every note reaches the NEWEBD team the moment you send it. We update its status here
+                      as we work on it.
                     </p>
                   </>
                 )}
