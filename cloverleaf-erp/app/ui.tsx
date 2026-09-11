@@ -6,15 +6,15 @@ import { WhoAmI } from "./session";
  * Site Feedback y Our Team pasan mode="live", porque son lo único que el
  * cliente puede editar de verdad.
  */
-export function PageHeader({ title, sub, mode = "preview" }: { title: string; sub: string; mode?: "preview" | "live" }) {
+export function PageHeader({ title, sub, mode = "preview" }: { title: string; sub: string; mode?: "preview" | "live" | "account" }) {
   return (
     <header className="topbar">
       <div>
         <div className="ph-title">
           <h1>{title}</h1>
-          {mode === "live"
-            ? <span className="ph-tag live">Editable</span>
-            : <span className="ph-tag preview">Preview · sample data</span>}
+          {mode === "live" && <span className="ph-tag live">Editable</span>}
+          {mode === "account" && <span className="ph-tag live">Your account</span>}
+          {mode === "preview" && <span className="ph-tag preview">Preview · sample data</span>}
         </div>
         <div className="sub">{sub}</div>
       </div>
@@ -47,8 +47,8 @@ const TONE: Record<string, string> = {
   Won: "b-ok", Lost: "b-mute",
   // Our Team y redes sociales
   Published: "b-ok", Hidden: "b-mute", Draft: "b-mute", "Needs approval": "b-warn",
-  // Site Feedback
-  Done: "b-ok",
+  // Site Feedback y cuenta
+  Done: "b-ok", Paid: "b-ok", Upcoming: "b-info", Live: "b-ok",
 };
 
 export function Badge({ children }: { children: string }) {

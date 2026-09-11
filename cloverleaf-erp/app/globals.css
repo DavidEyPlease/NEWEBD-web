@@ -994,3 +994,27 @@ html[data-theme="dark"] .lg-links button{color:var(--leaf);}
   .lg-by{display:none;}
   .lg-panel{place-items:start center; padding:30px 22px 48px;}
 }
+
+/* ---- Cuenta: hosting y pagos (datos reales) ------------------------------ */
+.acct-strip{
+  display:flex; align-items:center; gap:10px 14px; flex-wrap:wrap; margin-bottom:18px;
+  padding:13px 16px; border-radius:var(--r); background:var(--ok-bg); border:1px solid var(--ok-line);
+  color:var(--text); font-size:13px; transition:box-shadow .18s, transform .18s var(--ease);
+}
+.acct-strip:hover{box-shadow:var(--shadow-lift); transform:translateY(-1px);}
+.acct-dot{width:9px; height:9px; border-radius:50%; background:var(--ok); box-shadow:0 0 0 4px rgba(46,139,87,.16); flex:none;}
+.acct-tag{font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--ok); border:1px solid var(--ok-line); padding:2px 8px; border-radius:999px; background:var(--surf);}
+.acct-s2{color:var(--muted);}
+.acct-go{margin-left:auto; font-weight:620; color:var(--ok);}
+.acct-break{display:grid; gap:11px; font-size:13.5px;}
+.acct-break > div{display:flex; justify-content:space-between; gap:12px; color:var(--muted);}
+.acct-break b{color:var(--text); font-variant-numeric:tabular-nums; white-space:nowrap;}
+.acct-break .tot{padding-top:12px; border-top:1px solid var(--line); color:var(--text); font-weight:620;}
+.acct-break .tot b{font-size:17px;}
+.acct-note{margin:16px 0 0; font-size:12.5px; color:var(--muted);}
+.acct-rows{display:grid;}
+.acct-rows > div{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
+.acct-rows > div:last-child{border-bottom:0;}
+.acct-rows .k{font-weight:620;}
+.acct-rows .s{color:var(--muted); font-size:12.5px;}
+@media (max-width:620px){ .acct-go{margin-left:0;} }

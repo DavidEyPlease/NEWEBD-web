@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { PageHeader, Card, Badge, fmt } from "./ui";
+import { HostingStrip } from "./account/strip";
 import { CountUp, Ring, Trend } from "./widgets";
 import { audits, certificates, findings, leads, facilityLabel, auditorById, SPECIES, facilities } from "@/lib/data";
 
@@ -30,6 +31,7 @@ export default function Dashboard() {
     <>
       <PageHeader title="Dashboard" sub="Where every certification stands today" />
       <div className="content">
+        <HostingStrip />
         <div className="kpis stagger">
           <div className="kpi acc-gold">
             <div className="l">Audits scheduled</div>

@@ -14,6 +14,11 @@ const GROUPS: { label: string; items: Item[] }[] = [
     items: [{ href: "/", icon: "◧", text: "Dashboard" }],
   },
   {
+    // Datos reales del servicio: hosting y pagos.
+    label: "Your account",
+    items: [{ href: "/account/", icon: "◎", text: "Hosting & Billing" }],
+  },
+  {
     // La propuesta y la cotización viven en newebd.com: se abren aparte.
     label: "Your project",
     items: [
