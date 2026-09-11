@@ -1,12 +1,20 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { hasLocale } from "next-intl";
+
+import { useRouter } from "@/i18n/navigation";
+import { routing, type Locale } from "@/i18n/routing";
+
+import { VEGEMEX_COPY, type VegemexCopy } from "./copy";
 
 /**
  * Resumen "Integración entregada" para Vegemex.
  * Diseño self-contained (CSS scopeado bajo .vgm) que reutiliza las fuentes y la
  * paleta oficial del sitio. Se monta dentro del layout (Header + Footer del sitio),
  * por eso no incluye barra superior ni footer propios.
+ *
+ * El texto vive en `copy.ts` (es / en); aquí solo la estructura y la animación.
  */
 
 const CSS = `
@@ -170,11 +178,99 @@ const CSS = `
   .vgm .btn-primary:hover,.vgm .stat:hover,.vgm .mod:hover{transform:none;}
   .vgm .orb{display:none;}
 }
+
+.vgm .hero-top{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px; margin-bottom:22px;}
+.vgm .hero-top .eyebrow{margin-bottom:0;}
+/* En >=640px el switch ES/EN del Header ya está visible justo arriba; abajo de
+   eso vive dentro del menú hamburguesa, así que aquí lo mostramos en el hero. */
+.vgm .langsw{display:none; align-items:center; gap:2px; padding:3px; border-radius:999px; border:1px solid var(--border-strong); background:rgba(245,243,255,.04);}
+@media (max-width:639px){ .vgm .langsw{display:inline-flex;} }
+.vgm .langsw a{font-family:var(--fm); font-size:11px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); text-decoration:none; padding:5px 11px; border-radius:999px; transition:.2s;}
+.vgm .langsw a:hover{color:var(--text);}
+.vgm .langsw a.on{background:var(--text); color:var(--bg-2);}
 `;
 
 const ARROW = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
-const HTML = `
+const arrowBtn = (size: number) =>
+  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
+/* ---------- Estructura: cifras, clases e iconos (iguales en todo idioma) ---------- */
+
+/** Clase de color de cada eslabón de la cadena, en el orden de `chain.nodes`. */
+const NODE_KINDS = [
+  "buy",
+  "buy",
+  "core",
+  "buy",
+  "core",
+  "core",
+  "core",
+  "core",
+  "cash",
+  "cash",
+  "cash",
+];
+
+/** Color de cada entrada de la leyenda, en el orden de `chain.legend`. */
+const LEGEND_COLORS = ["var(--c2)", "var(--c3)", "var(--good)"];
+
+/** Valores del contador, en el orden de `executed.statLabels`. */
+const STAT_VALUES = [
+  379, 272697, 324, 186, 408, 114, 40, 379, 57, 15, 23, 12,
+];
+
+/** Cifras financieras, en el orden de `finance.labels`. */
+const FIN_VALUES = [
+  { cls: "a", prefix: "$", to: "3.3", dec: "1", suffix: "M", zero: "$0" },
+  { cls: "b", prefix: "", to: "25.6", dec: "1", suffix: "%", zero: "0" },
+  { cls: "c", prefix: "$", to: "953.5", dec: "1", suffix: "K", zero: "$0" },
+  { cls: "d", prefix: "$", to: "2.34", dec: "2", suffix: "M", zero: "$0" },
+];
+
+/** Icono de cada beneficio, en el orden de `values.items`. */
+const VALUE_ICONS = [
+  `<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>`,
+  `<path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/>`,
+  `<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15h6M9 18h4"/>`,
+  `<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>`,
+  `<path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/>`,
+  `<path d="M20 6L9 17l-5-5"/>`,
+];
+
+const QUOTE_URL = "/vegemex/cotizacion";
+const QUOTE_PDF = "/vegemex/Cotizacion-NEWEBD-Vegemex.pdf";
+const PORTAL_URL = "https://panel.vegemex.com.mx";
+
+/** URL de esta misma página en cada idioma (el locale por defecto va sin prefijo). */
+const PAGE_URLS: Record<Locale, string> = { es: "/vegemex", en: "/en/vegemex" };
+
+const mod = (m: {
+  badge: string;
+  h3: string;
+  route: string;
+  p: string;
+  pdf: string;
+}) => `
+      <div class="mod reveal">
+        <span class="badge">${m.badge}</span>
+        <h3>${m.h3}</h3>
+        <span class="route">${m.route}</span>
+        <p>${m.p}</p>
+        <span class="pdf">◆ ${m.pdf}</span>
+      </div>`;
+
+function buildHtml(c: VegemexCopy, locale: Locale) {
+  const langLinks = routing.locales
+    .map(
+      (l) =>
+        `<a href="${PAGE_URLS[l]}" hreflang="${l}" data-locale="${l}" class="${l === locale ? "on" : ""}"${
+          l === locale ? ' aria-current="true"' : ""
+        }>${l}</a>`,
+    )
+    .join("");
+
+  return `
 <div class="bg-fx" aria-hidden="true">
   <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
   <div class="grid-lines"></div>
@@ -182,98 +278,85 @@ const HTML = `
 <div class="wrap">
 
   <section class="hero">
-    <span class="eyebrow"><span class="dot"></span> Integración entregada · actualizado agosto 2026</span>
-    <h1>Tu operación real, ya <span class="g">viva dentro del portal.</span></h1>
-    <p class="lede">Partimos de una propuesta. Luego leímos tus Excel, entendimos toda la cadena de exportación y la <strong>ejecutamos directamente</strong> en el sistema. Ya no es una demo: son <strong>tres temporadas de tu operación</strong> —cargadas, verificadas en vivo y listas para que el equipo las use hoy.</p>
+    <div class="hero-top">
+      <span class="eyebrow"><span class="dot"></span> ${c.hero.eyebrow}</span>
+      <div class="langsw" role="group" aria-label="${c.lang.label}">${langLinks}</div>
+    </div>
+    <h1>${c.hero.h1}</h1>
+    <p class="lede">${c.hero.lede}</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://panel.vegemex.com.mx" target="_blank" rel="noopener">Abrir el portal
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <a class="btn btn-primary" href="${PORTAL_URL}" target="_blank" rel="noopener">${c.hero.ctaPortal}
+        ${arrowBtn(17)}
       </a>
-      <a class="btn btn-ghost" href="#entregas">Ver lo más reciente</a>
-      <a class="btn btn-ghost" href="#revision">Lo que hay que revisar</a>
-      <a class="btn btn-ghost" href="/vegemex/cotizacion">Ver la cotización</a>
+      <a class="btn btn-ghost" href="#entregas">${c.hero.ctaRecent}</a>
+      <a class="btn btn-ghost" href="#revision">${c.hero.ctaReview}</a>
+      <a class="btn btn-ghost" href="${QUOTE_URL}">${c.hero.ctaQuote}</a>
     </div>
     <div class="hero-chips">
-      <span class="chip"><span class="tick">✓</span> En producción en panel.vegemex.com.mx</span>
-      <span class="chip"><span class="tick">✓</span> Respaldo tomado antes de cargar</span>
-      <span class="chip"><span class="tick">✓</span> Verificado módulo por módulo</span>
+      ${c.hero.chips
+        .map((chip) => `<span class="chip"><span class="tick">✓</span> ${chip}</span>`)
+        .join("\n      ")}
     </div>
   </section>
 
   <section class="sec">
-    <p class="kicker">Cómo llegamos aquí</p>
-    <h2>De la propuesta a la operación, en cuatro pasos.</h2>
-    <p class="sec-lede">No entregamos un plan para que alguien lo capture después. Lo hicimos nosotros, directo sobre tu sistema.</p>
+    <p class="kicker">${c.journey.kicker}</p>
+    <h2>${c.journey.h2}</h2>
+    <p class="sec-lede">${c.journey.lede}</p>
     <div class="journey">
-      <div class="step reveal"><span class="num">PASO 01</span><h3>La propuesta</h3><p>Te mostramos un portal con la forma de tu operación de exportación: el molde correcto.</p></div>
-      <div class="step reveal"><span class="num">PASO 02</span><h3>Leímos tus Excel</h3><p>Nos mandaste la operación completa —15+ hojas que hoy corren a mano, más miles de PDFs y CFDIs. La estudiamos entera.</p></div>
-      <div class="step reveal"><span class="num">PASO 03</span><h3>Integramos y ejecutamos</h3><p>Convertimos esos Excel en datos reales dentro del portal. Un respaldo antes; carga y verificación uno por uno.</p></div>
-      <div class="step reveal live"><span class="num">PASO 04 · LISTO</span><h3>Listo para usarse</h3><p>El equipo entra y encuentra su operación real: buscable, conectada y con PDFs con el formato oficial.</p></div>
+      ${c.journey.steps
+        .map(
+          (s, i) =>
+            `<div class="step reveal${i === c.journey.steps.length - 1 ? " live" : ""}"><span class="num">${s.num}</span><h3>${s.h3}</h3><p>${s.p}</p></div>`,
+        )
+        .join("\n      ")}
     </div>
   </section>
 
   <section class="sec">
-    <p class="kicker">Lo que vimos en tus Excel</p>
-    <h2>Toda tu cadena, de la semilla a la liquidación.</h2>
-    <p class="sec-lede">Vegemex no maneja "una web": corre una cadena de suministro y exportación completa. La mapeamos entera para que el portal la refleje tal cual.</p>
+    <p class="kicker">${c.chain.kicker}</p>
+    <h2>${c.chain.h2}</h2>
+    <p class="sec-lede">${c.chain.lede}</p>
     <div class="flow-shell reveal">
       <div class="flow-scroll">
         <div class="flow">
-          <div class="node buy"><span class="s">Compra</span><span class="t">Semilla</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node buy"><span class="s">Compra</span><span class="t">Invernadero</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node core"><span class="s">Campo</span><span class="t">Agricultor</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node buy"><span class="s">Compra</span><span class="t">Material</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node core"><span class="s">Proceso</span><span class="t">Maquila</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node core"><span class="s">Salida</span><span class="t">Embarque</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node core"><span class="s">Carta porte</span><span class="t">Flete</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node core"><span class="s">Destino</span><span class="t">QC / calidad</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node cash"><span class="s">Costo</span><span class="t">Costeo</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node cash"><span class="s">Cobranza</span><span class="t">Facturación</span></div>
-          <span class="arrow">${ARROW}</span>
-          <div class="node cash"><span class="s">Pago</span><span class="t">Liquidación</span></div>
+          ${c.chain.nodes
+            .map(
+              (n, i) =>
+                `<div class="node ${NODE_KINDS[i]}"><span class="s">${n.s}</span><span class="t">${n.t}</span></div>`,
+            )
+            .join(`\n          <span class="arrow">${ARROW}</span>\n          `)}
         </div>
       </div>
       <div class="flow-legend">
-        <span><span class="swatch" style="background:var(--c2)"></span> Compras / procurement</span>
-        <span><span class="swatch" style="background:var(--c3)"></span> Operación de exportación</span>
-        <span><span class="swatch" style="background:var(--good)"></span> Dinero</span>
+        ${c.chain.legend
+          .map(
+            (l, i) =>
+              `<span><span class="swatch" style="background:${LEGEND_COLORS[i]}"></span> ${l}</span>`,
+          )
+          .join("\n        ")}
       </div>
       <div class="transv">
-        <span class="lbl">Transversal a todo</span>
-        <span class="tpill">Inocuidad · Primus GFS</span>
-        <span class="tpill">Inventario y almacén</span>
-        <span class="tpill">Servicios: aduana e inspección</span>
+        <span class="lbl">${c.chain.transversalLabel}</span>
+        ${c.chain.transversalPills
+          .map((p) => `<span class="tpill">${p}</span>`)
+          .join("\n        ")}
       </div>
-      <p class="flow-note">Cada eslabón vivía en su propio Excel, aparte del sistema. El portal ahora los conecta en un solo flujo.</p>
+      <p class="flow-note">${c.chain.note}</p>
     </div>
   </section>
 
   <section class="sec" id="ejecutamos">
-    <p class="kicker">Lo que ejecutamos directamente</p>
-    <h2>Tu historia, cargada y verificada en vivo.</h2>
-    <p class="sec-lede">Invierno 2025–26 y verano 2026, ya adentro. Estos no son datos de ejemplo: son tus registros reales, ya funcionando en el portal.</p>
+    <p class="kicker">${c.executed.kicker}</p>
+    <h2>${c.executed.h2}</h2>
+    <p class="sec-lede">${c.executed.lede}</p>
     <div class="stats">
-      <div class="stat reveal"><div class="v" data-to="379">0</div><div class="l">Embarques reales cargados</div></div>
-      <div class="stat reveal"><div class="v" data-to="272697">0</div><div class="l">Cajas entregadas registradas</div></div>
-      <div class="stat reveal"><div class="v" data-to="324">0</div><div class="l">Liquidaciones históricas</div></div>
-      <div class="stat reveal"><div class="v" data-to="186">0</div><div class="l">Manifiestos (maquila + proveedor)</div></div>
-      <div class="stat reveal"><div class="v" data-to="408">0</div><div class="l">Pagos de flete, con banco y CLABE</div></div>
-      <div class="stat reveal"><div class="v" data-to="114">0</div><div class="l">Agricultores en el catálogo</div></div>
-      <div class="stat reveal"><div class="v" data-to="40">0</div><div class="l">Transportistas · 50 tarifas por ruta</div></div>
-      <div class="stat reveal"><div class="v" data-to="379">0</div><div class="l">Cotizaciones / costeo por carga</div></div>
-      <div class="stat reveal"><div class="v" data-to="57">0</div><div class="l">Productos · 9 clientes de exportación</div></div>
-      <div class="stat reveal"><div class="v" data-to="15">0</div><div class="l">Órdenes de compra reales</div></div>
-      <div class="stat reveal"><div class="v" data-to="23">0</div><div class="l">Registros de inocuidad y vigencias</div></div>
-      <div class="stat reveal"><div class="v" data-to="12">0</div><div class="l">Programa de cosecha · 8 contratos</div></div>
+      ${c.executed.statLabels
+        .map(
+          (l, i) =>
+            `<div class="stat reveal"><div class="v" data-to="${STAT_VALUES[i]}">0</div><div class="l">${l}</div></div>`,
+        )
+        .join("\n      ")}
     </div>
   </section>
 
@@ -281,261 +364,166 @@ const HTML = `
     <div class="fin reveal">
       <div class="fin-inner">
         <div class="fin-grid">
-          <div class="fin-item a"><div class="v" data-prefix="$" data-to="3.3" data-dec="1" data-suffix="M">$0</div><div class="l">Ventas registradas</div></div>
-          <div class="fin-item b"><div class="v" data-to="25.6" data-dec="1" data-suffix="%">0</div><div class="l">Margen NETO promedio</div></div>
-          <div class="fin-item c"><div class="v" data-prefix="$" data-to="953.5" data-dec="1" data-suffix="K">$0</div><div class="l">Utilidad neta</div></div>
-          <div class="fin-item d"><div class="v" data-prefix="$" data-to="2.34" data-dec="2" data-suffix="M">$0</div><div class="l">Liquidado a la cadena</div></div>
+          ${c.finance.labels
+            .map((l, i) => {
+              const f = FIN_VALUES[i];
+              const prefix = f.prefix ? ` data-prefix="${f.prefix}"` : "";
+              return `<div class="fin-item ${f.cls}"><div class="v"${prefix} data-to="${f.to}" data-dec="${f.dec}" data-suffix="${f.suffix}">${f.zero}</div><div class="l">${l}</div></div>`;
+            })
+            .join("\n          ")}
         </div>
         <div class="insight">
           <span class="ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
-          <p>Tu operación se veía con <strong>~68% de margen</strong> mirando solo el costo logístico. Al sumar el <strong>costo del vegetal por carga</strong>, el portal muestra el margen NETO real: <strong>25.6%</strong>. Salieron a la luz incluso cargas que perdieron dinero (una hasta −1.64 USD por caja). Eso ahora se ve de un vistazo, no hasta el cierre del año.</p>
+          <p>${c.finance.insight}</p>
         </div>
       </div>
     </div>
   </section>
 
   <section class="sec">
-    <p class="kicker">Lo nuevo que construimos</p>
-    <h2>Dos módulos que te faltaban, ya en vivo.</h2>
-    <p class="sec-lede">Los huecos que revelaron tus Excel —compras y logística— ahora tienen su lugar en el portal, calcados de tus formatos reales.</p>
-    <div class="mods">
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Compras y órdenes de compra</h3>
-        <span class="route">/compras</span>
-        <p>Calcado de tu machote "Orden de compra VGM". Semilla, plántula, material y servicios, con flujo Solicitada → Enviada → Recibida → Facturada → Pagada.</p>
-        <span class="pdf">◆ PDF imprimible con membrete oficial</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Logística y manifiestos</h3>
-        <span class="route">/logistica</span>
-        <p>Orden de salida de maquila con supervisores, chofer y distribución de producto. Tres versiones —maquila, proveedor y cliente— cada una con su documento.</p>
-        <span class="pdf">◆ PDF por tipo de manifiesto</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Ampliado</span>
-        <h3>Formularios de alta reales</h3>
-        <span class="route">Embarques · Clientes</span>
-        <p>El alta de embarque ganó un "modo Completo" con los ~15 campos reales (agricultor, maquila, transportista, precio USD, PO, fechas). Los clientes ahora guardan términos de exportación: moneda, incoterm, puerto y crédito.</p>
-        <span class="pdf">◆ Captura fiel a tu operación</span>
-      </div>
+    <p class="kicker">${c.built.kicker}</p>
+    <h2>${c.built.h2}</h2>
+    <p class="sec-lede">${c.built.lede}</p>
+    <div class="mods">${c.built.mods.map(mod).join("")}
     </div>
   </section>
 
   <section class="sec">
-    <p class="kicker">Cómo mejora tu sistema</p>
-    <h2>Lo que cambia para el equipo, en concreto.</h2>
+    <p class="kicker">${c.values.kicker}</p>
+    <h2>${c.values.h2}</h2>
     <div class="values">
-      <div class="val reveal"><span class="vi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg></span><div><h4>Una sola fuente de verdad</h4><p>Lo que vivía en 15+ Excel sueltos ahora está en un solo lugar, conectado y buscable.</p></div></div>
-      <div class="val reveal"><span class="vi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span><div><h4>El margen real, no el aparente</h4><p>El costo del vegetal ya entra al cálculo. Ves utilidad neta por carga, no una cifra inflada.</p></div></div>
-      <div class="val reveal"><span class="vi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 15h6M9 18h4"/></svg></span><div><h4>PDFs con un clic</h4><p>Órdenes de compra, manifiestos y liquidaciones se imprimen con tu formato oficial.</p></div></div>
-      <div class="val reveal"><span class="vi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span><div><h4>Tu historia, ya cargada</h4><p>Invierno 25–26 y verano 26 adentro. El equipo consulta el pasado y da de alta lo nuevo.</p></div></div>
-      <div class="val reveal"><span class="vi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.9 5.8H20l-4.9 3.6 1.9 5.8L12 14.6 7 18.2l1.9-5.8L4 8.8h6.1z"/></svg></span><div><h4>Listo para la capa de IA</h4><p>Con la operación estructurada, el siguiente paso es un asistente que lea y registre por ti.</p></div></div>
-      <div class="val reveal"><span class="vi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></span><div><h4>Sin riesgo en la carga</h4><p>Tomamos un respaldo completo antes de reemplazar el demo, y verificamos cada módulo en vivo.</p></div></div>
+      ${c.values.items
+        .map(
+          (v, i) =>
+            `<div class="val reveal"><span class="vi"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${VALUE_ICONS[i]}</svg></span><div><h4>${v.h4}</h4><p>${v.p}</p></div></div>`,
+        )
+        .join("\n      ")}
     </div>
   </section>
 
 
   <section class="sec" id="entregas">
-    <p class="kicker">Lo más reciente · agosto 2026</p>
-    <h2>Lo que entregamos después de la carga.</h2>
-    <p class="sec-lede">Con tu operación ya dentro, seguimos construyendo sobre ella. Esto es lo que se sumó al portal en las últimas semanas — todo en vivo.</p>
-    <div class="mods">
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Torre de control</h3>
-        <span class="route">/dashboard</span>
-        <p>El tablero de inicio ahora gira alrededor del programa de cargas: qué se mueve hoy, qué expediente está incompleto, qué llega tarde y el retorno real de la temporada — todo en vivo, sin abrir un módulo.</p>
-        <span class="pdf">◆ Alertas de lo que requiere tu atención</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Roles y permisos por área</h3>
-        <span class="route">/permisos</span>
-        <p>Cada persona entra solo a lo suyo. Dirección y administración ven todo y deciden, con interruptores, qué área toca a cada rol operativo — con excepciones por persona cuando hace falta.</p>
-        <span class="pdf">◆ Finanzas y expedientes legales, protegidos</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Expediente de la carga</h3>
-        <span class="route">/embarques</span>
-        <p>La carga es el centro de todo: una línea de tiempo de siembra a entrega, el porcentaje de llenado del expediente y los días que faltan para entregar. Lo que falta se llena ahí mismo.</p>
-        <span class="pdf">◆ Cosecha, manifiestos y costeo en un solo lugar</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Unificado</span>
-        <h3>Materiales, inventario y compras</h3>
-        <span class="route">/materiales</span>
-        <p>Un solo lugar: existencias, movimientos y órdenes de compra. La orden de compra entra sola al inventario y la carga descuenta sola lo que consume.</p>
-        <span class="pdf">◆ Automático de punta a punta</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Ampliado</span>
-        <h3>Manifiestos, los cuatro tipos</h3>
-        <span class="route">Desde el expediente</span>
-        <p>Maquila, proveedor, cliente y embarque. Se crean desde la carga, se rellenan solos con lo que ya capturaste y heredan supervisores y transporte del manifiesto hermano.</p>
-        <span class="pdf">◆ PDF con el formato oficial de cada tipo</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Área jurídica con firma digital</h3>
-        <span class="route">/contratos</span>
-        <p>Contratos por agricultor con sus anexos reales —calidad, programa de cargas y plan de pagos— y firma por liga: el agricultor firma desde su celular y queda registrada.</p>
-        <span class="pdf">◆ Expediente de documentos por proveedor</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Ampliado</span>
-        <h3>El expediente, completo</h3>
-        <span class="route">/embarques → abrir una carga</span>
-        <p>Servicio de empaque, costo del flete con su tabulador, aduana de cruce y los dos despachos, carga consolidada de varios productos, y la cita en destino con los días de retraso que se recalculan solos.</p>
-        <span class="pdf">◆ Inocuidad del agricultor, dentro de la carga</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Ampliado</span>
-        <h3>Concentrado de gastos</h3>
-        <span class="route">Expediente → flujo de dinero</span>
-        <p>Los 18 conceptos de sus hojas de costeo, editables, más el pago al agricultor. Suma todo, calcula el retorno y les dice qué concepto falta capturar.</p>
-        <span class="pdf">◆ Avisa cuando el retorno guardado no cuadra</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Fiel al formato</span>
-        <h3>Manifiestos con su machote real</h3>
-        <span class="route">Expediente → manifiestos</span>
-        <p>La orden de salida de empaque con sus dos listas de verificación y sus tablas de entrada y desglose; el manifiesto de embarque con origen, cliente, factura, registro FDA, sello, termógrafo y los dos despachos aduanales.</p>
-        <span class="pdf">◆ Cada documento dice para qué sirve</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Termógrafos Copeland</h3>
-        <span class="route">Expediente → ruta y traslado</span>
-        <p>El número GO del termógrafo vive en la carga. Desde ahí se abre el rastreo del portal de Copeland y el sistema arma los datos del envío listos para pegar: el folio de la carga ya es el nombre del viaje.</p>
-        <span class="pdf">◆ Falta que Copeland comparta su API</span>
-      </div>
-      <div class="mod reveal">
-        <span class="badge">Nuevo</span>
-        <h3>Programa de cosecha en tres capas</h3>
-        <span class="route">/cosecha</span>
-        <p>Lo comprometido con el cliente por producto y mes; quién surte cada semana con el semáforo contra las cargas reales; y la postura completa de campo, de la semilla al lote.</p>
-        <span class="pdf">◆ Las fechas se calculan con la ficha del cultivo</span>
-      </div>
+    <p class="kicker">${c.recent.kicker}</p>
+    <h2>${c.recent.h2}</h2>
+    <p class="sec-lede">${c.recent.lede}</p>
+    <div class="mods">${c.recent.mods.map(mod).join("")}
     </div>
   </section>
 
   <section class="sec" id="revision">
-    <p class="kicker">Para su equipo</p>
-    <h2>Lo que necesitamos que revisen.</h2>
-    <p class="sec-lede">Todo lo de arriba ya está en línea y verificado técnicamente. Lo que falta es el visto bueno de quien lo usa todos los días. Esta es la lista, en el orden en que conviene recorrerla.</p>
+    <p class="kicker">${c.review.kicker}</p>
+    <h2>${c.review.h2}</h2>
+    <p class="sec-lede">${c.review.lede}</p>
     <div class="chk">
-      <div class="ck reveal"><span class="box">1</span><div class="txt">
-        <h4>Los nombres <span class="rt">todo el portal</span></h4>
-        <p>Maquila ahora se lee <strong>Empaque</strong> en todas partes, y a la empresa le pusimos <strong>empacadora</strong>. «Flete y transporte» quedó como <strong>Flete</strong> y «fletero» como <strong>proveedor</strong>. Si prefieren otra palabra, se cambia en minutos.</p>
-      </div></div>
-      <div class="ck reveal"><span class="box">2</span><div class="txt">
-        <h4>El expediente de una carga <span class="rt">/embarques → abrir cualquiera</span></h4>
-        <p>Recorran los grupos: empaque, flete, cliente y destino, fechas, flujo de dinero, ruta, manifiestos e inocuidad. ¿Falta algún campo que usan a diario? ¿Sobra alguno?</p>
-      </div></div>
-      <div class="ck reveal"><span class="box">3</span><div class="txt">
-        <h4>Los cuatro manifiestos y sus PDF <span class="rt">expediente → manifiestos</span></h4>
-        <p>Generen uno de cada tipo y compárenlo contra su formato en papel. Los de <strong>empaque</strong> y <strong>embarque</strong> los hicimos con sus machotes reales; los de <strong>proveedor</strong> y <strong>cliente</strong> todavía no.</p>
-      </div></div>
-      <div class="ck reveal"><span class="box">4</span><div class="txt">
-        <h4>El concentrado de gastos <span class="rt">expediente → flujo de dinero</span></h4>
-        <p>Abran una carga con costeo y revisen si los 18 conceptos son los correctos. <strong>Ojo aquí:</strong> el retorno guardado no cuadra en 131 de 246 cargas porque el pago al agricultor viene capturado por caja, no completo. El sistema lo señala y ofrece el cálculo, pero no pisa su cifra sin que ustedes lo decidan.</p>
-      </div></div>
-      <div class="ck reveal"><span class="box">5</span><div class="txt">
-        <h4>El porcentaje del expediente <span class="rt">/embarques y torre de control</span></h4>
-        <p>Bajó a 44 % en promedio a propósito: ahora exige cuatro datos nuevos (servicio de empaque, costo de flete, aduana y agente aduanal). No es que se haya perdido información — es que ahora mide lo que de verdad falta.</p>
-      </div></div>
-      <div class="ck reveal"><span class="box">6</span><div class="txt">
-        <h4>El programa de cosecha <span class="rt">/cosecha</span></h4>
-        <p>Tres pestañas nuevas. Revisen si la rejilla del compromiso refleja cómo lo manejan, si el semáforo semanal les sirve, y si la ficha del cultivo de la iceberg quedó bien cargada.</p>
-      </div></div>
-      <div class="ck reveal"><span class="box">7</span><div class="txt">
-        <h4>La contraseña de Copeland <span class="rt">acción de seguridad</span></h4>
-        <p>El documento interno de termógrafos trae usuario y contraseña en texto plano y circula por correo. <strong>Recomendamos cambiarla</strong> y capturarla en el portal, donde queda protegida y nadie la ve completa.</p>
-      </div></div>
+      ${c.review.items
+        .map(
+          (r, i) =>
+            `<div class="ck reveal"><span class="box">${i + 1}</span><div class="txt">
+        <h4>${r.h4} <span class="rt">${r.route}</span></h4>
+        <p>${r.p}</p>
+      </div></div>`,
+        )
+        .join("\n      ")}
     </div>
   </section>
 
   <section class="sec">
-    <p class="kicker">Lo que falta</p>
-    <h2>Depende de ustedes, no de nosotros.</h2>
-    <p class="sec-lede">Cuatro cosas están detenidas esperando información que solo Vegemex tiene. En cuanto llegue, se construyen.</p>
+    <p class="kicker">${c.needs.kicker}</p>
+    <h2>${c.needs.h2}</h2>
+    <p class="sec-lede">${c.needs.lede}</p>
     <div class="need">
-      <div class="nd reveal"><span class="num">01</span><div>
-        <h4>La API de Copeland</h4>
-        <p>Para que la temperatura y la posición se vean dentro del expediente hace falta que Copeland comparta su documentación: cómo autentica y cuál es el endpoint de lecturas por número GO. El conector ya está escrito esperándola.</p>
-      </div></div>
-      <div class="nd reveal"><span class="num">02</span><div>
-        <h4>Los machotes de manifiesto de proveedor y de cliente</h4>
-        <p>Con los de empaque y embarque quedaron idénticos a su formato. Faltan esos dos ejemplos reales para dejarlos igual de fieles.</p>
-      </div></div>
-      <div class="nd reveal"><span class="num">03</span><div>
-        <h4>Los programas de siembra de los otros seis cultivos</h4>
-        <p>Tenemos el de lechuga iceberg. Con los de apio, brócoli, coliflor, romaine, green leaf y red leaf se carga la temporada completa y cada cultivo tiene su ficha.</p>
-      </div></div>
-      <div class="nd reveal"><span class="num">04</span><div>
-        <h4>Su visto bueno de la lista de arriba</h4>
-        <p>Sobre esa revisión salen los ajustes finos. Nada de lo entregado se toca sin que ustedes lo pidan.</p>
-      </div></div>
+      ${c.needs.items
+        .map(
+          (n, i) =>
+            `<div class="nd reveal"><span class="num">${String(i + 1).padStart(2, "0")}</span><div>
+        <h4>${n.h4}</h4>
+        <p>${n.p}</p>
+      </div></div>`,
+        )
+        .join("\n      ")}
     </div>
   </section>
 
   <section class="sec">
-    <p class="kicker">La propuesta</p>
-    <h2>La cotización, siempre a la mano.</h2>
-    <p class="sec-lede">El acuerdo completo: alcance, fases, inversión y el despliegue de pagos a 24 meses.</p>
+    <p class="kicker">${c.quote.kicker}</p>
+    <h2>${c.quote.h2}</h2>
+    <p class="sec-lede">${c.quote.lede}</p>
     <div class="cta-row" style="margin-top:6px;">
-      <a class="btn btn-primary" href="/vegemex/cotizacion">Ver la cotización completa
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      <a class="btn btn-primary" href="${QUOTE_URL}">${c.quote.ctaFull}
+        ${arrowBtn(17)}
       </a>
-      <a class="btn btn-ghost" href="/vegemex/Cotizacion-NEWEBD-Vegemex.pdf" target="_blank" rel="noopener">Descargar en PDF</a>
+      <a class="btn btn-ghost" href="${QUOTE_PDF}" target="_blank" rel="noopener">${c.quote.ctaPdf}</a>
     </div>
     <div class="hero-chips" style="margin-top:16px;">
-      <span class="chip"><span class="tick">✓</span> Inversión acordada · $1,015,000 MXN + IVA</span>
-      <span class="chip"><span class="tick">✓</span> 24 mensualidades de $49,058.33 con IVA</span>
-      <span class="chip"><span class="tick">✓</span> Sin intereses ni costo financiero</span>
+      ${c.quote.chips
+        .map((chip) => `<span class="chip"><span class="tick">✓</span> ${chip}</span>`)
+        .join("\n      ")}
     </div>
   </section>
 
   <section class="sec">
-    <p class="kicker">Lo que sigue (opcional)</p>
-    <h2>Sobre esta base, los próximos pasos.</h2>
-    <p class="sec-lede">La operación ya está adentro. Lo demás es enriquecerla cuando lo decidas.</p>
+    <p class="kicker">${c.next.kicker}</p>
+    <h2>${c.next.h2}</h2>
+    <p class="sec-lede">${c.next.lede}</p>
     <div class="road">
-      <span class="rd reveal"><span class="d"></span>Activar el asistente de IA del portal</span>
-      <span class="rd reveal"><span class="d"></span>Correo automático de recordatorio para firmar contratos</span>
-      <span class="rd reveal"><span class="d"></span>Alertas del programa de cosecha en la torre de control</span>
-      <span class="rd reveal"><span class="d"></span>Enriquecer clientes con contactos y datos fiscales</span>
-      <span class="rd reveal"><span class="d"></span>Notas de remisión y evidencias de temperatura</span>
-      <span class="rd reveal"><span class="d"></span>WhatsApp IA — disponible cuando lo decidan</span>
+      ${c.next.items
+        .map((i) => `<span class="rd reveal"><span class="d"></span>${i}</span>`)
+        .join("\n      ")}
     </div>
   </section>
 
   <section class="sec" style="padding-top:20px;">
     <div class="close reveal">
       <div class="close-inner">
-        <p class="kicker" style="text-align:center;margin-bottom:14px;">Ya está en línea</p>
-        <h2>Tu operación te está esperando en el portal.</h2>
-        <p>Entra con tu equipo y recórrela: los 379 embarques, las liquidaciones, los manifiestos y las compras, tal como los viven todos los días.</p>
-        <a class="btn btn-primary" href="https://panel.vegemex.com.mx" target="_blank" rel="noopener">Abrir panel.vegemex.com.mx
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        <p class="kicker" style="text-align:center;margin-bottom:14px;">${c.close.kicker}</p>
+        <h2>${c.close.h2}</h2>
+        <p>${c.close.p}</p>
+        <a class="btn btn-primary" href="${PORTAL_URL}" target="_blank" rel="noopener">${c.close.cta}
+          ${arrowBtn(18)}
         </a>
         <div class="sign">
           <span class="n">NEWEBD</span>
-          <span>El nuevo desarrollo es con IA — integrada en tu operación.</span>
+          <span>${c.close.signTagline}</span>
         </div>
       </div>
     </div>
-    <p class="cotz">¿Buscas la propuesta? <a href="/vegemex/cotizacion">Ver la cotización completa →</a> · <a href="/vegemex/Cotizacion-NEWEBD-Vegemex.pdf" target="_blank" rel="noopener">Descargar PDF →</a></p>
+    <p class="cotz">${c.close.cotzQuestion} <a href="${QUOTE_URL}">${c.close.cotzQuote}</a> · <a href="${QUOTE_PDF}" target="_blank" rel="noopener">${c.close.cotzPdf}</a></p>
   </section>
 
 </div>
 `;
+}
 
-export function VegemexRecap() {
+export function VegemexRecap({ locale }: { locale: Locale }) {
   const ref = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const html = useMemo(
+    () => buildHtml(VEGEMEX_COPY[locale], locale),
+    [locale],
+  );
+
+  // El switch de idioma del hero son <a> reales (funcionan sin JS), pero el
+  // middleware de next-intl redirige /vegemex → /en/vegemex si la cookie o el
+  // navegador dicen inglés. Enrutamos el click por el router de next-intl, que
+  // además sincroniza esa cookie: así "ES" sí regresa al español.
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+
+    const onClick = (event: MouseEvent) => {
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey) return;
+      const link = (event.target as HTMLElement | null)?.closest<HTMLAnchorElement>(
+        ".langsw a[data-locale]",
+      );
+      const next = link?.dataset.locale;
+      if (!next || !hasLocale(routing.locales, next)) return;
+      event.preventDefault();
+      if (next !== locale) router.replace("/vegemex", { locale: next });
+    };
+
+    root.addEventListener("click", onClick);
+    return () => root.removeEventListener("click", onClick);
+  }, [locale, router, html]);
 
   useEffect(() => {
     const root = ref.current;
@@ -567,8 +555,9 @@ export function VegemexRecap() {
     }
 
     // Count-up
+    const numberLocale = locale === "en" ? "en-US" : "es-MX";
     const fmt = (n: number, dec: number) =>
-      n.toLocaleString("es-MX", {
+      n.toLocaleString(numberLocale, {
         minimumFractionDigits: dec,
         maximumFractionDigits: dec,
       });
@@ -615,7 +604,7 @@ export function VegemexRecap() {
     }
 
     return () => observers.forEach((o) => o.disconnect());
-  }, []);
+  }, [locale, html]);
 
   return (
     <>
@@ -623,7 +612,7 @@ export function VegemexRecap() {
       <div
         className="vgm"
         ref={ref}
-        dangerouslySetInnerHTML={{ __html: HTML }}
+        dangerouslySetInnerHTML={{ __html: html }}
       />
     </>
   );
