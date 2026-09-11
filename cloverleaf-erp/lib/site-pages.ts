@@ -13,11 +13,11 @@ export type SitePage = {
 };
 
 export const sitePages: SitePage[] = [
-  { slug: "home", title: "Home", url: "https://cloverleaf.newebd.com/", image: "/site/home.jpeg", width: 1440, height: 5029 },
-  { slug: "about-us", title: "About Us", url: "https://cloverleaf.newebd.com/about-us", image: "/site/about-us.jpeg", width: 1440, height: 2055 },
-  { slug: "auditing-services", title: "Auditing Services", url: "https://cloverleaf.newebd.com/auditing-services", image: "/site/auditing-services.jpeg", width: 1440, height: 3688 },
-  { slug: "certified-care", title: "Certified Care", url: "https://cloverleaf.newebd.com/certified-care", image: "/site/certified-care.jpeg", width: 1440, height: 5423 },
-  { slug: "contact-us", title: "Contact Us", url: "https://cloverleaf.newebd.com/contact-us", image: "/site/contact-us.jpeg", width: 1440, height: 995 },
+  { slug: "home", title: "Home", url: "https://cloverleafaws.com/", image: "/site/home.jpeg", width: 1440, height: 5029 },
+  { slug: "about-us", title: "About Us", url: "https://cloverleafaws.com/about-us", image: "/site/about-us.jpeg", width: 1440, height: 2055 },
+  { slug: "auditing-services", title: "Auditing Services", url: "https://cloverleafaws.com/auditing-services", image: "/site/auditing-services.jpeg", width: 1440, height: 3688 },
+  { slug: "certified-care", title: "Certified Care", url: "https://cloverleafaws.com/certified-care", image: "/site/certified-care.jpeg", width: 1440, height: 5423 },
+  { slug: "contact-us", title: "Contact Us", url: "https://cloverleafaws.com/contact-us", image: "/site/contact-us.jpeg", width: 1440, height: 995 },
 ];
 
 /** Tipos de nota, con el color que los distingue en la lista. */

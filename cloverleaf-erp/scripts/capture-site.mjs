@@ -13,7 +13,7 @@ const EXECUTABLE =
   process.env.CHROMIUM_PATH ??
   `${process.env.HOME}/Library/Caches/ms-playwright/chromium_headless_shell-1223/chrome-headless-shell-mac-arm64/chrome-headless-shell`;
 
-const BASE = "https://cloverleaf.newebd.com";
+const BASE = "https://cloverleafaws.com";
 const PAGES = [
   { slug: "home", path: "/", title: "Home" },
   { slug: "about-us", path: "/about-us", title: "About Us" },
