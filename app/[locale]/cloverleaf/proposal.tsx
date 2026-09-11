@@ -13,7 +13,7 @@ import { useEffect, useRef } from "react";
  * Contenido en inglés — el cliente está en Missouri, EE.UU.
  */
 
-const CSS = `
+export const CSS = `
 .clv{
   --gold:#B89847; --gold-2:#D4BC7A; --leaf:#6E9A6A; --sage:#9DBE8A;
   --grad:linear-gradient(100deg,var(--gold),var(--gold-2) 38%,var(--leaf) 74%,var(--sage));
@@ -146,6 +146,73 @@ const CSS = `
 
 .clv .foot{padding:30px 0 70px; color:var(--faint); font-family:var(--fm); font-size:11.5px; text-align:center;}
 
+/* ---- Plazos, cotización y formas de pago (compartido con /cloverleaf/cotizacion) ---- */
+.clv .tl-track{display:grid; grid-template-columns:2fr 4fr 2fr; gap:6px; margin:0 0 10px;}
+.clv .tl-track span{height:10px; border-radius:999px;}
+.clv .tl-track .a{background:var(--gold);} .clv .tl-track .b{background:var(--leaf);} .clv .tl-track .c{background:var(--sage);}
+.clv .tl-scale{display:flex; justify-content:space-between; font-family:var(--fm); font-size:11px; color:var(--faint); margin:0 0 22px;}
+.clv .tl{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+.clv .tl-step{position:relative; background:var(--surface); border:1px solid var(--border); border-radius:17px; padding:24px 22px 22px; overflow:hidden; transition:.22s;}
+.clv .tl-step:hover{border-color:var(--border-strong); transform:translateY(-3px); box-shadow:var(--shadow);}
+.clv .tl-step::before{content:""; position:absolute; left:0; top:0; right:0; height:3px; background:var(--c,var(--gold));}
+.clv .tl-step .wk{font-family:var(--fm); font-size:11.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--gold-2);}
+.clv .tl-step h3{font-weight:600; font-size:1.1rem; margin:8px 0 8px;}
+.clv .tl-step p{margin:0; color:var(--muted); font-size:.92rem; line-height:1.56;}
+.clv .tl-step ul{margin:12px 0 0; padding-left:18px; color:var(--muted); font-size:.9rem; line-height:1.62;}
+.clv .note-box{margin-top:18px; border:1px dashed var(--border-strong); border-radius:14px; padding:17px 20px; color:var(--muted); font-size:.97rem; line-height:1.6;}
+.clv .note-box strong{color:var(--text); font-weight:600;}
+
+.clv .qt-shell{border:1px solid var(--border); border-radius:18px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow);}
+.clv .qt-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch;}
+.clv table.qt{width:100%; border-collapse:collapse; min-width:760px; font-size:.93rem;}
+.clv .qt th{font-family:var(--fm); font-size:10.5px; letter-spacing:.13em; text-transform:uppercase; color:var(--faint); text-align:left; padding:14px 18px; border-bottom:1px solid var(--border-strong); font-weight:500; background:var(--bg-2);}
+.clv .qt th.r{text-align:right;}
+.clv .qt td{padding:16px 18px; border-bottom:1px solid var(--border); vertical-align:top;}
+.clv .qt tbody tr{transition:background .18s;}
+.clv .qt tbody tr:hover td{background:rgba(242,246,239,.025);}
+.clv .qt .ph{font-family:var(--fm); font-size:11.5px; color:var(--gold-2); white-space:nowrap;}
+.clv .qt .mn{font-weight:600;}
+.clv .qt .cv{color:var(--muted); font-size:.86rem; margin-top:3px; line-height:1.5;}
+.clv .qt .wk{font-family:var(--fm); font-size:12px; color:var(--muted); white-space:nowrap;}
+.clv .qt .usd{text-align:right; font-family:var(--fm); font-variant-numeric:tabular-nums; white-space:nowrap; font-weight:600;}
+.clv .qt tr.done td{background:rgba(127,191,106,.05);}
+.clv .qt .st{display:inline-block; font-family:var(--fm); font-size:10px; letter-spacing:.1em; text-transform:uppercase; padding:3px 8px; border-radius:999px; background:var(--good-bg); color:var(--good); border:1px solid rgba(127,191,106,.3); white-space:nowrap;}
+.clv .qt .muted{color:var(--faint); font-weight:500;}
+.clv .qt .ast{color:var(--warn);}
+.clv .qt tfoot td{border-bottom:0; padding:12px 18px;}
+.clv .qt tfoot .lbl{color:var(--muted); text-align:right;}
+.clv .qt tfoot tr.total td{padding:20px 18px; border-top:1px solid var(--border-strong); background:var(--bg-2);}
+.clv .qt tfoot tr.total .lbl{color:var(--text); font-weight:600; font-size:1.02rem;}
+.clv .qt tfoot tr.total .usd{font-size:1.45rem; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;}
+.clv .qt-foot{padding:14px 18px; font-size:.84rem; color:var(--faint); border-top:1px solid var(--border);}
+
+.clv .pays{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+.clv .pay{border-radius:19px; padding:1px; background:var(--border-strong); transition:.22s;}
+.clv .pay.main{background:var(--grad); box-shadow:var(--shadow);}
+.clv .pay:hover{transform:translateY(-3px);}
+.clv .pay-in{background:var(--bg-2); border-radius:18px; padding:28px 26px; height:100%;}
+.clv .pay .opt{font-family:var(--fm); font-size:11px; letter-spacing:.13em; text-transform:uppercase; color:var(--gold-2);}
+.clv .pay h3{font-weight:600; font-size:1.2rem; margin:8px 0 4px;}
+.clv .pay .sub{color:var(--muted); font-size:.93rem; margin:0 0 18px;}
+.clv .pay .big{font-weight:700; font-size:clamp(2rem,4vw,2.5rem); letter-spacing:-.02em; line-height:1; font-variant-numeric:tabular-nums;}
+.clv .pay .big small{font-size:.95rem; font-weight:500; color:var(--muted); letter-spacing:0;}
+.clv .pay ul{list-style:none; margin:20px 0 0; padding:0; display:grid; gap:11px;}
+.clv .pay li{display:flex; gap:10px; color:var(--muted); font-size:.93rem; line-height:1.5;}
+.clv .pay li::before{content:"\\2713"; color:var(--good); font-weight:700; flex:none;}
+.clv .pay li b{color:var(--text); font-weight:600;}
+
+.clv .invest{display:grid; grid-template-columns:1.1fr 1fr; gap:18px; align-items:stretch;}
+.clv .invest .final-in{text-align:left; padding:34px 32px;}
+.clv .invest .big{font-weight:700; font-size:clamp(2.4rem,5vw,3.3rem); letter-spacing:-.025em; line-height:1; background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent; font-variant-numeric:tabular-nums;}
+.clv .invest ul{list-style:none; margin:18px 0 24px; padding:0; display:grid; gap:10px;}
+.clv .invest li{display:flex; gap:10px; color:var(--muted); font-size:.95rem;}
+.clv .invest li::before{content:"\\2713"; color:var(--good); font-weight:700;}
+.clv .invest li b{color:var(--text); font-weight:600;}
+
+@media (max-width:980px){
+  .clv .tl,.clv .pays,.clv .invest{grid-template-columns:1fr;}
+}
+
 /* Visible por defecto: si el JS no corre, la propuesta se lee igual.
    La animacion solo existe cuando el componente marca el contenedor. */
 .clv.js-reveal .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease,transform .6s ease;}
@@ -169,6 +236,15 @@ const CSS = `
 
 const ARROW = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
+/**
+ * El admin del cliente (Our Team y Site Feedback reales; el resto, vista previa).
+ * Apunta a la dirección que tiene certificado hoy: cuando admin.cloverleafaws.com
+ * tenga el suyo, el servidor redirige esta a aquella conservando la ruta.
+ */
+export const PORTAL = "https://cloverleaf-erp.newebd.com";
+export const QUOTE = "/cloverleaf/cotizacion";
+export const PROPOSAL = "/cloverleaf";
+
 const HTML = `
 <div class="bg-fx" aria-hidden="true">
   <div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
@@ -181,16 +257,17 @@ const HTML = `
     <h1>Your website is back. Now the <span class="g">system behind it.</span></h1>
     <p class="lede">The server your site lived on is gone. We rebuilt the site on new infrastructure and <strong>it is live today</strong>. Along the way we found things worth telling you about. This page is both: what we already delivered, and what we propose building next &mdash; <strong>one system that runs certification end to end</strong>, from the first inquiry to the certificate and its renewal.</p>
     <div class="cta-row">
-      <a class="btn btn-primary" href="https://cloverleaf-erp.newebd.com" target="_blank" rel="noopener">Open the ERP portal
+      <a class="btn btn-primary" href="${PORTAL}" target="_blank" rel="noopener">Open your admin
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
+      <a class="btn btn-ghost" href="${QUOTE}">See the quote</a>
       <a class="btn btn-ghost" href="#system">The system</a>
       <a class="btn btn-ghost" href="#findings">What we found</a>
-      <a class="btn btn-ghost" href="https://cloverleaf.newebd.com" target="_blank" rel="noopener">See the site live</a>
+      <a class="btn btn-ghost" href="https://cloverleafaws.com" target="_blank" rel="noopener">See the site live</a>
     </div>
     <div class="hero-chips">
-      <span class="chip"><span class="tick">&#10003;</span> ERP portal open to explore</span>
-      <span class="chip"><span class="tick">&#10003;</span> HTTPS with automatic renewal</span>
+      <span class="chip"><span class="tick">&#10003;</span> Your admin is live</span>
+      <span class="chip"><span class="tick">&#10003;</span> cloverleafaws.com on the new server, with HTTPS</span>
       <span class="chip"><span class="tick">&#10003;</span> English, Spanish and Portuguese verified</span>
     </div>
   </section>
@@ -226,10 +303,6 @@ const HTML = `
       </div>
       <div class="find crit">
         <div class="fi">!</div>
-        <div><h3>Your API subdomain still points to the old machine</h3><p>api.cloverleafaws.com resolves to the decommissioned server. Anything pointed at it fails.</p></div>
-      </div>
-      <div class="find crit">
-        <div class="fi">!</div>
         <div><h3>No analytics, and no lead attribution</h3><p>There is no way to answer the question that matters: which channel actually produces certifications, not just visits.</p></div>
       </div>
       <div class="find crit">
@@ -242,7 +315,11 @@ const HTML = `
       </div>
       <div class="find ok">
         <div class="fi">&#10003;</div>
-        <div><h3>Your admin panel survived</h3><p>The internal panel is still in version control. It tells us exactly what the lost backend did, which makes rebuilding it a matter of days rather than months.</p></div>
+        <div><h3>Your domain is on the new server</h3><p>cloverleafaws.com now points at the new infrastructure, with HTTPS, automatic certificate renewal and security headers. Nothing depends on the old machine anymore.</p></div>
+      </div>
+      <div class="find ok">
+        <div class="fi">&#10003;</div>
+        <div><h3>Your team page is back &mdash; and yours to edit</h3><p>The old admin panel was still in version control, which told us exactly what the lost backend did. We rebuilt that part: Our Team is live again on About Us, and you edit it from your own admin.</p></div>
       </div>
     </div>
   </section>
@@ -329,12 +406,12 @@ const HTML = `
   <section class="sec reveal" id="portal">
     <p class="kicker">The portal</p>
     <h2>Three doors into the same system.</h2>
-    <p class="sec-lede">One system, but nobody sees more than their job requires. The client door is the one that quietly saves your team the most time. <strong>The internal portal is already built and open below</strong> &mdash; go in and use it.</p>
+    <p class="sec-lede">One system, but nobody sees more than their job requires. The client door is the one that quietly saves your team the most time. <strong>Your admin is already live at admin.cloverleafaws.com</strong>: Our Team and Site Feedback work for real and are connected to your website; the rest is a navigable preview with sample data.</p>
     <div class="cta-row" style="margin:-14px 0 30px;">
-      <a class="btn btn-primary" href="https://cloverleaf-erp.newebd.com" target="_blank" rel="noopener">Open the ERP portal
+      <a class="btn btn-primary" href="${PORTAL}" target="_blank" rel="noopener">Open your admin
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </a>
-      <span class="chip">Navigable, with sample data</span>
+      <span class="chip">Sign in with your work email</span>
     </div>
     <div class="doors">
       <div class="door"><div class="door-in">
@@ -360,12 +437,53 @@ const HTML = `
     <h2>In phases, each one useful on its own.</h2>
     <p class="sec-lede">No phase depends on the next one existing to be worth having. If you stop after any of them, what is built keeps working.</p>
     <div class="phases">
-      <div class="phase done"><span class="pn">PHASE 0</span><div><h3>Website migration</h3><p>Site rebuilt on new infrastructure, HTTPS in place, all pages verified in three languages.</p></div><span class="tag">Delivered</span></div>
-      <div class="phase now"><span class="pn">PHASE 1</span><div><h3>Lead capture and attribution</h3><p>The contact form works again, every inquiry is stored with the campaign that produced it, and your team is notified the moment one arrives. This is also the first brick of the CRM.</p></div><span class="tag">In progress</span></div>
-      <div class="phase"><span class="pn">PHASE 2</span><div><h3>Clients, facilities and pipeline</h3><p>Inquiries become clients, clients get their facilities, and the commercial pipeline replaces the inbox.</p></div><span class="tag">Next</span></div>
-      <div class="phase"><span class="pn">PHASE 3</span><div><h3>Audits, findings and corrective actions</h3><p>Scheduling, execution against versioned standards, evidence capture and the full corrective action cycle.</p></div><span class="tag">Planned</span></div>
-      <div class="phase"><span class="pn">PHASE 4</span><div><h3>Certificates and public registry</h3><p>Certificate lifecycle, renewal alerts, and the public verification page on your own domain.</p></div><span class="tag">Planned</span></div>
-      <div class="phase"><span class="pn">PHASE 5</span><div><h3>Competence, invoicing and dashboards</h3><p>Auditor competence records, billing tied to the work, and the reporting layer on top of everything already captured.</p></div><span class="tag">Planned</span></div>
+      <div class="phase done"><span class="pn">PHASE 0</span><div><h3>Website migration and your admin</h3><p>Site rebuilt on new infrastructure with HTTPS in three languages, and your admin live: Our Team and Site Feedback, connected to the website.</p></div><span class="tag">Delivered</span></div>
+      <div class="phase now"><span class="pn">PHASE 1</span><div><h3>Foundation and lead capture</h3><p>Accounts and roles for your whole team, and the contact form working again: every inquiry stored with the campaign that produced it, and your team notified the moment one arrives.</p></div><span class="tag">Weeks 1&ndash;2</span></div>
+      <div class="phase"><span class="pn">PHASE 2</span><div><h3>Clients, facilities and pipeline</h3><p>Inquiries become clients, clients get their facilities, and the commercial pipeline replaces the inbox.</p></div><span class="tag">Weeks 2&ndash;4</span></div>
+      <div class="phase"><span class="pn">PHASE 3</span><div><h3>Audits, findings and corrective actions</h3><p>Scheduling, execution against versioned standards, evidence capture and the full corrective action cycle.</p></div><span class="tag">Weeks 3&ndash;6</span></div>
+      <div class="phase"><span class="pn">PHASE 4</span><div><h3>Certificates and public registry</h3><p>Certificate lifecycle, renewal alerts, and the public verification page on your own domain.</p></div><span class="tag">Weeks 5&ndash;7</span></div>
+      <div class="phase"><span class="pn">PHASE 5</span><div><h3>Team, competence and dashboards</h3><p>Directory, roles and access, workload, auditor competence records, and the reporting layer on top of everything already captured.</p></div><span class="tag">Weeks 5&ndash;7</span></div>
+      <div class="phase"><span class="pn">SOCIAL</span><div><h3>Social media with AI</h3><p>Your Facebook and Instagram in one calendar, with an AI assistant that drafts each post in English, Spanish and Portuguese for your approval. Publishing depends on Meta approving the app.</p></div><span class="tag">Weeks 4&ndash;7</span></div>
+      <div class="phase"><span class="pn">PHASE 6</span><div><h3>Launch</h3><p>Your existing data migrated, your team trained, go-live, and 60 days of close support afterwards.</p></div><span class="tag">Weeks 7&ndash;8</span></div>
+    </div>
+  </section>
+
+  <section class="sec reveal" id="tailored">
+    <p class="kicker">Made to fit</p>
+    <h2>Everything on this page can be tailored to you.</h2>
+    <p class="sec-lede">The modules, screens and flows above are a starting point, not a fixed package. Fields, steps, checklists, permissions, reports and wording all get adjusted to how CloverLeaf actually works.</p>
+    <div class="tl-track" aria-hidden="true"><span class="a"></span><span class="b"></span><span class="c"></span></div>
+    <div class="tl-scale" aria-hidden="true"><span>Week 1</span><span>Week 2</span><span>Week 6</span><span>Week 8</span></div>
+    <div class="tl">
+      <div class="tl-step" style="--c:var(--gold)"><span class="wk">Weeks 1&ndash;2</span><h3>Up and running</h3><p>Standing the platform up is fast. The base system, your accounts and roles, and lead capture are live within one to two weeks.</p></div>
+      <div class="tl-step" style="--c:var(--leaf)"><span class="wk">Weeks 2&ndash;6</span><h3>Understand, connect, adapt</h3><p>Working sessions with your coordinators and auditors to map the real process, connect the tools you already use, and adapt each module until it fits.</p></div>
+      <div class="tl-step" style="--c:var(--sage)"><span class="wk">Weeks 6&ndash;8</span><h3>Refine and launch</h3><p>Your existing data migrated, your team trained, and the system in daily use &mdash; with us close by for the first 60 days.</p></div>
+    </div>
+    <div class="note-box"><strong>Where the time goes.</strong> Building the base takes one or two weeks. What takes the rest is understanding how you work, connecting with your tools and making the adjustments that make it yours &mdash; which is why we plan <strong>six to eight weeks</strong> in total.</div>
+  </section>
+
+  <section class="sec reveal" id="investment">
+    <p class="kicker">Investment</p>
+    <h2>The full system, in six to eight weeks.</h2>
+    <p class="sec-lede">Priced module by module, in US dollars. The quote lists what each module covers, when it arrives and what it costs.</p>
+    <div class="invest">
+      <div class="final"><div class="final-in">
+        <div class="big" data-to="63600" data-prefix="$">$63,600</div>
+        <p style="margin:10px 0 0; text-align:left; max-width:none;">Full project, every module on this page.</p>
+        <ul>
+          <li><span><b>Website migration included</b> at no cost</span></li>
+          <li><span><b>Prototype credited in full</b> &mdash; the admin you are already using</span></li>
+          <li><span><b>30% to start</b>, the rest as each module is delivered</span></li>
+          <li><span>Or <b>$3,400 per month</b>, with no large upfront payment</span></li>
+        </ul>
+        <div class="cta-row"><a class="btn btn-primary" href="${QUOTE}">See the full quote ${ARROW.replace('<svg ', '<svg width="17" height="17" ')}</a></div>
+      </div></div>
+      <div class="stats" style="grid-template-columns:1fr 1fr; align-content:stretch;">
+        <div class="stat"><div class="v">1&ndash;2</div><div class="l">Weeks to have the base platform running</div></div>
+        <div class="stat"><div class="v">6&ndash;8</div><div class="l">Weeks from kickoff to launch</div></div>
+        <div class="stat"><div class="v" data-to="5600" data-prefix="$">$5,600</div><div class="l">Prototype, credited against the project</div></div>
+        <div class="stat"><div class="v" data-to="1500" data-prefix="$" data-suffix="/mo">$1,500/mo</div><div class="l">Hosting, AI, support and monitoring, from launch</div></div>
+      </div>
     </div>
   </section>
 
@@ -374,7 +492,7 @@ const HTML = `
     <h2>Six things, and we keep moving.</h2>
     <p class="sec-lede">Some of these unblock work already underway. Others shape how the system gets built, so the earlier we know, the better the result.</p>
     <div class="needs">
-      <div class="need"><h3>DNS access</h3><p>To point cloverleafaws.com at the new server. Until then the site runs on a temporary address, deliberately hidden from search engines.</p></div>
+      <div class="need"><h3>Access to your Meta Business account</h3><p>Admin access to your Facebook Page and Instagram through Meta Business Suite, so the social media app can be submitted for Meta&rsquo;s review early.</p></div>
       <div class="need"><h3>A Google Analytics property</h3><p>Yours, or we create it. The site is already prepared to use it without touching the code again.</p></div>
       <div class="need"><h3>A decision on privacy and cookies</h3><p>Your site has no privacy or cookie notice today. It should be in place before analytics is switched on.</p></div>
       <div class="need"><h3>Do auditors work without signal?</h3><p>Farms often have none. If audits are captured on site, the system has to work offline and sync later &mdash; that decision shapes the architecture more than any other.</p></div>
@@ -389,9 +507,10 @@ const HTML = `
         <h2>The website is back. The operation is the next step.</h2>
         <p>What we propose is not software for its own sake. It is the difference between certification work that lives in spreadsheets and inboxes, and an operation you can prove, audit and scale across four continents.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="https://cloverleaf-erp.newebd.com" target="_blank" rel="noopener">Open the ERP portal
+          <a class="btn btn-primary" href="${PORTAL}" target="_blank" rel="noopener">Open your admin
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
+          <a class="btn btn-ghost" href="${QUOTE}">See the quote</a>
           <a class="btn btn-ghost" href="https://newebd.com/contacto">Talk to NEWEBD</a>
         </div>
       </div>
@@ -402,7 +521,11 @@ const HTML = `
 </div>
 `;
 
-export function CloverleafProposal() {
+/**
+ * Molde de las páginas de CloverLeaf (propuesta y cotización): CSS scopeado,
+ * HTML self-contained, apariciones al hacer scroll y contadores.
+ */
+export function ClvPage({ html }: { html: string }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -444,23 +567,25 @@ export function CloverleafProposal() {
     // Contadores: cuentan una sola vez, al ser visibles.
     const run = (el: HTMLElement) => {
       const to = Number(el.dataset.to ?? 0);
+      const prefix = el.dataset.prefix ?? "";
       const suffix = el.dataset.suffix ?? "";
+      const fmt = (n: number) => prefix + n.toLocaleString("en-US") + suffix;
       const dur = 1100;
 
       if (reduce) {
-        el.textContent = String(to) + suffix;
+        el.textContent = fmt(to);
         return;
       }
 
-      el.textContent = "0" + suffix;
+      el.textContent = fmt(0);
       let start: number | null = null;
       const frame = (ts: number) => {
         if (start === null) start = ts;
         const p = Math.min((ts - start) / dur, 1);
         const eased = 1 - Math.pow(1 - p, 3);
-        el.textContent = String(Math.round(to * eased)) + suffix;
+        el.textContent = fmt(Math.round(to * eased));
         if (p < 1) requestAnimationFrame(frame);
-        else el.textContent = String(to) + suffix;
+        else el.textContent = fmt(to);
       };
       requestAnimationFrame(frame);
     };
@@ -493,7 +618,11 @@ export function CloverleafProposal() {
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div className="clv" ref={ref} dangerouslySetInnerHTML={{ __html: HTML }} />
+      <div className="clv" ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
     </>
   );
+}
+
+export function CloverleafProposal() {
+  return <ClvPage html={HTML} />;
 }

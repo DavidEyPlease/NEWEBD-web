@@ -39,6 +39,11 @@ export const routing = defineRouting({
       es: "/cloverleaf",
       en: "/cloverleaf",
     },
+    // Cotización de CloverleafAWS (misma lógica que /vegemex/cotizacion)
+    "/cloverleaf/cotizacion": {
+      es: "/cloverleaf/cotizacion",
+      en: "/cloverleaf/cotizacion",
+    },
   },
 });
 
