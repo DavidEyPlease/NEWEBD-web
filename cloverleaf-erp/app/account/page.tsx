@@ -13,6 +13,23 @@ export default function AccountPage() {
     <>
       <PageHeader mode="account" title="Hosting & Billing" sub="Your website's server and plan with NEWEBD" />
       <div className="content enter">
+        <div className="acct-hero stagger">
+          <div className="acct-pay paid">
+            <span className="lbl">Payment received</span>
+            <div className="amt">{usd(TOTAL)} <small>USD</small></div>
+            <div className="meta">Paid on {fmt(ACCOUNT.lastPaid)} · covers Sep 10, 2026 – Sep 10, 2027</div>
+            <span className="pill ok">✓ Paid in full — your hosting is covered for the year</span>
+          </div>
+          <div className="acct-pay next">
+            <span className="lbl">Next payment</span>
+            <div className="amt">{usd(TOTAL)} <small>USD</small></div>
+            <div className="meta">
+              Due on <b>{fmt(ACCOUNT.nextDue)}</b>{days === null ? "" : ` · in ${days} days`} · covers Sep 10, 2027 – Sep 10, 2028
+            </div>
+            <span className="pill">{usd(ACCOUNT.monthlyUsd, false)}/month × 12 + 16% VAT (IVA)</span>
+          </div>
+        </div>
+
         <div className="kpis stagger">
           <div className="kpi acc-ok">
             <div className="l">Service</div>

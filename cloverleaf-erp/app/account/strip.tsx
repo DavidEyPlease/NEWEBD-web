@@ -14,9 +14,9 @@ export function HostingStrip() {
     <Link href="/account/" className="acct-strip">
       <span className="acct-dot" />
       <span className="acct-tag">Your account</span>
-      <span><b>Hosting active</b> · paid through {fmt(ACCOUNT.nextDue)}</span>
+      <span><b>Hosting paid ✓</b> {usd(TOTAL, false)} USD on {fmt(ACCOUNT.lastPaid)}</span>
       <span className="acct-s2">
-        Next payment {usd(TOTAL, false)} USD{days !== null ? ` · in ${days} days` : ""}
+        Next payment: {usd(TOTAL, false)} USD on {fmt(ACCOUNT.nextDue)}{days !== null ? ` (in ${days} days)` : ""}
       </span>
       <span className="acct-go">Hosting &amp; Billing →</span>
     </Link>

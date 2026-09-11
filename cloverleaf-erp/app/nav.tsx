@@ -65,6 +65,7 @@ const GROUPS: { label: string; items: Item[] }[] = [
       // exact: si no, "/website/" tambien se marcaria activo dentro de /website/team/
       { href: "/website/", icon: "▣", text: "Site Feedback", exact: true, editable: true },
       { href: "/website/team/", icon: "☺", text: "Our Team", editable: true },
+      { href: "/website/analytics/", icon: "▥", text: "Analytics" },
     ],
   },
   {

@@ -85,6 +85,7 @@ export function DemoModal() {
             <ul>
               <li><strong>Site Feedback</strong> — mark any part of your website and tell us what you&apos;d change.</li>
               <li><strong>Our Team</strong> — edit the profiles, photos, order and translations shown on your About Us page.</li>
+              <li><strong>Analytics</strong> — who visits your site and where they come from.</li>
               <li><strong>Hosting &amp; Billing</strong> — your plan and your next payment date.</li>
             </ul>
           </div>

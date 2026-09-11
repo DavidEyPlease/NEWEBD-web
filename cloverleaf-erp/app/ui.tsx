@@ -6,7 +6,7 @@ import { WhoAmI } from "./session";
  * Site Feedback y Our Team pasan mode="live", porque son lo único que el
  * cliente puede editar de verdad.
  */
-export function PageHeader({ title, sub, mode = "preview" }: { title: string; sub: string; mode?: "preview" | "live" | "account" }) {
+export function PageHeader({ title, sub, mode = "preview" }: { title: string; sub: string; mode?: "preview" | "live" | "account" | "data" }) {
   return (
     <header className="topbar">
       <div>
@@ -14,6 +14,7 @@ export function PageHeader({ title, sub, mode = "preview" }: { title: string; su
           <h1>{title}</h1>
           {mode === "live" && <span className="ph-tag live">Editable</span>}
           {mode === "account" && <span className="ph-tag live">Your account</span>}
+          {mode === "data" && <span className="ph-tag live">Live data</span>}
           {mode === "preview" && <span className="ph-tag preview">Preview · sample data</span>}
         </div>
         <div className="sub">{sub}</div>

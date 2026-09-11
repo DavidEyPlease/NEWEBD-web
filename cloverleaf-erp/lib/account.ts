@@ -9,6 +9,8 @@ export const ACCOUNT = {
   site: "cloverleafaws.com",
   admin: "admin.cloverleafaws.com",
   liveSince: "2026-09-10",
+  /** Pago anual recibido (confirmado por David el 10-sep-2026). */
+  lastPaid: "2026-09-10",
   plan: "Annual hosting",
   monthlyUsd: 150,
   months: 12,

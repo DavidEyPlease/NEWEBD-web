@@ -86,7 +86,7 @@ export function SessionShell({ children }: { children: ReactNode }) {
             <div className="demobar">
               <span className="pulse" />
               <b>Demo by NEWEBD</b>
-              <span>— sample data, except Site Feedback, Our Team and Hosting &amp; Billing, which are real.</span>
+              <span>— sample data, except the Website section and Hosting &amp; Billing, which are real.</span>
               <DemoInfoButton />
             </div>
             <MobileNav />
