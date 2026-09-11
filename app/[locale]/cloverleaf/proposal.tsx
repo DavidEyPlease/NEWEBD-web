@@ -236,12 +236,8 @@ export const CSS = `
 
 const ARROW = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
 
-/**
- * El admin del cliente (Our Team y Site Feedback reales; el resto, vista previa).
- * Apunta a la dirección que tiene certificado hoy: cuando admin.cloverleafaws.com
- * tenga el suyo, el servidor redirige esta a aquella conservando la ruta.
- */
-export const PORTAL = "https://cloverleaf-erp.newebd.com";
+/** El admin del cliente (Website y Hosting & Billing reales; el resto, vista previa). */
+export const PORTAL = "https://admin.cloverleafaws.com";
 export const QUOTE = "/cloverleaf/cotizacion";
 export const PROPOSAL = "/cloverleaf";
 
